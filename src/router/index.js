@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
-import LoginView from '../views/LoginView.vue';
-import SignUpView from '../views/SignUpView.vue';
-import AssessmentView from '../views/AssessmentView.vue';
-import QuestionsView from '../views/QuestionsView.vue';
-import SuccessView from '../views/SuccessView.vue';
+import HomeView from '../views/user-views/HomeView.vue';
+import LoginView from '../views/user-views/LoginView.vue';
+import SignUpView from '../views/user-views/SignUpView.vue';
+import AssessmentView from '../views/user-views/AssessmentView.vue';
+import QuestionsView from '../views/user-views/QuestionsView.vue';
+import SuccessView from '../views/user-views/SuccessView.vue';
 import AdminLoginView from '../views/admin-views/AdminLoginView.vue';
 import AdminDashboardView from '../views/admin-views/AdminDashboardView.vue';
 import CreateApplicationView from '../views/admin-views/CreateApplicationView.vue';
