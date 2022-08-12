@@ -127,6 +127,15 @@ form input {
     border-radius: 4px;
 }
 
+input[type="date" i] {
+    font-family: 'Lato';
+    font-style: italic;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    color: #CECECE;
+}
+
 .right-side,
 .left-side {
     width: 40%;
