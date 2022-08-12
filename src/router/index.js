@@ -14,6 +14,7 @@ import AssessmentHistoryView from "../views/admin-views/AssessmentHistoryView.vu
 import ResultsView from "../views/admin-views/ResultsView.vue";
 import SettingsView from "../views/admin-views/SettingsView.vue";
 import ForgotPassword from "../views/user-views/ForgotPasswordView.vue";
+import UserApplication from "../views/user-views/ApplicationView.vue";
 const routes = [
   {
     path: "/",
@@ -86,10 +87,15 @@ const routes = [
     component: SettingsView,
   },
   {
-  path: "/forgot-password",
-  name: "forgot-password",
-  component: ForgotPassword,
-},
+    path: "/forgot-password",
+    name: "forgot-password",
+    component: ForgotPassword,
+  },
+  {
+    path: "/user-application",
+    name: "user-application",
+    component: UserApplication,
+  },
 ];
 
 const router = createRouter({

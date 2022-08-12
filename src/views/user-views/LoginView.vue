@@ -94,7 +94,8 @@ button {
     color: #FFFFFF;
     margin-top: 32px;
 }
-button:hover{
+
+button:hover {
     cursor: pointer;
 }
 
