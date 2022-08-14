@@ -122,7 +122,7 @@ label {
 
 form input {
     width: 100%;
-    height: 38px;
+    height: 48px;
     border: 1.5px solid #2B3C4E;
     border-radius: 4px;
 }

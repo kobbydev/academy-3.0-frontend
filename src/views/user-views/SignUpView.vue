@@ -110,7 +110,6 @@ form input {
     height: 48px;
     border: 1.5px solid #BDBDBD;
     border-radius: 4px;
-    outline: 0.01px solid #7557D3;
 
 }
 
