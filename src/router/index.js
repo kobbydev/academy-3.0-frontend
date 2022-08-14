@@ -4,7 +4,6 @@ import LoginView from '../views/user-views/LoginView.vue';
 import SignUpView from '../views/user-views/SignUpView.vue';
 import DashboardView from '../views/user-views/DashboardView.vue';
 import AssessmentView from '../views/user-views/AssessmentView.vue';
-import DashboardView from '../views/user-views/DashboardView.vue';
 import QuestionsView from '../views/user-views/QuestionsView.vue';
 import SuccessView from '../views/user-views/SuccessView.vue';
 import AdminLoginView from '../views/admin-views/AdminLoginView.vue';
