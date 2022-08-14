@@ -2,7 +2,7 @@
 	<div class="home">
 		<nav>
 			<figure class="logo">
-				<img src="../../assets/enyata-logo.svg" alt="" />
+				<img src="../../assets/Enyata-logo.svg" alt="" />
 			</figure>
 			<ul class="menu-links">
 				<li class="menu"><a href="#">Home</a></li>
