@@ -1,4 +1,5 @@
 <template>
+<router-link >"/assessment/questions"</router-link>
 	<router-view />
 </template>
 
