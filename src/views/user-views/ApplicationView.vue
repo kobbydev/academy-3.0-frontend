@@ -3,7 +3,7 @@
         <img src="@/assets/Enyata-logo.svg" alt="Enyata Logo" id="logo">
         <h1>Applicantion Form</h1>
         <section class="form-container">
-            <form class="upload-form">
+            <form class="upload-form" enctype='multipart/form-data'>
                 <input type="file" class="cv-inp" id="cv" accept=".doc, .docx, .pdf">
                 <label for="cv" class="cv-lab">+ Upload CV</label>
                 <input type="file" class="photo-inp" id="photo">
