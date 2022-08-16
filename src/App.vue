@@ -24,6 +24,16 @@ export default {
 	font-family: 'Poppins';
 	src: local('Poppins'), url(./fonts/Poppins-Regular.ttf) format('truetype');
 }
+/* @font-face {
+	font-family: 'Avenir';
+	src: local('Avenir'), url(./fonts/avenir_roman_12.otf) format('truetype');
+} */
+@font-face {
+	font-family: 'Avenir Roman';
+	font-style: normal;
+	font-weight: normal;
+	src: local('Avenir Roman'), url('./fonts/avenir_roman_12.woff') format('woff');
+}
 * {
 	margin: 0;
 	padding: 0;
