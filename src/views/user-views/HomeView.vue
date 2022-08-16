@@ -5,12 +5,12 @@
 				<img src="../../assets/Enyata-logo.svg" alt="" />
 			</figure>
 			<ul class="menu-links">
-				<li class="menu"><a href="#">Home</a></li>
+				<li class="menu"><a href="#" class="home-link">Home</a></li>
 				<router-link to="/login">
 					<li class="menu"><a href="#">Sign In</a></li>
 				</router-link>
 				<router-link to="/signup">
-				<Button text="Register Now" class="menu-btn" />
+					<Button text="Register Now" class="menu-btn" />
 				</router-link>
 
 			</ul>
@@ -26,7 +26,7 @@
 						reality.
 					</p>
 					<router-link to="/signup">
-					<Button text=" Register Now" class="hero-btn" />
+						<Button text=" Register Now" class="hero-btn" />
 					</router-link>
 				</div>
 				<figure class="section-2">
@@ -96,6 +96,10 @@ nav {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+}
+
+.home-link {
+	color: rgba(117, 87, 211, 0.4)
 }
 
 .menu-links {
