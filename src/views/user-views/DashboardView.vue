@@ -16,13 +16,13 @@
 			</p>
 			<div class="application-data">
 				<div class="application-date">
-					<p class="date-header">Date of Application</p>
+					<p class="header">Date of Application</p>
 					<h2>09.09.19</h2>
 					<hr />
-					<p class="duration">4 days since applied</p>
+					<p class="status-text">4 days since applied</p>
 				</div>
 				<div class="application-status">
-					<p class="status-header">Application Status</p>
+					<p class="header">Application Status</p>
 					<h2>Pending</h2>
 					<hr />
 					<p class="status-text">We will get back to you</p>
@@ -86,7 +86,8 @@ export default {
 <style scoped>
 .dashboard {
 	display: flex;
-	/* height: 100vh; */
+	overflow: hidden;
+	height: 100vh;
 }
 .left-section {
 	width: 20vw;
@@ -99,8 +100,9 @@ export default {
 }
 .right-section {
 	width: 80vw;
-	/* height: 100vh; */
+	height: 100%;
 	padding: 107px 61px 86px 47px;
+	overflow-y: scroll;
 }
 .heading {
 	font-family: 'Lato';
@@ -127,8 +129,7 @@ export default {
 .application-date {
 	margin-right: 86px;
 }
-.date-header,
-.status-header {
+.header {
 	font-family: 'Lato';
 	font-style: normal;
 	font-weight: 400;
@@ -159,7 +160,6 @@ export default {
 .application-status hr {
 	background: #f09000;
 }
-.duration,
 .status-text {
 	font-family: 'Lato';
 	font-style: normal;
@@ -232,5 +232,24 @@ button {
 	color: #ffffff;
 	margin: auto;
 	margin-top: 0;
+	cursor: pointer;
+}
+::-webkit-scrollbar {
+	width: 10px;
+	right: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #cdcfd6;
+	border-radius: 17px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #031131;
+	opacity: 0.7;
+	border-radius: 17px;
+	height: 66px;
 }
 </style>
