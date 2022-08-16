@@ -1,11 +1,244 @@
 <template>
-
-    <p>Hi</p>
+	<div class="create-application">
+		<div class="left-section">
+			<UserMenu
+				class="user-menu"
+				:linksData="links"
+				:linkName="linkName"
+				:linkIcon="linkIcon"
+				:routerLink="routerLink"
+				:lId="lId"
+			/>
+		</div>
+		<div class="right-section">
+			<h1 class="heading">Create Application</h1>
+			<form>
+				<div class="section-1">
+					<label class="custom-file-upload">
+						<input type="file" />
+						+ Choose file
+					</label>
+					<div class="link-input">
+						<label for="link-input">Link</label> <br />
+						<input type="text" name="link-input" id="link-input" />
+					</div>
+				</div>
+				<div class="section-2">
+					<div class="date-input">
+						<label for="date-input">Application closure date</label><br />
+						<input
+							type="date"
+							id="date-input"
+							name="date-input"
+							min="2022-08-14"
+						/>
+					</div>
+					<div class="batch-input">
+						<label for="batch-id">Batch ID</label> <br />
+						<input type="text" id="batch-id" name="batch-id" />
+					</div>
+				</div>
+				<label for="instructions">Instructions</label><br />
+				<textarea
+					name="instructions"
+					id="instructions"
+					cols="30"
+					rows="10"
+				></textarea
+				><br />
+				<Button type="submit" text="Submit" />
+			</form>
+		</div>
+	</div>
 </template>
 
 <script>
-export default {};
+import UserMenu from '../../components/UserMenu.vue';
+import Button from '@/components/Button.vue';
+export default {
+	name: 'CreateApplication',
+	components: { UserMenu, Button },
+	data() {
+		return {
+			links: [
+				{
+					lId: 'dashboard',
+					linkName: 'Dashboard',
+					linkIcon: require('../../assets/dashboard-icon.svg'),
+					routerLink: '/admindashboard',
+				},
+				{
+					lId: 'create-aaplication',
+					linkName: 'Create Application',
+					linkIcon: require('../../assets/Create-application-icon.svg'),
+					routerLink: '/create-application',
+				},
+				{
+					lId: 'application-entries',
+					linkName: 'Application Entries',
+					linkIcon: require('../../assets/Application-entries-icon.svg'),
+					routerLink: '/application-entries',
+				},
+				{
+					lId: 'compose',
+					linkName: 'Compose Assessment',
+					linkIcon: require('../../assets/assessment-icon.svg'),
+					routerLink: '/compose-assessment',
+				},
+				{
+					lId: 'assessment-history',
+					linkName: 'Assessment History',
+					linkIcon: require('../../assets/Assessment-history-icon.svg'),
+					routerLink: '/assessment-history',
+				},
+				{
+					lId: 'results',
+					linkName: 'Results',
+					linkIcon: require('../../assets/Results-icon.svg'),
+					routerLink: '/results',
+				},
+				{
+					lId: 'settings',
+					linkName: 'Settings',
+					linkIcon: require('../../assets/Setting-icon.svg'),
+					routerLink: '/settings',
+				},
+				{
+					lId: 'logout',
+					linkName: 'Logout',
+					linkIcon: require('../../assets/logout-icon.svg'),
+					routerLink: '/',
+				},
+			],
+		};
+	},
+};
 </script>
 
-<style>
+<style scoped>
+.create-application {
+	display: flex;
+	overflow: hidden;
+	height: 100vh;
+}
+.left-section {
+	width: 20vw;
+	background: #ffffff;
+	box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
+	border-radius: 8px;
+	position: relative;
+	bottom: 0;
+	height: 100vh;
+}
+.right-section {
+	width: 80vw;
+	height: 100%;
+	padding: 137px 97px 86px 75px;
+	overflow-y: scroll;
+}
+.heading {
+	font-family: 'Lato';
+	font-style: normal;
+	font-weight: 300;
+	font-size: 43.5555px;
+	line-height: 52px;
+	margin-bottom: 62px;
+	letter-spacing: -0.02em;
+	color: #2b3c4e;
+}
+.section-1,
+.section-2 {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.section-1 {
+	margin-bottom: 30px;
+}
+.section-2 {
+	margin-bottom: 36px;
+}
+input[type='file'] {
+	display: none;
+}
+label {
+	font-family: 'Lato';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 17px;
+	color: #2b3c4e;
+}
+.custom-file-upload {
+	border: 1.55172px dashed #2b3c4e;
+	border-radius: 6.2069px;
+	display: inline-block;
+	cursor: pointer;
+	width: 456px;
+	padding: 46px 181px 40px 167px;
+	font-family: 'Avenir Roman';
+	font-size: 16px;
+	line-height: 22px;
+	color: #2b3c4e;
+	margin-right: 64px;
+}
+.section-1 input,
+.section-2 input {
+	border: 1.5px solid #2b3c4e;
+	border-radius: 4px;
+	padding: 5px;
+	height: 41px;
+	width: 456px;
+}
+#date-input {
+	margin-right: 64px;
+	font-family: 'Lato';
+	font-style: italic;
+	font-weight: 400;
+	font-size: 10px;
+	line-height: 12px;
+	color: #cecece;
+}
+textarea {
+	border: 1.5px solid #2b3c4e;
+	border-radius: 4px;
+	height: 144px;
+	width: 100%;
+}
+form {
+	display: flex;
+	flex-direction: column;
+}
+button {
+	background: #7557d3;
+	border-radius: 4px;
+	font-family: 'Lato';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 19px;
+	border: none;
+	margin: auto;
+	margin-top: 60px;
+	color: #ffffff;
+	padding: 16px 164px;
+}
+::-webkit-scrollbar {
+	width: 10px;
+	right: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #cdcfd6;
+	border-radius: 17px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #031131;
+	opacity: 0.7;
+	border-radius: 17px;
+	height: 66px;
+}
 </style>
