@@ -5,9 +5,13 @@
 				<img src="../../assets/Enyata-logo.svg" alt="" />
 			</figure>
 			<ul class="menu-links">
-				<li class="menu"><a href="#">Home</a></li>
-				<li class="menu"><a href="#">Sign In</a></li>
-				<Button text="Register Now" class="menu-btn" />
+				<li class="menu"><a href="#" class="home-link">Home</a></li>
+				<router-link to="/login">
+					<li class="menu"><a href="#">Sign In</a></li>
+				</router-link>
+				<router-link to="/signup">
+					<Button text="Register Now" class="menu-btn" />
+				</router-link>
 			</ul>
 			<figure class="bg-image">
 				<img src="../../assets/bg-layers.svg" alt="" />
@@ -23,7 +27,9 @@
 						Join enyata academy today and bring your long awaiting dream to
 						reality.
 					</p>
-					<Button text=" Register Now" class="hero-btn" />
+					<router-link to="/signup">
+						<Button text=" Register Now" class="hero-btn" />
+					</router-link>
 				</div>
 				<figure class="section-2">
 					<img src="../../assets/hero-image.svg" alt="" />
