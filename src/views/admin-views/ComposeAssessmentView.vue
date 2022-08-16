@@ -21,13 +21,43 @@
 					</label>
 				</div>
 				<div class="section-2">
-					<label for="questoins">Questions</label><br />
+					<label for="questions">Questions</label><br />
 					<textarea
 						name="questions"
 						id="questions"
 						cols="30"
 						rows="10"
 					></textarea>
+				</div>
+				<div class="options-section">
+					<div class="options-a-b">
+						<div class="options-a">
+							<label for="option1" class="radio-labels">Option A</label><br />
+							<label for="" class="radio-btn"
+								><input type="radio" name="question-options" /> </label
+							><br />
+						</div>
+						<div class="options-b">
+							<label for="option1" class="radio-labels">Option B</label><br />
+							<label for="" class="radio-btn"
+								><input type="radio" name="question-options" /> </label
+							><br />
+						</div>
+					</div>
+					<div class="options-c-d">
+						<div class="option-c">
+							<label for="option1" class="radio-labels">Option C</label><br />
+							<label for="" class="radio-btn"
+								><input type="radio" name="question-options" /> </label
+							><br />
+						</div>
+						<div class="option-d">
+							<label for="option1" class="radio-labels">Option D</label><br />
+							<label for="" class="radio-btn"
+								><input type="radio" name="question-options" />
+							</label>
+						</div>
+					</div>
 				</div>
 				<div class="buttons">
 					<Button text="Previous" />
@@ -146,6 +176,35 @@ form {
 	display: flex;
 	flex-direction: column;
 }
+input[type='radio'] {
+	border: 1.5px solid #2b3c4e;
+	-webkit-appearance: none;
+	height: 41px;
+	width: 456px;
+	border-radius: 4px;
+	cursor: pointer;
+}
+input[type='radio']:checked {
+	background: #31d283 no-repeat center center;
+	background-size: 59px 59px;
+}
+
+input[type='radio']:focus {
+	outline-color: transparent;
+}
+.options-a-b {
+	margin-bottom: 25px;
+}
+.options-a-b,
+.options-c-d {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.options-section {
+	margin-top: 25px;
+}
+
 input[type='file'] {
 	display: none;
 }
@@ -156,6 +215,9 @@ label {
 	font-size: 14px;
 	line-height: 17px;
 	color: #2b3c4e;
+	margin-bottom: 5px;
+}
+.radio-labels {
 	margin-bottom: 5px;
 }
 .section-1 {

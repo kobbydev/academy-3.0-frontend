@@ -9,6 +9,9 @@
 				<li class="menu"><a href="#">Sign In</a></li>
 				<Button text="Register Now" class="menu-btn" />
 			</ul>
+			<figure class="bg-image">
+				<img src="../../assets/bg-layers.svg" alt="" />
+			</figure>
 		</nav>
 		<main>
 			<div class="main-section">
@@ -94,6 +97,12 @@ nav {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+}
+.bg-image {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: -1;
 }
 .menu-links {
 	display: flex;
@@ -220,5 +229,23 @@ footer p {
 	line-height: 156%;
 	letter-spacing: 0.01em;
 	color: #ffffff;
+}
+::-webkit-scrollbar {
+	width: 10px;
+	right: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #cdcfd6;
+	border-radius: 17px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #031131;
+	opacity: 0.7;
+	border-radius: 17px;
+	height: 66px;
 }
 </style>
