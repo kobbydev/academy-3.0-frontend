@@ -3,17 +3,13 @@
         <img src="@/assets/Enyata-logo.svg" alt="Enyata Logo" id="logo">
         <h1>Applicantion Form</h1>
         <section class="form-container">
-            <div class="files-button">
-                <button class="cv-button">
-                    <p>+</p>
-                    <p>Upload CV</p>
-                </button>
-                <button class="photo-button">
-                    <p>+</p>
-                    <p>Upload Photo</p>
-                </button>
-            </div>
-            <form action="#">
+            <form class="upload-form">
+                <input type="file" class="cv-inp" id="cv" accept=".doc, .docx, .pdf">
+                <label for="cv" class="cv-lab">+ Upload CV</label>
+                <input type="file" class="photo-inp" id="photo">
+                <label for="photo" accept="image/*" class="photo-lab">+ Upload Photo</label>
+            </form>
+            <form action="#" class="main-form">
                 <div class="left-side">
                     <div class="label-inp">
                         <label for="firstName">First Name</label>
@@ -85,7 +81,7 @@ export default {
     padding-bottom: 39px;
 }
 
-.files-button {
+.upload-form {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -105,7 +101,7 @@ export default {
     background-color: #FFFFFF;
 }
 
-form {
+.main-form {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -115,12 +111,12 @@ form {
     justify-content: center;
 }
 
-label {
+.main-form label {
     display: block;
     margin-bottom: 5px;
 }
 
-form input {
+.main-form input {
     width: 100%;
     height: 48px;
     border: 1.5px solid #2B3C4E;
@@ -173,7 +169,7 @@ h1 {
     color: #FFFFFF;
 }
 
-label {
+.main-form label {
     font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
@@ -183,11 +179,25 @@ label {
 }
 
 p {
-    font-family: 'Nunito';
-    font-size: 16px;
-    line-height: 22px;
+
     display: flex;
     align-items: center;
     color: #2B3C4E;
+}
+
+.upload-form input {
+    display: none;
+}
+
+.upload-form label {
+    font-family: 'Nunito';
+    font-size: 16px;
+    line-height: 22px;
+    width: 211px;
+    height: 50px;
+    border: 1.5px dashed #2b3c4e;
+    border-radius: 2.87205px;
+    text-align: center;
+    padding: 14px;
 }
 </style>
