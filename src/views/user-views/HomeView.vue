@@ -98,6 +98,9 @@ nav {
 	justify-content: space-between;
 	align-items: center;
 }
+.home-link {
+	color: rgba(117, 87, 211, 0.4);
+}
 .bg-image {
 	position: absolute;
 	top: 0;
