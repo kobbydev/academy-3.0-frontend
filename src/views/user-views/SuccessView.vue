@@ -161,7 +161,6 @@ export default {
     right: 96.18%;
     top: 39%;
     bottom: 64.47%;
-    background: #2B3C4E;
 }
 .logout p{
     position: absolute;
