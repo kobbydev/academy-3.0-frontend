@@ -13,6 +13,7 @@ import ComposeAssessmentView from '../views/admin-views/ComposeAssessmentView.vu
 import AssessmentHistoryView from '../views/admin-views/AssessmentHistoryView.vue';
 import ResultsView from '../views/admin-views/ResultsView.vue';
 import SettingsView from '../views/admin-views/SettingsView.vue';
+import ProfileSettings from '../views/admin-views/ProfileSettings.vue';
 
 const routes = [
 	{
@@ -84,6 +85,11 @@ const routes = [
 		path: '/settings',
 		name: 'settings',
 		component: SettingsView,
+	},
+	{
+		path: '/profilesettings',
+		name: 'profilesettings',
+		component: ProfileSettings,
 	},
 ];
 
