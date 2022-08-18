@@ -1,9 +1,20 @@
 <template>
 	<div class="application-entries">
-		<Modal v-show="isModalVisible" @close="closeModal" />
+		<Modal
+			v-show="isModalVisible"
+			@close="closeModal"
+			@approve="approveModal"
+			@decline="declineModal"
+		/>
 		<ChoiceModal
+			@close="closeChoiceModal"
 			v-show="isApproveModalVisible"
 			text="Are you sure you want to approve this application?"
+		/>
+		<ChoiceModal
+			@close="closeChoiceModal"
+			v-show="isDeclineModalVisible"
+			text="Are you sure you want to decline this application?"
 		/>
 		<div class="left-section">
 			<UserMenu
@@ -133,13 +144,19 @@ export default {
 			this.isModalVisible = true;
 		},
 		approveModal() {
+			this.isModalVisible = false;
 			this.isApproveModalVisible = true;
 		},
 		declineModal() {
+			this.isModalVisible = false;
 			this.isDeclineModalVisible = true;
 		},
 		closeModal() {
 			this.isModalVisible = false;
+		},
+		closeChoiceModal() {
+			this.isApproveModalVisible = false;
+			this.isDeclineModalVisible = false;
 		},
 	},
 };

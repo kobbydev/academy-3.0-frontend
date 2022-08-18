@@ -48,7 +48,7 @@
 			</div>
 			<div class="buttons">
 				<Button text="Approve" class="approve-btn" @click="approve" />
-				<Button text="Decline" class="decline-btn" />
+				<Button text="Decline" class="decline-btn" @click="decline" />
 			</div>
 		</div>
 	</div>
@@ -65,6 +65,9 @@ export default {
 		},
 		approve() {
 			this.$emit('approve');
+		},
+		decline() {
+			this.$emit('decline');
 		},
 	},
 };
@@ -89,7 +92,7 @@ export default {
 	background-color: rgba(0, 0, 0, 0.3);
 	display: flex;
 	justify-content: flex-end;
-	z-index: 2;
+	z-index: 1;
 	/* align-items: center; */
 }
 .modal-content {
@@ -159,6 +162,7 @@ input::placeholder {
 	margin-right: 24px;
 	color: #ffffff;
 	padding: 14px 32px;
+	cursor: pointer;
 }
 .buttons {
 	margin: auto;
@@ -174,5 +178,6 @@ input::placeholder {
 	line-height: 19px;
 	color: #4f4f4f;
 	padding: 14px 36px;
+	cursor: pointer;
 }
 </style>

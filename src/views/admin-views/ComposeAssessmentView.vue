@@ -152,24 +152,6 @@ export default {
 	height: 100%;
 	padding: 111px 93px 93px 79px;
 	overflow-y: scroll;
-	&::-webkit-scrollbar {
-		width: 10px;
-		right: 10px;
-	}
-
-	/* Track */
-	&::-webkit-scrollbar-track {
-		background: #cdcfd6;
-		border-radius: 17px;
-	}
-
-	/* Handle */
-	&::-webkit-scrollbar-thumb {
-		background: #031131;
-		opacity: 0.7;
-		border-radius: 17px;
-		height: 66px;
-	}
 }
 .heading {
 	font-family: 'Lato';

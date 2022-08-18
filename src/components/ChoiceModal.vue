@@ -1,5 +1,5 @@
 <template>
-	<div class="modal">
+	<div class="modal" @click="close">
 		<div class="modal-content">
 			<p>{{ text }}</p>
 			<div class="buttons">
@@ -16,6 +16,11 @@ export default {
 	name: 'ChoiceModal',
 	components: { Button },
 	props: ['text'],
+	methods: {
+		close() {
+			this.$emit('close');
+		},
+	},
 };
 </script>
 
@@ -45,6 +50,7 @@ export default {
 	width: 600px; */
 	display: flex;
 	flex-direction: column;
+	padding: 79px 96px;
 }
 .approve-btn {
 	background: #7557d3;
@@ -58,13 +64,14 @@ export default {
 	margin-right: 24px;
 	color: #ffffff;
 	padding: 14px 32px;
+	cursor: pointer;
 }
 .buttons {
 	margin: auto;
 }
 .decline-btn {
 	background: white;
-	border: 1px solid #cecece;
+	border: none;
 	border-radius: 4px;
 	font-family: 'Lato';
 	font-style: normal;
@@ -73,5 +80,17 @@ export default {
 	line-height: 19px;
 	color: #4f4f4f;
 	padding: 14px 36px;
+	cursor: pointer;
+}
+.modal-content p {
+	font-family: 'Lato';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 18px;
+	line-height: 150%;
+	margin-bottom: 48px;
+	text-align: center;
+	color: #4f4f4f;
+	width: 267px;
 }
 </style>
