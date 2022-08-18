@@ -6,13 +6,12 @@
 			<form action="#">
 				<div class="label-inp">
 					<label for="email">Email Address</label>
-					<input type="email" name="email" />
+					<input type="email" name="email" v-model="emailAddress" />
 				</div>
 				<div class="label-inp">
 					<label for="password">Password</label>
-					<input type="password" name="password" id="pass" /><span
-						><img src="@/assets/see-icon.svg" alt="visibility icon"
-					/></span>
+					<input type="password" name="password" id="pass" v-model="password" /><span><img
+							src="@/assets/see-icon.svg" alt="visibility icon" /></span>
 				</div>
 			</form>
 			<Button text="Sign In"></Button>
@@ -29,6 +28,12 @@ import Button from '@/components/Button.vue';
 export default {
 	name: 'LogInView',
 	components: { Button },
+	data() {
+		return {
+			emailAddress: "",
+			password: ""
+		}
+	}
 };
 </script>
 

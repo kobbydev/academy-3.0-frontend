@@ -7,30 +7,30 @@
                 <div class="left-side">
                     <div class="label-inp">
                         <label for="firstName">First Name</label>
-                        <input type="text" name="firstName">
+                        <input type="text" name="firstName" v-model="firstName">
                     </div>
                     <div class="label-inp">
                         <label for="emailAddress">Email Address</label>
-                        <input type="email" name="emailAddress">
+                        <input type="email" name="emailAddress" v-model="emailAddress">
                     </div>
                     <div class="label-inp">
                         <label for="password">Password</label>
-                        <input type="password" name="password" id="pass"><span><img src="@/assets/see-icon.svg"
+                        <input type="password" name="password" id="pass" v-model="password"><span><img src="@/assets/see-icon.svg"
                                 alt="visibility icon"></span>
                     </div>
                 </div>
                 <div class="left-side">
                     <div class="label-inp">
                         <label for="lastName">Last Name</label>
-                        <input type="text" name="lastName">
+                        <input type="text" name="lastName" v-model="lastName">
                     </div>
                     <div class="label-inp">
                         <label for="phoneNumber">Phone Number</label>
-                        <input type="tel" name="phoneNumber">
+                        <input type="tel" name="phoneNumber" v-model="phoneNumber">
                     </div>
                     <div class="label-inp">
                         <label for="confirmPassword">Confirm Password</label>
-                        <input type="password" name="confirmPassword" id="conpass"><span><img
+                        <input type="password" name="confirmPassword" id="conpass" v-model="confirmPassword"><span><img
                                 src="@/assets/see-icon.svg" alt="visibility icon"></span>
                     </div>
                 </div>
@@ -45,7 +45,17 @@
 import Button from "@/components/Button.vue";
 export default {
     name: "SignUpView",
-    components: { Button }
+    components: { Button },
+    data(){
+        return{
+            firstName: "",
+            lastName: "",
+            emailAddress: "",
+            phoneNumber: "",
+            password: "", 
+            confirmPassword: ""
+        }
+    }
 };
 </script>
 

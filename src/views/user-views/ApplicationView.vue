@@ -13,37 +13,37 @@
                 <div class="left-side">
                     <div class="label-inp">
                         <label for="firstName">First Name</label>
-                        <input type="text" name="name">
+                        <input type="text" name="name" id="firstName" v-model="firstName">
                     </div>
                     <div class="label-inp">
                         <label for="email">Email</label>
-                        <input type="email" name="email">
+                        <input type="email" name="email" id="email" v-model="enailAddress">
                     </div>
                     <div class="label-inp">
                         <label for=" address">Address</label>
-                        <input type="text" name="address">
+                        <input type="text" name="address" id="address" v-model="address">
                     </div>
                     <div class="label-inp">
                         <label for="course">Course of Study</label>
-                        <input type="text" name="course">
+                        <input type="text" name="course" id="course" v-model="courseOfStudy">
                     </div>
                 </div>
                 <div class="right-side">
                     <div class="label-inp">
                         <label for="lastNAme">Last Name</label>
-                        <input type="text" name="lastName">
+                        <input type="text" name="lastName" id="lastName" v-model="lastName">
                     </div>
                     <div class="label-inp">
                         <label for="dob">Date of Birth</label>
-                        <input type="date" name="dob">
+                        <input type="date" name="dob" id="dob" v-model="dob">
                     </div>
                     <div class="label-inp">
                         <label for="university">University</label>
-                        <input type="text" name="university">
+                        <input type="text" name="university" id="university" v-model="university">
                     </div>
                     <div class="label-inp">
                         <label for="cgpa">CGPA</label>
-                        <input type="number" name="cgpa">
+                        <input type="number" name="cgpa" id="cgpa" v-model="cgpa">
                     </div>
                 </div>
             </form>
@@ -56,7 +56,19 @@
 import Button from '@/components/Button.vue';
 export default {
     name: "ApplicationView",
-    components: { Button }
+    components: { Button },
+    data() {
+        return {
+            firstName: "",
+            lastName: "",
+            emailAddress: "",
+            address: "",
+            courseOfStudy: "",
+            dob: "",
+            university: "",
+            cgpa: ""
+        }
+    }
 }
 </script>
 
