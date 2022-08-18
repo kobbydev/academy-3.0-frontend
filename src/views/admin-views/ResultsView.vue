@@ -217,7 +217,7 @@ th {
 	line-height: 17px;
 	text-align: center;
 	color: #ffffff;
-	padding: 14px 42px;
+	padding: 14px 32px;
 }
 .table-sort {
 	cursor: pointer;

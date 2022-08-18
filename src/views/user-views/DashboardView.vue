@@ -96,7 +96,7 @@ export default {
 	border-radius: 8px;
 	position: relative;
 	bottom: 0;
-	/* height: 100%; */
+	height: 100vh;
 }
 .right-section {
 	width: 80vw;

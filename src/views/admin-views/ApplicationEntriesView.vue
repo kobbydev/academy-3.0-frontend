@@ -1,5 +1,21 @@
 <template>
 	<div class="application-entries">
+		<Modal
+			v-show="isModalVisible"
+			@close="closeModal"
+			@approve="approveModal"
+			@decline="declineModal"
+		/>
+		<ChoiceModal
+			@close="closeChoiceModal"
+			v-show="isApproveModalVisible"
+			text="Are you sure you want to approve this application?"
+		/>
+		<ChoiceModal
+			@close="closeChoiceModal"
+			v-show="isDeclineModalVisible"
+			text="Are you sure you want to decline this application?"
+		/>
 		<div class="left-section">
 			<UserMenu
 				class="user-menu"
@@ -30,7 +46,7 @@
 						CGPA <img src="../../assets/sort-icon.svg" alt="" />
 					</th>
 				</tr>
-				<tr class="table-body">
+				<tr class="table-body" @click="showModal">
 					<td>Ify Chinke</td>
 					<td>ify@enyata.com</td>
 					<td>12/09/19 - 22</td>
@@ -38,7 +54,7 @@
 					<td>University of Nigeria</td>
 					<td>5.0</td>
 				</tr>
-				<tr class="table-body">
+				<tr class="table-body" @click="showModal">
 					<td>Ify Chinke</td>
 					<td>ify@enyata.com</td>
 					<td>12/09/19 - 22</td>
@@ -46,7 +62,7 @@
 					<td>University of Nigeria</td>
 					<td>5.0</td>
 				</tr>
-				<tr class="table-body">
+				<tr class="table-body" @click="showModal">
 					<td>Ify Chinke</td>
 					<td>ify@enyata.com</td>
 					<td>12/09/19 - 22</td>
@@ -61,9 +77,11 @@
 
 <script>
 import UserMenu from '../../components/UserMenu.vue';
+import Modal from '@/components/Modal.vue';
+import ChoiceModal from '@/components/ChoiceModal.vue';
 export default {
 	name: 'ApplicationEntries',
-	components: { UserMenu },
+	components: { UserMenu, Modal, ChoiceModal },
 	data() {
 		return {
 			links: [
@@ -117,14 +135,28 @@ export default {
 				},
 			],
 			isModalVisible: false,
+			isApproveModalVisible: false,
+			isDeclineModalVisible: false,
 		};
 	},
 	methods: {
 		showModal() {
 			this.isModalVisible = true;
 		},
+		approveModal() {
+			this.isModalVisible = false;
+			this.isApproveModalVisible = true;
+		},
+		declineModal() {
+			this.isModalVisible = false;
+			this.isDeclineModalVisible = true;
+		},
 		closeModal() {
 			this.isModalVisible = false;
+		},
+		closeChoiceModal() {
+			this.isApproveModalVisible = false;
+			this.isDeclineModalVisible = false;
 		},
 	},
 };
@@ -215,7 +247,7 @@ th {
 	line-height: 17px;
 	text-align: center;
 	color: #ffffff;
-	padding: 14px 42px;
+	padding: 14px 32px;
 }
 .table-sort {
 	cursor: pointer;

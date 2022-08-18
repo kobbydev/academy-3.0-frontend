@@ -7,13 +7,17 @@
 			<ul class="menu-links">
 				<li class="menu"><a href="#" class="home-link">Home</a></li>
 				<router-link to="/login">
-					<li class="menu"><a href="#">Sign In</a></li>
+					<li class="menu"><a>Sign In</a></li>
 				</router-link>
-				<router-link to="/signup">
-					<Button text="Register Now" class="menu-btn" />
-				</router-link>
-
+				<Button
+					text="Register Now"
+					class="menu-btn"
+					@click="this.$router.push({ name: 'signup' })"
+				/>
 			</ul>
+			<figure class="bg-image">
+				<img src="../../assets/bg-layers.svg" alt="" />
+			</figure>
 		</nav>
 		<main>
 			<div class="main-section">
@@ -25,9 +29,11 @@
 						Join enyata academy today and bring your long awaiting dream to
 						reality.
 					</p>
-					<router-link to="/signup">
-						<Button text=" Register Now" class="hero-btn" />
-					</router-link>
+					<Button
+						text=" Register Now"
+						class="hero-btn"
+						@click="this.$router.push({ name: 'signup' })"
+					/>
 				</div>
 				<figure class="section-2">
 					<img src="../../assets/hero-image.svg" alt="" />
@@ -41,7 +47,12 @@
 					<h1>Why us?</h1>
 				</div>
 				<div class="cards">
-					<Card v-for="(card, index) in cardsData" :key="index" :header="card.title" :body="card.body" />
+					<Card
+						v-for="(card, index) in cardsData"
+						:key="index"
+						:header="card.title"
+						:body="card.body"
+					/>
 				</div>
 			</div>
 		</section>
@@ -98,8 +109,15 @@ nav {
 	align-items: center;
 }
 
+.bg-image {
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: -1;
+}
+
 .home-link {
-	color: rgba(117, 87, 211, 0.4)
+	color: #7557d3;
 }
 
 .menu-links {
@@ -244,5 +262,24 @@ footer p {
 	line-height: 156%;
 	letter-spacing: 0.01em;
 	color: #ffffff;
+}
+
+::-webkit-scrollbar {
+	width: 100px;
+	right: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #cdcfd6;
+	border-radius: 17px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #031131;
+	opacity: 0.7;
+	border-radius: 17px;
+	height: 66px;
 }
 </style>
