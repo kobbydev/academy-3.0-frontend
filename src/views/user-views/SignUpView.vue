@@ -78,8 +78,6 @@ export default {
     font-family: 'Lato';
 }
 
-
-
 h1 {
     font-style: italic;
     font-weight: 500;
