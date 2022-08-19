@@ -15,8 +15,10 @@
                     </div>
                     <div class="label-inp">
                         <label for="password">Password</label>
-                        <input type="password" name="password" id="pass" v-model="password"><span><img src="@/assets/see-icon.svg"
-                                alt="visibility icon"></span>
+                        <input :type="[passToggle ? password : text]" name="password" id="pass" v-model="password"><span
+                            @click="change"><img src="@/assets/see-icon.svg" :class="[passToggle ? see1 : '']"
+                                alt="visibility icon">
+                            <img src="@/assets/unsee-icon.svg" alt="" :class="[passToggle ? '' : unsee1]"></span>
                     </div>
                 </div>
                 <div class="left-side">
@@ -30,8 +32,10 @@
                     </div>
                     <div class="label-inp">
                         <label for="confirmPassword">Confirm Password</label>
-                        <input type="password" name="confirmPassword" id="conpass" v-model="confirmPassword"><span><img
-                                src="@/assets/see-icon.svg" alt="visibility icon"></span>
+                        <input :type="[conPassToggle ? password : text]" name="confirmPassword" id="conpass"><span
+                            @click="change2"><img src="@/assets/see-icon.svg" alt="visibility icon"
+                                :class="[conPassToggle ? see2 : '']">
+                            <img src="@/assets/unsee-icon.svg" alt="" :class="[conPassToggle ? '' : unsee2]"></span>
                     </div>
                 </div>
             </form>
@@ -46,14 +50,24 @@ import Button from "@/components/Button.vue";
 export default {
     name: "SignUpView",
     components: { Button },
-    data(){
-        return{
-            firstName: "",
-            lastName: "",
-            emailAddress: "",
-            phoneNumber: "",
-            password: "", 
-            confirmPassword: ""
+    data() {
+        return {
+            passToggle: true,
+            see1: 'see1',
+            unsee1: 'unsee1',
+            conPassToggle: true,
+            see2: 'see1',
+            unsee2: 'unsee1',
+            password: 'password',
+            text: 'text'
+        }
+    },
+    methods: {
+        change() {
+            this.passToggle = !this.passToggle
+        },
+        change2() {
+            this.conPassToggle = !this.conPassToggle
         }
     }
 };
@@ -63,8 +77,6 @@ export default {
 * {
     font-family: 'Lato';
 }
-
-
 
 h1 {
     font-style: italic;
@@ -120,7 +132,7 @@ form input {
     height: 48px;
     border: 1.5px solid #BDBDBD;
     border-radius: 4px;
-
+    padding-left: 5px;
 }
 
 .left-side,
@@ -178,5 +190,14 @@ span img {
     position: absolute;
     left: 96%;
     top: 40px;
+    display: none;
+}
+
+.see1 {
+    display: block;
+}
+
+.unsee1 {
+    display: block;
 }
 </style>
