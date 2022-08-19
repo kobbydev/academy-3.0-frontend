@@ -1,128 +1,131 @@
-<template lang="">
-    <div>
-        <h1>{{header}}</h1>
-        <p>{{header_paragraph}}</p>
-        <div class="reset">
-            <div class="mail">
-                <img src="@/assets/Mail.png" alt="">
-            </div>
-
-            <div class="reset_info">
-                <h2>{{reset_header}}</h2>
-                <p>{{reset_paragraph}}</p>
-            </div>
-
-            <form action="">
-                <input type="radio">
-            </form>
-        </div>
-
-
-
-        <div class="reset_sms">
-            <div class="phone">
-                <img src="@/assets/Calling.png" alt="">
-            </div>
-
-            <div class="reset_via_sms">
-                <h2>{{reset_sms}}</h2>
-                <p>{{reset_sms_paragraph}}</p>
-            </div>
-
-            <form action="">
-                <input type="radio">
-            </form>
-        </div>
-
-        <button v-on:click="send()">{{button}}</button>
-
-        <p>Didn’t receive link? <a href="#">Resend</a></p>
+<template>
+    <div class="whole-section">
+        <section class="container">
+            <h1>Forgot Password</h1>
+            <h2>Please select option to send link to reset password</h2>
+            <button class="email-but">
+                <img src="@/assets/Email-icon-black.svg" alt="">
+                <div class="message">
+                    <h3>Reset via Email</h3>
+                    <h4>Reset password link will be send to your
+                        registered email address.</h4>
+                </div>
+                <img src="@/assets/check-image.svg" alt="">
+            </button>
+            <button class="sms-but">
+                <img src="@/assets/Sms-icon-black.svg" alt="">
+                <div class="message">
+                    <h3>Reset via Sms</h3>
+                    <h4>Reset password link will be send to your
+                        registered phone number.</h4>
+                </div>
+                <img src="@/assets/check-image.svg" alt="">
+            </button>
+            <Submit text="Send Link" class="send-but"></Submit>
+            <p>Didn’t receive link? <a href="#">Resend</a> </p>
+        </section>
     </div>
 </template>
+
 <script>
+import Submit from '@/components/Button.vue';
+
 export default {
-    data(){
-        return{
-           header: 'Forgot Password', 
-           header_paragraph: 'Please select option to send link to reset password',
-           reset_header: 'Reset via Email',
-           reset_paragraph: 'Reset password link will be send to your registered email address.',
-           reset_sms: 'Reset via Sms',
-           reset_sms_paragraph: 'Reset password link will be send to your registered phone number.',
-           button: 'Send Link',
-        }
-    },
-    methods: {
-        send(){
-            
-        }
-    },
+    name: 'ForgotPasswordView',
+    components: { Submit }
+
 }
 </script>
+
 <style scoped>
-h1{
-    text-align: center;
-    margin-top: 134.42px;
+/* template {
+    display: flex;
+    justify-content: center;
+} */
+
+.whole-section {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 43%;
+    background: #FFFFFF;
+    box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 34px;
+    padding-bottom: 50px;
+}
+
+.email-but,
+.sms-but {
+    width: 81%;
+    background: #FFFFFF;
+    border: 1px solid #E8E8E8;
+    border-radius: 4px;
+    padding-right: 32px;
+    padding-left: 28px;
+    padding-top: 27px;
+    padding-bottom: 23px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.sms-but {
+    margin-top: 24px;
+    margin-bottom: 32px;
+}
+
+.message {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+    margin-left: 28px;
+}
+
+h1 {
     font-family: 'Lato';
     font-style: normal;
     font-weight: 600;
     font-size: 32px;
     line-height: 38px;
     color: #2B3C4E;
-
+    margin-bottom: 17px;
 }
-p{  
+
+h2 {
+    width: 80%;
     text-align: center;
-    top: 290px;
     font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
     line-height: 19px;
     color: #7D7D7D;
+    margin-bottom: 48px;
 }
-.reset{
-    display: flex;
-    margin-left: 32.71%;
-    margin-right: 32.71%;
-    bottom: 52.34%;
-    background: #FFFFFF;
-    background: #FFFFFF;
-    box-shadow: 0px 8px 30px 10px rgba(117, 87, 211, 0.05);
-    border-radius: 4px;
-    padding: 1%;
-}
-.reset:hover{
-    border: 1px solid #7557D3;
-}
-.mail{
-    width: 48px;
-    height: 48px;
-    background: rgba(117, 87, 211, 0.1);
-    border-radius: 40px;
-    justify-content: center;
-    margin-top: 4%;
-    margin-left: 2%;
-}
-.mail img{
-    margin-left: 30%;
-    margin-top: 30%;
-}
-.reset_info h2{
-    width: 119px;
-    height: 22px;
+
+h3 {
     font-family: 'Lato';
     font-style: normal;
     font-weight: 600;
     font-size: 18px;
     line-height: 22px;
-    color: #7557D3;
-    padding-left: 20%;
+    color: #211F26;
 }
 
-.reset_info p{
-    width: 245px;
-    height: 42px;
+h4 {
+    width: 80%;
     font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
@@ -130,83 +133,37 @@ p{
     line-height: 150%;
     color: #B1B1B1;
     text-align: left;
-    padding-left: 20%;
+}
 
-}
-form{
-    padding-left: 40%;
-    padding-top: 35px;
-}
-input{
-    width: 20px;
-    height: 20px;
-}
-.reset_sms{
-    display: flex;
-    margin-left: 32.71%;
-    margin-right: 32.71%;
-    margin-top: 3%;
-    bottom: 52.34%;
-    background: #FFFFFF;
-    border: 1px solid #E8E8E8;
-    box-shadow: 0px 8px 30px 10px rgba(117, 87, 211, 0.05);
-    border-radius: 4px;
-    padding: 1%;
-}
-.reset_sms:hover{
-    border: 1px solid #7557D3;
-}
-.phone{
-    width: 48px;
-    height: 48px;
-    background: rgba(117, 87, 211, 0.1);
-    border-radius: 40px;
-    justify-content: center;
-    margin-top: 4%;
-    margin-left: 2%;
-}
-.phone img{
-    margin-left: 30%;
-    margin-top: 30%;
-}
-.reset_via_sms h2{
-    width: 119px;
-    height: 22px;
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 22px;
-    padding-left: 20%;
-}
-.reset_via_sms p{
-    width: 245px;
-    height: 42px;
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 150%;
-    color: #B1B1B1;
-    text-align: left;
-    padding-left: 20%;
-}
-button{
-    margin-top: 2%;
-    margin-left: 37%;
-    width: 500px;
+.send-but {
+    width: 62%;
     height: 50px;
+    background: #7557D3;
+    border-radius: 4px;
+    border: none;
     font-family: 'Lato';
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
     line-height: 19px;
     color: #FFFFFF;
-    background: #7557D3;
-    border: none;
-    border-radius: 4px;
 }
-a{
+
+p {
+    margin-top: 28px;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    color: #B1B1B1;
+}
+
+p a {
+    color: #7557D3;
     text-decoration: none;
 }
+/* img{
+    width: 10%;
+} */
 </style>

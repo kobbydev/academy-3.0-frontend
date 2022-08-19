@@ -1,169 +1,164 @@
 <template>
-    <div class="whole-section">
-        <section class="container">
-            <h1>Forgot Password</h1>
-            <h2>Please select option to send link to reset password</h2>
-            <button class="email-but">
-                <img src="@/assets/Email-icon-black.svg" alt="">
-                <div class="message">
-                    <h3>Reset via Email</h3>
-                    <h4>Reset password link will be send to your
-                        registered email address.</h4>
-                </div>
-                <img src="@/assets/check-image.svg" alt="">
-            </button>
-            <button class="sms-but">
-                <img src="@/assets/Sms-icon-black.svg" alt="">
-                <div class="message">
-                    <h3>Reset via Sms</h3>
-                    <h4>Reset password link will be send to your
-                        registered phone number.</h4>
-                </div>
-                <img src="@/assets/check-image.svg" alt="">
-            </button>
-            <Submit text="Send Link" class="send-but"></Submit>
-            <p>Didn’t receive link? <a href="#">Resend</a> </p>
-        </section>
-    </div>
+	<div class="settings">
+		<div class="left-section">
+			<UserMenu
+				class="user-menu"
+				:linksData="links"
+				:linkName="linkName"
+				:linkIcon="linkIcon"
+				:routerLink="routerLink"
+				:lId="lId"
+			/>
+		</div>
+		<div class="right-section">
+			<h1 class="heading">Profiles and Settings</h1>
+			<p>Helps you set admin profile and give other users permissions</p>
+			<Button
+				text="Admin Profile"
+				@click="setSelectedComponent('profile')"
+				:class="{ active: isActive }"
+			/>
+			<Button
+				text="Timer Settings"
+				@click="setSelectedComponent('timer')"
+				:class="{ active: isActive }"
+			/>
+			<!-- <profile v-if="selectedComponent === 'profile'"></profile>
+			<timer v-if="selectedComponent === 'timer'"></timer> -->
+			<keep-alive>
+				<component :is="selectedComponent"></component>
+			</keep-alive>
+		</div>
+	</div>
 </template>
 
 <script>
-import Submit from '@/components/Button.vue';
-
+import UserMenu from '../../components/UserMenu.vue';
+import Button from '@/components/Button.vue';
+import Profile from '../../components/Profile.vue';
+import Timer from '../../components/Timer.vue';
 export default {
-    name: 'ForgotPasswordView',
-    components: { Submit }
-
-}
+	name: 'SettingsView',
+	components: { UserMenu, Button, Profile, Timer },
+	data() {
+		return {
+			selectedComponent: 'profile',
+			isActive: true,
+			links: [
+				{
+					lId: 'dashboard',
+					linkName: 'Dashboard',
+					linkIcon: require('../../assets/dashboard-icon.svg'),
+					routerLink: '/admindashboard',
+				},
+				{
+					lId: 'create-aaplication',
+					linkName: 'Create Application',
+					linkIcon: require('../../assets/Create-application-icon.svg'),
+					routerLink: '/create-application',
+				},
+				{
+					lId: 'application-entries',
+					linkName: 'Application Entries',
+					linkIcon: require('../../assets/Application-entries-icon.svg'),
+					routerLink: '/application-entries',
+				},
+				{
+					lId: 'compose',
+					linkName: 'Compose Assessment',
+					linkIcon: require('../../assets/assessment-icon.svg'),
+					routerLink: '/compose-assessment',
+				},
+				{
+					lId: 'assessment-history',
+					linkName: 'Assessment History',
+					linkIcon: require('../../assets/Assessment-history-icon.svg'),
+					routerLink: '/assessment-history',
+				},
+				{
+					lId: 'results',
+					linkName: 'Results',
+					linkIcon: require('../../assets/Results-icon.svg'),
+					routerLink: '/results',
+				},
+				{
+					lId: 'settings',
+					linkName: 'Settings',
+					linkIcon: require('../../assets/Setting-icon.svg'),
+					routerLink: '/settings',
+				},
+				{
+					lId: 'logout',
+					linkName: 'Logout',
+					linkIcon: require('../../assets/logout-icon.svg'),
+					routerLink: '/',
+				},
+			],
+		};
+	},
+	methods: {
+		setSelectedComponent(component) {
+			this.selectedComponent = component;
+			this.isActive = true;
+		},
+	},
+};
 </script>
 
 <style scoped>
-/* template {
-    display: flex;
-    justify-content: center;
-} */
-
-.whole-section {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
+.settings {
+	display: flex;
+	overflow: hidden;
+	height: 100vh;
 }
-
-.container {
-    width: 43%;
-    background: #FFFFFF;
-    box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding-top: 34px;
-    padding-bottom: 50px;
+.left-section {
+	width: 20vw;
+	background: #ffffff;
+	box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
+	border-radius: 8px;
+	position: relative;
+	bottom: 0;
+	height: 100vh;
 }
-
-.email-but,
-.sms-but {
-    width: 81%;
-    background: #FFFFFF;
-    border: 1px solid #E8E8E8;
-    border-radius: 4px;
-    padding-right: 32px;
-    padding-left: 28px;
-    padding-top: 27px;
-    padding-bottom: 23px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+.right-section {
+	width: 80vw;
+	height: 100%;
+	padding: 101px 376px 159px 42px;
+	overflow-y: scroll;
 }
-
-.sms-but {
-    margin-top: 24px;
-    margin-bottom: 32px;
+.heading {
+	font-family: 'Lato';
+	font-style: normal;
+	font-weight: 300;
+	font-size: 43.5555px;
+	line-height: 52px;
+	letter-spacing: -0.02em;
+	margin-bottom: 15px;
+	color: #2b3c4e;
 }
-
-.message {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    align-items: flex-start;
-    margin-left: 28px;
+.right-section p {
+	font-family: 'Lato';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 21px;
+	margin-bottom: 86px;
+	color: #202f44;
+	mix-blend-mode: normal;
+	opacity: 0.5;
 }
-
-h1 {
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 32px;
-    line-height: 38px;
-    color: #2B3C4E;
-    margin-bottom: 17px;
+.active {
+	background: rgba(117, 87, 211, 0.1);
+	font-family: 'Lato';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 17px;
+	color: #333758;
+	mix-blend-mode: normal;
+	padding: 24px 52px;
+	border: none;
+	cursor: pointer;
+	margin-bottom: 43px;
 }
-
-h2 {
-    width: 80%;
-    text-align: center;
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 19px;
-    color: #7D7D7D;
-    margin-bottom: 48px;
-}
-
-h3 {
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 18px;
-    line-height: 22px;
-    color: #211F26;
-}
-
-h4 {
-    width: 80%;
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 150%;
-    color: #B1B1B1;
-    text-align: left;
-}
-
-.send-but {
-    width: 62%;
-    height: 50px;
-    background: #7557D3;
-    border-radius: 4px;
-    border: none;
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 19px;
-    color: #FFFFFF;
-}
-
-p {
-    margin-top: 28px;
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 150%;
-    color: #B1B1B1;
-}
-
-p a {
-    color: #7557D3;
-    text-decoration: none;
-}
-/* img{
-    width: 10%;
-} */
 </style>
