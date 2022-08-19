@@ -15,7 +15,7 @@
                     </div>
                     <div class="label-inp">
                         <label for="password">Password</label>
-                        <input :type="[passToggle ? password : text]" name="password" id="pass" v-model="password"><span
+                        <input :type="[passToggle ? password : text]" name="passwords" id="pass" v-model="password1"><span
                             @click="change"><img src="@/assets/see-icon.svg" :class="[passToggle ? see1 : '']"
                                 alt="visibility icon">
                             <img src="@/assets/unsee-icon.svg" alt="" :class="[passToggle ? '' : unsee1]"></span>
@@ -32,7 +32,7 @@
                     </div>
                     <div class="label-inp">
                         <label for="confirmPassword">Confirm Password</label>
-                        <input :type="[conPassToggle ? password : text]" name="confirmPassword" id="conpass"><span
+                        <input :type="[conPassToggle ? password : text]" name="confirmPassword" id="conpass" v-model="conPasswords"><span
                             @click="change2"><img src="@/assets/see-icon.svg" alt="visibility icon"
                                 :class="[conPassToggle ? see2 : '']">
                             <img src="@/assets/unsee-icon.svg" alt="" :class="[conPassToggle ? '' : unsee2]"></span>
@@ -52,6 +52,12 @@ export default {
     components: { Button },
     data() {
         return {
+            firstName: '',
+            lastName: '', 
+            emailAddress: '',
+            phoneNumber: '',
+            password1: '',
+            conPasswords: '',
             passToggle: true,
             see1: 'see1',
             unsee1: 'unsee1',
@@ -59,7 +65,7 @@ export default {
             see2: 'see1',
             unsee2: 'unsee1',
             password: 'password',
-            text: 'text'
+            text: 'text', 
         }
     },
     methods: {

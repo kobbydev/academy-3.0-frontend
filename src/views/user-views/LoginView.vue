@@ -10,7 +10,7 @@
 				</div>
 				<div class="label-inp">
 					<label for="password">Password</label>
-					<input :type="[passToggle ? password : text]" name="password" id="pass"><span @click="change"><img
+					<input :type="[passToggle ? password : text]" name="password" id="pass" v-model="password1"><span @click="change"><img
 							src="@/assets/see-icon.svg" :class="[passToggle ? see1 : '']" alt="visibility icon">
 						<img src="@/assets/unsee-icon.svg" alt="" :class="[passToggle ? '' : unsee1]"></span>
 				</div>
@@ -35,7 +35,9 @@ export default {
 			see1: 'see1',
 			unsee1: 'unsee1',
 			password: 'password',
-			text: 'text'
+			text: 'text',
+			password1: '',
+			emailAddress: ''
 		}
 	},
 	methods: {
