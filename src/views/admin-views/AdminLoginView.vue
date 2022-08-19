@@ -10,8 +10,9 @@
                 </div>
                 <div class="label-inp">
                     <label for="password">Password</label>
-                    <input type="password" name="password" id="pass"><span><img src="@/assets/see-icon.svg"
-                            alt="visibility icon"></span>
+                    <input :type="[passToggle ? password : text]" name="password" id="pass"><span @click="change"><img
+                            src="@/assets/see-icon.svg" :class="[passToggle ? see1 : '']" alt="visibility icon">
+                        <img src="@/assets/unsee-icon.svg" alt="" :class="[passToggle ? '' : unsee1]"></span>
                 </div>
             </form>
             <Button text="Sign In"></Button>
@@ -24,7 +25,21 @@
 import Button from '@/components/Button.vue';
 export default {
     name: "AdminLogInView",
-    components: { Button }
+    components: { Button },
+    data() {
+        return {
+            passToggle: true,
+            see1: 'see1',
+            unsee1: 'unsee1',
+            password: 'password',
+            text: 'text'
+        }
+    },
+    methods: {
+        change() {
+            this.passToggle = !this.passToggle
+        }
+    }
 };
 </script>
 
@@ -86,6 +101,7 @@ input {
     border-radius: 4px;
     outline: 0.1px solid #7557D3;
     color: #FFFF;
+    padding-left: 5px;
 }
 
 input:focus-visible {
@@ -133,5 +149,14 @@ span img {
     position: absolute;
     left: 92%;
     top: 40px;
+    display: none;
+}
+
+.see1 {
+    display: block;
+}
+
+.unsee1 {
+    display: block;
 }
 </style>
