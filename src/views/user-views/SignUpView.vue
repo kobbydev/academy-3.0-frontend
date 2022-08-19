@@ -7,39 +7,39 @@
                 <div class="left-side">
                     <div class="label-inp">
                         <label for="firstName">First Name</label>
-                        <input type="text" name="firstName" v-model="firstName">
+                        <input type="text" name="firstName" v-model="newUser.firstName">
                     </div>
                     <div class="label-inp">
                         <label for="emailAddress">Email Address</label>
-                        <input type="email" name="emailAddress" v-model="emailAddress">
+                        <input type="email" name="emailAddress" v-model="newUser.emailAddress">
                     </div>
                     <div class="label-inp">
                         <label for="password">Password</label>
-                        <input :type="[passToggle ? password : text]" name="passwords" id="pass" v-model="password1"><span
-                            @click="change"><img src="@/assets/see-icon.svg" :class="[passToggle ? see1 : '']"
-                                alt="visibility icon">
+                        <input :type="[passToggle ? password1 : text]" name="passwords" id="pass"
+                            v-model="newUser.password"><span @click="change"><img src="@/assets/see-icon.svg"
+                                :class="[passToggle ? see1 : '']" alt="visibility icon">
                             <img src="@/assets/unsee-icon.svg" alt="" :class="[passToggle ? '' : unsee1]"></span>
                     </div>
                 </div>
                 <div class="left-side">
                     <div class="label-inp">
                         <label for="lastName">Last Name</label>
-                        <input type="text" name="lastName" v-model="lastName">
+                        <input type="text" name="lastName" v-model="newUser.lastName">
                     </div>
                     <div class="label-inp">
                         <label for="phoneNumber">Phone Number</label>
-                        <input type="tel" name="phoneNumber" v-model="phoneNumber">
+                        <input type="tel" name="phoneNumber" v-model="newUser.phoneNumber">
                     </div>
                     <div class="label-inp">
                         <label for="confirmPassword">Confirm Password</label>
-                        <input :type="[conPassToggle ? password : text]" name="confirmPassword" id="conpass" v-model="conPasswords"><span
-                            @click="change2"><img src="@/assets/see-icon.svg" alt="visibility icon"
-                                :class="[conPassToggle ? see2 : '']">
+                        <input :type="[conPassToggle ? password1 : text]" name="confirmPassword" id="conpass"
+                            v-model="conPasswords"><span @click="change2"><img src="@/assets/see-icon.svg"
+                                alt="visibility icon" :class="[conPassToggle ? see2 : '']">
                             <img src="@/assets/unsee-icon.svg" alt="" :class="[conPassToggle ? '' : unsee2]"></span>
                     </div>
                 </div>
             </form>
-            <Button text="Sign Up"></Button>
+            <Button text="Sign Up" @click.prevent="createUser"></Button>
             <h2>Already have an account? <a href="/login">Sign In</a></h2>
         </div>
     </div>
@@ -47,16 +47,19 @@
 
 <script>
 import Button from "@/components/Button.vue";
+import axios from 'axios'
 export default {
     name: "SignUpView",
     components: { Button },
     data() {
         return {
-            firstName: '',
-            lastName: '', 
-            emailAddress: '',
-            phoneNumber: '',
-            password1: '',
+            newUser: {
+                firstName: '',
+                lastName: '',
+                emailAddress: '',
+                phoneNumber: '',
+                password: '',
+            },
             conPasswords: '',
             passToggle: true,
             see1: 'see1',
@@ -64,8 +67,8 @@ export default {
             conPassToggle: true,
             see2: 'see1',
             unsee2: 'unsee1',
-            password: 'password',
-            text: 'text', 
+            password1: 'password',
+            text: 'text',
         }
     },
     methods: {
@@ -74,7 +77,16 @@ export default {
         },
         change2() {
             this.conPassToggle = !this.conPassToggle
-        }
+        },
+        createUser() {
+            axios
+                .post("http://localhost:8081/api/v1/user-signup", this.newUser)
+                .then((res) => {
+                    console.log(res);
+                    this.$router.push("/login");
+                })
+                .catch((err) => console.log(err));
+        },
     }
 };
 </script>

@@ -6,16 +6,16 @@
 			<form action="#">
 				<div class="label-inp">
 					<label for="email">Email Address</label>
-					<input type="email" name="email" v-model="emailAddress" />
+					<input type="email" name="email" v-model="user.emailAddress" />
 				</div>
 				<div class="label-inp">
 					<label for="password">Password</label>
-					<input :type="[passToggle ? password : text]" name="password" id="pass" v-model="password1"><span @click="change"><img
+					<input :type="[passToggle ? password1 : text]" name="password" id="pass" v-model="user.password"><span @click="change"><img
 							src="@/assets/see-icon.svg" :class="[passToggle ? see1 : '']" alt="visibility icon">
 						<img src="@/assets/unsee-icon.svg" alt="" :class="[passToggle ? '' : unsee1]"></span>
 				</div>
 			</form>
-			<Button text="Sign In"></Button>
+			<Button text="Sign In" @click.prevent="loginUser"></Button>
 			<div class="word">
 				<h3>Don’t have an account yet? <a href="/signup">Sign Up</a></h3>
 				<a href="/forgot-password" id="forgot">Forgot Password?</a>
@@ -26,6 +26,7 @@
 
 <script>
 import Button from '@/components/Button.vue';
+import axios from 'axios'
 export default {
 	name: 'LogInView',
 	components: { Button },
@@ -34,16 +35,28 @@ export default {
 			passToggle: true,
 			see1: 'see1',
 			unsee1: 'unsee1',
-			password: 'password',
+			password1: 'password',
 			text: 'text',
-			password1: '',
-			emailAddress: ''
+			user:{
+
+				password: '',
+				emailAddress: ''
+			}
 		}
 	},
 	methods: {
 		change() {
 			this.passToggle = !this.passToggle
-		}
+		},
+		loginUser() {
+            axios
+                .post("http://localhost:8081/api/v1/user-login", this.user)
+                .then((res) => {
+                    console.log(res);
+                   
+                })
+                .catch((err) => console.log(err));
+        },
 	}
 };
 </script>
