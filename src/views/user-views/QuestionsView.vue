@@ -29,22 +29,66 @@
 				<p class="question-text">What is the purpose of HDR technology?</p>
 				<div class="options">
 					<div class="option-a">
+						<input
+							type="radio"
+							name="options"
+							value="A. To reduce the file size of images and videos."
+							id="option-a"
+						/>
 						<label for="option-a"
 							>A. To reduce the file size of images and videos.</label
 						>
-						<input type="radio" name="option-a" />
+					</div>
+					<div class="option-b">
+						<input
+							type="radio"
+							name="options"
+							value="B. To speed up 3D rendering performance."
+							id="option-b"
+						/>
+						<label for="option-b"
+							>B. To speed up 3D rendering performance.</label
+						>
+					</div>
+					<div class="option-c">
+						<input
+							type="radio"
+							name="options"
+							value="C. To support higher video resolutions."
+							id="option-c"
+						/>
+						<label for="option-c"
+							>C. To support higher video resolutions.</label
+						>
+					</div>
+					<div class="option-d">
+						<input
+							type="radio"
+							name="options"
+							value="D. To display more colors in images and videos"
+							id="option-d"
+						/>
+						<label for="option-d"
+							>D. To display more colors in images and videos</label
+						>
 					</div>
 				</div>
 			</div>
+			<div class="buttons">
+				<Button text="Previous" class="previous-btn" />
+				<Button text="Next" class="next-btn" />
+			</div>
+			<Button text="Finish" class="finish-btn" />
 		</div>
 	</div>
 </template>
 
 <script>
 import UserMenu from '../../components/UserMenu.vue';
+import Button from '@/components/Button.vue';
 export default {
 	name: 'QuestionsView',
-	components: { UserMenu },
+	components: { UserMenu, Button },
 	data() {
 		return {
 			links: [
@@ -89,6 +133,8 @@ export default {
 	height: 100%;
 	padding: 107px 82px 0px 47px;
 	overflow-y: scroll;
+	display: flex;
+	flex-direction: column;
 }
 .header {
 	display: flex;
@@ -138,5 +184,107 @@ span {
 	line-height: 14px;
 	text-align: center;
 	color: #4f4f4f;
+}
+.buttons {
+	margin-top: 86px;
+	padding: 0 123px 0 117px;
+	display: flex;
+	justify-content: space-between;
+}
+.previous-btn {
+	border: 1px solid rgba(0, 0, 0, 0.25);
+	border-radius: 4px;
+	font-family: 'Lato';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 19px;
+	background: white;
+	color: #211f26;
+	padding: 10px 31px;
+}
+.next-btn {
+	background: #7557d3;
+	border-radius: 4px;
+	border: none;
+	font-family: 'Lato';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 19px;
+	color: #ffffff;
+	padding: 10px 44px;
+}
+.questions-section {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-top: 64px;
+}
+.finish-btn {
+	margin: auto;
+	margin-top: 75px;
+	background: #cecece;
+	border-radius: 4px;
+	border: none;
+	font-family: 'Lato';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 19px;
+	color: #ffffff;
+	padding: 10px 81px;
+}
+input[type='radio']:checked ~ label {
+	background: #31d283;
+	padding: 6px 15px;
+}
+.question-number {
+	font-family: 'Lato';
+	font-style: italic;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 17px;
+	color: #2b3c4e;
+	margin-bottom: 14px;
+}
+.question-text {
+	font-family: 'Lato';
+	font-style: italic;
+	font-weight: 500;
+	font-size: 24px;
+	line-height: 29px;
+	color: #2b3c4e;
+	margin-bottom: 48px;
+}
+#option-b,
+#option-c,
+#option-d {
+	margin-top: 37px;
+}
+label {
+	font-family: 'Lato';
+	font-style: italic;
+	font-weight: 500;
+	font-size: 16px;
+	line-height: 19px;
+	color: #2b3c4e;
+	margin-left: 42px;
+	padding: 6px 15px;
+	cursor: pointer;
+}
+input[type='radio'] {
+	border: 1px solid #2b3c4e;
+	-webkit-appearance: none;
+	width: 8px;
+	height: 8px;
+	cursor: pointer;
+}
+input[type='radio']:focus {
+	outline-color: transparent;
+}
+input[type='radio']:checked {
+	background: #2b3c4e;
 }
 </style>
