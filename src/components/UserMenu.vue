@@ -47,7 +47,9 @@ export default {
 	background: #7557d3;
 	/* height: 25vh; */
 	margin-bottom: 42px;
-	padding: 75px 100px 38px 82px;
+	/* padding: 75px 100px 38px 82px; */
+	width: 292px;
+	height: 255px;
 }
 .profile-picture {
 	border-radius: 50%;
@@ -104,6 +106,6 @@ a.router-link-exact-active {
 	font-weight: 700;
 }
 #logout {
-	margin-top: 203px;
+	margin-top: 10vh;
 }
 </style>
