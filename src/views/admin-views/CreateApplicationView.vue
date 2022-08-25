@@ -109,7 +109,7 @@ export default {
 			const formData = new FormData();
 			formData.append('applicationFile', this.file)
 			formData.append('link', this.link),
-				formData.append('dateOfApplication', this.dateOfApplication)
+			formData.append('dateOfApplication', this.dateOfApplication)
 			formData.append('batchId', this.batchId)
 			formData.append('instructions', this.instructions)
 
