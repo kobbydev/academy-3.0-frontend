@@ -3,71 +3,114 @@
         <img src="@/assets/Enyata-logo.svg" alt="Enyata Logo" id="logo">
         <h1>Applicantion Form</h1>
         <section class="form-container">
-            <form class="upload-form" enctype='multipart/form-data'>
-                <input type="file" class="cv-inp" id="cv" accept=".doc, .docx, .pdf">
+            <form class="upload-form" enctype="multipart/form-data">
+                <input type="file" class="cv-inp" id="cv" ref="cv" @change="selectFile">
                 <label for="cv" class="cv-lab">+ Upload CV</label>
-                <input type="file" class="photo-inp" id="photo">
-                <label for="photo" accept="image/*" class="photo-lab">+ Upload Photo</label>
+                <input type="file" class="photo-inp" id="photo" ref="image" @change="selectFileIm">
+                <label for="photo" class="photo-lab">+ Upload Photo</label>
             </form>
             <form action="#" class="main-form">
                 <div class="left-side">
                     <div class="label-inp">
                         <label for="firstName">First Name</label>
-                        <input type="text" name="name" id="firstName" v-model="firstName">
+                        <input type="text" name="name" id="firstName" v-model="app.firstName">
                     </div>
                     <div class="label-inp">
                         <label for="email">Email</label>
-                        <input type="email" name="email" id="email" v-model="enailAddress">
+                        <input type="email" name="email" id="email" v-model="app.emailAddress">
                     </div>
                     <div class="label-inp">
                         <label for=" address">Address</label>
-                        <input type="text" name="address" id="address" v-model="address">
+                        <input type="text" name="address" id="address" v-model="app.address">
                     </div>
                     <div class="label-inp">
                         <label for="course">Course of Study</label>
-                        <input type="text" name="course" id="course" v-model="courseOfStudy">
+                        <input type="text" name="course" id="course" v-model="app.courseOfStudy">
                     </div>
                 </div>
                 <div class="right-side">
                     <div class="label-inp">
                         <label for="lastNAme">Last Name</label>
-                        <input type="text" name="lastName" id="lastName" v-model="lastName">
+                        <input type="text" name="lastName" id="lastName" v-model="app.lastName">
                     </div>
                     <div class="label-inp">
                         <label for="dob">Date of Birth</label>
-                        <input type="date" name="dob" id="dob" v-model="dob">
+                        <input type="text" name="dob" id="dob" v-model="app.dateOfBirth">
                     </div>
                     <div class="label-inp">
                         <label for="university">University</label>
-                        <input type="text" name="university" id="university" v-model="university">
+                        <input type="text" name="university" id="university" v-model="app.university">
                     </div>
                     <div class="label-inp">
                         <label for="cgpa">CGPA</label>
-                        <input type="number" name="cgpa" id="cgpa" v-model="cgpa">
+                        <input type="number" name="cgpa" id="cgpa" v-model="app.cgpa">
                     </div>
                 </div>
             </form>
-            <Button text="Submit" class="subButton"></Button>
+            <Button text="Submit" class="subButton" @click.prevent="apply"></Button>
         </section>
     </section>
 </template>
 
 <script>
 import Button from '@/components/Button.vue';
+import axios from 'axios';
 export default {
     name: "ApplicationView",
     components: { Button },
     data() {
         return {
-            firstName: "",
-            lastName: "",
-            emailAddress: "",
-            address: "",
-            courseOfStudy: "",
-            dob: "",
-            university: "",
-            cgpa: ""
+            app: {
+
+                firstName: "",
+                lastName: "",
+                emailAddress: "",
+                address: "",
+                courseOfStudy: "",
+                dateOfBirth: "",
+                university: "",
+                cgpa: "",
+                image: "",
+                cv: ""
+            }
+
         }
+    },
+    methods: {
+         async apply() {
+            const token = localStorage.getItem('token');
+            const formData = new FormData();
+            formData.append('firstName', this.app.firstName)
+            formData.append('lastName', this.app.lastName)
+            formData.append('emailAddress', this.app.emailAddress)
+            formData.append('address', this.app.address)
+            formData.append('courseOfStudy', this.app.courseOfStudy)
+            formData.append('dateOfBirth', this.app.dateOfBirth)
+            formData.append('university', this.app.university)
+            formData.append('cgpa', this.app.cgpa)
+            formData.append('image', this.app.image)
+            formData.append('cv', this.app.cv)
+
+            try {
+                const response = await axios.post('http://localhost:8082/api/v1/application', formData,
+                    {
+                        headers: { token: token },
+                    })
+                console.log(response)
+            } catch (e) {
+                console.log(e)
+            }
+        },
+
+        selectFile() {
+            this.app.cv = this.$refs.cv.files[0]
+        },
+        selectFileIm() {
+            this.app.image = this.$refs.image.files[0]
+            console.log(this.app.image.name)
+        }
+
+        
     }
 }
 </script>
@@ -100,19 +143,6 @@ export default {
     gap: 32px;
 }
 
-.cv-button,
-.photo-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 14px;
-    width: 22%;
-    border: 1.5px dashed #2B3C4E;
-    border-radius: 2.87205px;
-    height: 50px;
-    background-color: #FFFFFF;
-}
-
 .main-form {
     width: 100%;
     display: flex;
@@ -129,10 +159,13 @@ export default {
 }
 
 .main-form input {
+    font-family: 'Lato';
+    font-weight: 400;
     width: 100%;
     height: 48px;
     border: 1.5px solid #2B3C4E;
     border-radius: 4px;
+    padding-left: 5px;
 }
 
 input[type="date" i] {
@@ -199,7 +232,7 @@ p {
 
 .upload-form input {
     display: none;
-}
+} 
 
 .upload-form label {
     font-family: 'Nunito';

@@ -78,14 +78,13 @@ export default {
         change2() {
             this.conPassToggle = !this.conPassToggle
         },
-        createUser() {
-            axios
-                .post("http://localhost:8081/api/v1/user-signup", this.newUser)
-                .then((res) => {
-                    console.log(res);
-                    this.$router.push("/login");
-                })
-                .catch((err) => console.log(err));
+        async createUser() {
+            if (this.user.emailAddress.trim() !== '' && this.user.password !== '') {
+				const response = await axios.post("http://localhost:8082/api/v1/signup", this.user)
+				this.user.emailAddress = ''
+				this.user.password = ''
+				console.log(response)
+			}
         },
     }
 };

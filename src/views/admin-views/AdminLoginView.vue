@@ -24,6 +24,7 @@
 
 <script>
 import Button from '@/components/Button.vue';
+import axios from 'axios'
 export default {
     name: "AdminLogInView",
     components: { Button },
@@ -41,7 +42,25 @@ export default {
     methods: {
         change() {
             this.passToggle = !this.passToggle
-        }
+        },
+        async loginAdmin() {
+			if (this.user.emailAddress.trim() !== '' && this.user.password !== '') {
+				const response = await axios.post("http://localhost:8082/api/v1/adminlogin", this.user)
+				this.user.emailAddress = ''
+				this.user.password = ''
+				console.log(response)
+				if (response.data.message === 'User logged in successfully') {
+					localStorage.setItem("token", response.headers);
+					console.log(response.header)
+					// console.log(Object.keys(response.data.data.user));
+					this.$router.push('/dashboard');
+					console.log(response.data.message)
+					this.isLoggedin = true
+					console.log(this.isLoggedin)
+				}
+				
+			}
+		}
     }
 };
 </script>

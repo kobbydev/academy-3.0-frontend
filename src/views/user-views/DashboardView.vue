@@ -1,12 +1,7 @@
 <template>
 	<div class="dashboard">
 		<div class="left-section">
-			<UserMenu
-				:linksData="links"
-				:linkName="linkName"
-				:linkIcon="linkIcon"
-				:routerLink="routerLink"
-			/>
+			<UserMenu :linksData="links" :linkName="linkName" :linkIcon="linkIcon" :routerLink="routerLink" />
 		</div>
 		<div class="right-section">
 			<h1 class="heading">Dashboard</h1>
@@ -75,7 +70,7 @@ export default {
 				{
 					linkName: 'Logout',
 					linkIcon: require('../../assets/logout-icon.svg'),
-					routerLink: '/',
+					routerLink: '/login',
 				},
 			],
 		};
@@ -89,6 +84,7 @@ export default {
 	overflow: hidden;
 	height: 100vh;
 }
+
 .left-section {
 	width: 20vw;
 	background: #ffffff;
@@ -98,12 +94,14 @@ export default {
 	bottom: 0;
 	height: 100vh;
 }
+
 .right-section {
 	width: 80vw;
 	height: 100%;
 	padding: 107px 61px 86px 47px;
 	overflow-y: scroll;
 }
+
 .heading {
 	font-family: 'Lato';
 	font-style: normal;
@@ -114,6 +112,7 @@ export default {
 	color: #2b3c4e;
 	margin-bottom: 14px;
 }
+
 .status-message {
 	font-family: 'Lato';
 	font-style: italic;
@@ -123,12 +122,15 @@ export default {
 	color: #2b3c4e;
 	margin-bottom: 60px;
 }
+
 .application-data {
 	display: flex;
 }
+
 .application-date {
 	margin-right: 86px;
 }
+
 .header {
 	font-family: 'Lato';
 	font-style: normal;
@@ -138,6 +140,7 @@ export default {
 	margin-bottom: 11px;
 	color: #4f4f4f;
 }
+
 .application-date h2,
 .application-status h2 {
 	font-family: 'Lato';
@@ -149,6 +152,7 @@ export default {
 	margin-bottom: 19px;
 	color: #2b3c4e;
 }
+
 .application-date hr,
 .application-status hr {
 	width: 148px;
@@ -157,9 +161,11 @@ export default {
 	border-radius: 4px;
 	margin-bottom: 9px;
 }
+
 .application-status hr {
 	background: #f09000;
 }
+
 .status-text {
 	font-family: 'Lato';
 	font-style: normal;
@@ -168,11 +174,13 @@ export default {
 	line-height: 14px;
 	color: #4f4f4f;
 }
+
 .updates-and-assessment {
 	display: flex;
 	justify-content: space-between;
 	margin-top: 97px;
 }
+
 .updates,
 .assessment {
 	width: 482px;
@@ -181,10 +189,12 @@ export default {
 	border-radius: 4px;
 	padding: 25px 34px;
 }
+
 .assessment {
 	display: flex;
 	flex-direction: column;
 }
+
 .updates h1,
 .assessment h1 {
 	font-family: 'Lato';
@@ -195,18 +205,22 @@ export default {
 	letter-spacing: -0.02em;
 	color: #2b3c4e;
 }
+
 .updates h1 {
 	margin-bottom: 87px;
 }
+
 .updates hr {
 	width: 412.5px;
 	height: 0px;
 	border: 1px solid #cecece;
 	margin-bottom: 74px;
 }
+
 .assessment h1 {
 	margin-bottom: 144px;
 }
+
 .assessment p {
 	font-family: 'Lato';
 	font-style: normal;
@@ -219,6 +233,7 @@ export default {
 	color: #4f4f4f;
 	margin-bottom: 24px;
 }
+
 button {
 	background: #b1b1b1;
 	border-radius: 4px;
@@ -234,6 +249,7 @@ button {
 	margin-top: 0;
 	cursor: pointer;
 }
+
 ::-webkit-scrollbar {
 	width: 10px;
 	right: 10px;

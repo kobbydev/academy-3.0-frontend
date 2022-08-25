@@ -10,8 +10,9 @@
 				</div>
 				<div class="label-inp">
 					<label for="password">Password</label>
-					<input :type="[passToggle ? password1 : text]" name="password" id="pass" v-model="user.password"><span @click="change"><img
-							src="@/assets/see-icon.svg" :class="[passToggle ? see1 : '']" alt="visibility icon">
+					<input :type="[passToggle ? password1 : text]" name="password" id="pass"
+						v-model="user.password"><span @click="change"><img src="@/assets/see-icon.svg"
+							:class="[passToggle ? see1 : '']" alt="visibility icon">
 						<img src="@/assets/unsee-icon.svg" alt="" :class="[passToggle ? '' : unsee1]"></span>
 				</div>
 			</form>
@@ -37,7 +38,7 @@ export default {
 			unsee1: 'unsee1',
 			password1: 'password',
 			text: 'text',
-			user:{
+			user: {
 
 				password: '',
 				emailAddress: ''
@@ -48,17 +49,35 @@ export default {
 		change() {
 			this.passToggle = !this.passToggle
 		},
-		loginUser() {
-            axios
-                .post("http://localhost:8081/api/v1/user-login", this.user)
-                .then((res) => {
-                    console.log(res);
-                   
-                })
-                .catch((err) => console.log(err));
-        },
+		// loginUser() {
+		// 	axios
+		// 		.post("http://localhost:8081/api/v1/user-login", this.user)
+		// 		.then((res) => {
+		// 			console.log(res);
+
+		// 		})
+		// 		.catch((err) => console.log(err));
+		// },
+		async loginUser() {
+			if (this.user.emailAddress.trim() !== '' && this.user.password !== '') {
+				const response = await axios.post("http://localhost:8082/api/v1/user-login", this.user)
+				this.user.emailAddress = ''
+				this.user.password = ''
+				console.log(response)
+				if (response.data.message === 'User logged in successfully') {
+					localStorage.setItem("token", response.headers);
+					console.log(response.header)
+					// console.log(Object.keys(response.data.data.user));
+					this.$router.push('/dashboard');
+					console.log(response.data.message)
+					this.isLoggedin = true
+					console.log(this.isLoggedin)
+				}
+				
+			}
+		}
 	}
-};
+}
 </script>
 
 <style scoped>
