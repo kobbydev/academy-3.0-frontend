@@ -52,11 +52,6 @@ export default {
 					linkIcon: require('../../assets/assessment-icon.svg'),
 					routerLink: '/assessment',
 				},
-				{
-					linkName: 'Logout',
-					linkIcon: require('../../assets/logout-icon.svg'),
-					routerLink: '/',
-				},
 			],
 		};
 	},

@@ -6,16 +6,28 @@
 			<form action="#">
 				<div class="label-inp">
 					<label for="email">Email Address</label>
-					<input type="email" name="email" v-model="emailAddress" />
+					<input type="email" name="email" v-model="userInfo.emailAddress" />
 				</div>
 				<div class="label-inp">
 					<label for="password">Password</label>
-					<input :type="[passToggle ? password : text]" name="password" id="pass" v-model="password1"><span @click="change"><img
-							src="@/assets/see-icon.svg" :class="[passToggle ? see1 : '']" alt="visibility icon">
-						<img src="@/assets/unsee-icon.svg" alt="" :class="[passToggle ? '' : unsee1]"></span>
+					<input
+						:type="[passToggle ? password : text]"
+						name="password"
+						id="pass"
+						v-model="userInfo.password"
+					/><span @click="change"
+						><img
+							src="@/assets/see-icon.svg"
+							:class="[passToggle ? see1 : '']"
+							alt="visibility icon" />
+						<img
+							src="@/assets/unsee-icon.svg"
+							alt=""
+							:class="[passToggle ? '' : unsee1]"
+					/></span>
 				</div>
 			</form>
-			<Button text="Sign In"></Button>
+			<Button text="Sign In" @click="logIn"></Button>
 			<div class="word">
 				<h3>Don’t have an account yet? <a href="/signup">Sign Up</a></h3>
 				<a href="/forgot-password" id="forgot">Forgot Password?</a>
@@ -26,25 +38,45 @@
 
 <script>
 import Button from '@/components/Button.vue';
+import axios from 'axios';
 export default {
 	name: 'LogInView',
 	components: { Button },
 	data() {
 		return {
+			userInfo: {
+				emailAddress: '',
+				password: '',
+			},
 			passToggle: true,
 			see1: 'see1',
 			unsee1: 'unsee1',
 			password: 'password',
 			text: 'text',
 			password1: '',
-			emailAddress: ''
-		}
+			emailAddress: '',
+		};
 	},
 	methods: {
 		change() {
-			this.passToggle = !this.passToggle
-		}
-	}
+			this.passToggle = !this.passToggle;
+		},
+		logIn() {
+			axios
+				.post('http://localhost:8081/api/v1/user-login', this.userInfo)
+				.then((response) => {
+					localStorage.setItem('token', response.data.data.user.token);
+					localStorage.setItem('userRole', response.data.data.user.role);
+					console.log(response);
+					alert(response.data.message);
+					this.$router.push('/dashboard');
+				})
+				.catch((error) => {
+					alert('Email or Password wrong');
+					console.log(error);
+				});
+		},
+	},
 };
 </script>
 
