@@ -2,10 +2,12 @@
 	<div class="menu">
 		<div class="profile">
 			<div class="profile-picture">
-				<img src="../assets/hero-image.svg" alt="" />
+				<img :src="profilePic" alt="" />
 			</div>
-			<p class="user-name">Jane Doe</p>
-			<p class="user-email">doe@email.com</p>
+			<p class="user-name">
+				{{ userFirstName }} <span>{{ userLastName }}</span>
+			</p>
+			<p class="user-email">{{ userEmail }}</p>
 		</div>
 		<div class="menu-links">
 			<div
@@ -19,6 +21,12 @@
 				>
 			</div>
 		</div>
+		<div class="logout-btn" @click="logOut()">
+			<figure class="footer-image">
+				<img src="../assets/logout-icon.svg" alt="" />
+			</figure>
+			<span>Logout</span>
+		</div>
 	</div>
 </template>
 
@@ -27,14 +35,22 @@ export default {
 	name: 'UserMenu',
 	props: [
 		'profilePic',
-		'userName',
+		'userFirstName',
+		'userLastName',
 		'userEmail',
 		'linkName',
 		'linkIcon',
 		'routerLink',
 		'linksData',
 		'lId',
+		'logout',
 	],
+	methods: {
+		logOut() {
+			localStorage.removeItem('token');
+			this.$router.push({ name: 'login' });
+		},
+	},
 };
 </script>
 
@@ -64,8 +80,22 @@ export default {
 .links {
 	margin-bottom: 28px;
 }
-.links img {
+.links img,
+.logout-btn img {
 	margin-right: 16px;
+}
+.logout-btn {
+	display: flex;
+	font-family: 'Lato';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 19px;
+	text-align: center;
+	color: #2b3c4e;
+	width: 100%;
+	padding: 20px 43px;
+	cursor: pointer;
 }
 a {
 	text-decoration: none;

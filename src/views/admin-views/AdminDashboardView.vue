@@ -15,19 +15,19 @@
 			<div class="applications-data">
 				<div class="current-applications">
 					<p class="header">Current Applications</p>
-					<h3 class="number">233</h3>
+					<h3 class="number">{{ allApplicants.length }}</h3>
 					<hr />
 					<p class="application-class">Academy 2.0</p>
 				</div>
 				<div class="total-applications">
 					<p class="header">Total Applications</p>
-					<h3 class="number">4253</h3>
+					<h3 class="number">{{ allApplicants.length }}</h3>
 					<hr />
 					<p class="application-class">All entries so far</p>
 				</div>
 				<div class="academys">
 					<p class="header">Academy's</p>
-					<h3 class="number">4</h3>
+					<h3 class="number">{{ allBatches.length }}</h3>
 					<hr />
 					<p class="application-class">So far</p>
 				</div>
@@ -37,12 +37,12 @@
 					<h1>History</h1>
 					<p>Last Update 18:24, 22/02/19</p>
 					<table>
-						<tr>
-							<td>Academy Batch 1</td>
-							<td>15 students</td>
-							<td>started 11/09/15</td>
+						<tr v-for="(batch, index) in allBatches" :key="index">
+							<td>Academy {{ batch.batchId }}</td>
+							<td>{{ allApplicants.length }} students</td>
+							<td>started {{}}</td>
 						</tr>
-						<tr>
+						<!-- <tr>
 							<td>Academy Batch 2</td>
 							<td>15 students</td>
 							<td>started 11/09/15</td>
@@ -51,7 +51,7 @@
 							<td>Academy Batch 3</td>
 							<td>15 students</td>
 							<td>started 11/09/15</td>
-						</tr>
+						</tr> -->
 					</table>
 				</div>
 				<div class="assessment">
@@ -67,6 +67,8 @@
 <script>
 import UserMenu from '@/components/UserMenu.vue';
 import Button from '@/components/Button.vue';
+import { mapActions, mapGetters } from 'vuex';
+// import { format } from 'date-fns';
 export default {
 	name: 'AdminDashboard',
 	components: { UserMenu, Button },
@@ -115,14 +117,31 @@ export default {
 					linkIcon: require('../../assets/Setting-icon.svg'),
 					routerLink: '/settings',
 				},
-				{
-					lId: 'logout',
-					linkName: 'Logout',
-					linkIcon: require('../../assets/logout-icon.svg'),
-					routerLink: '/',
-				},
 			],
 		};
+	},
+	async created() {
+		await this.getAllApplicants();
+		await this.getAllBatches();
+		console.log(this.date);
+	},
+	computed: {
+		...mapGetters({
+			allApplicants: 'getAllApplicants',
+			allBatches: 'getAllBatches',
+		}),
+		// date() {
+		// 	return this.allBatches.forEach((element) => {
+		// 		const newDate = format(new Date(element.createdAt), 'dd/MM/yy');
+		// 		return newDate;
+		// 	});
+		// },
+	},
+	methods: {
+		...mapActions({
+			getAllApplicants: 'getAllApplicants',
+			getAllBatches: 'getAllBatches',
+		}),
 	},
 };
 </script>
