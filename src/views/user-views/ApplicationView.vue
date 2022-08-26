@@ -5,45 +5,45 @@
         <section class="form-container">
             <form class="upload-form" enctype="multipart/form-data">
                 <input type="file" class="cv-inp" id="cv" ref="cv" @change="selectFile">
-                <label for="cv" class="cv-lab">+ Upload CV</label>
+                <label for="cv" class="cv-lab">{{ cvLabel }}</label>
                 <input type="file" class="photo-inp" id="photo" ref="image" @change="selectFileIm">
-                <label for="photo" class="photo-lab">+ Upload Photo</label>
+                <label for="photo" class="photo-lab">{{ imgLabel }}</label>
             </form>
             <form action="#" class="main-form">
                 <div class="left-side">
                     <div class="label-inp">
                         <label for="firstName">First Name</label>
-                        <input type="text" name="name" id="firstName" v-model="app.firstName">
+                        <input type="text" name="name" id="firstName" v-model="firstName">
                     </div>
                     <div class="label-inp">
                         <label for="email">Email</label>
-                        <input type="email" name="email" id="email" v-model="app.emailAddress">
+                        <input type="email" name="email" id="email" v-model="emailAddress">
                     </div>
                     <div class="label-inp">
                         <label for=" address">Address</label>
-                        <input type="text" name="address" id="address" v-model="app.address">
+                        <input type="text" name="address" id="address" v-model="address">
                     </div>
                     <div class="label-inp">
                         <label for="course">Course of Study</label>
-                        <input type="text" name="course" id="course" v-model="app.courseOfStudy">
+                        <input type="text" name="course" id="course" v-model="courseOfStudy">
                     </div>
                 </div>
                 <div class="right-side">
                     <div class="label-inp">
                         <label for="lastNAme">Last Name</label>
-                        <input type="text" name="lastName" id="lastName" v-model="app.lastName">
+                        <input type="text" name="lastName" id="lastName" v-model="lastName">
                     </div>
                     <div class="label-inp">
                         <label for="dob">Date of Birth</label>
-                        <input type="text" name="dob" id="dob" v-model="app.dateOfBirth">
+                        <input type="text" name="dob" id="dob" v-model="dateOfBirth">
                     </div>
                     <div class="label-inp">
                         <label for="university">University</label>
-                        <input type="text" name="university" id="university" v-model="app.university">
+                        <input type="text" name="university" id="university" v-model="university">
                     </div>
                     <div class="label-inp">
                         <label for="cgpa">CGPA</label>
-                        <input type="number" name="cgpa" id="cgpa" v-model="app.cgpa">
+                        <input type="number" name="cgpa" id="cgpa" v-model="cgpa">
                     </div>
                 </div>
             </form>
@@ -60,8 +60,6 @@ export default {
     components: { Button },
     data() {
         return {
-            app: {
-
                 firstName: "",
                 lastName: "",
                 emailAddress: "",
@@ -71,25 +69,26 @@ export default {
                 university: "",
                 cgpa: "",
                 image: "",
-                cv: ""
-            }
+                cv: "",
+            imgLabel: "+ Upload Photo",
+            cvLabel: "+ Upload CV"
 
         }
     },
     methods: {
-         async apply() {
+        async apply() {
             const token = localStorage.getItem('token');
             const formData = new FormData();
-            formData.append('firstName', this.app.firstName)
-            formData.append('lastName', this.app.lastName)
-            formData.append('emailAddress', this.app.emailAddress)
-            formData.append('address', this.app.address)
-            formData.append('courseOfStudy', this.app.courseOfStudy)
-            formData.append('dateOfBirth', this.app.dateOfBirth)
-            formData.append('university', this.app.university)
-            formData.append('cgpa', this.app.cgpa)
-            formData.append('image', this.app.image)
-            formData.append('cv', this.app.cv)
+            formData.append('firstName', this.firstName)
+            formData.append('lastName', this.lastName)
+            formData.append('emailAddress', this.emailAddress)
+            formData.append('address', this.address)
+            formData.append('courseOfStudy', this.courseOfStudy)
+            formData.append('dateOfBirth', this.dateOfBirth)
+            formData.append('university', this.university)
+            formData.append('cgpa', this.cgpa)
+            formData.append('image', this.image)
+            formData.append('cv', this.cv)
 
             try {
                 const response = await axios.post('http://localhost:8082/api/v1/application', formData,
@@ -103,14 +102,27 @@ export default {
         },
 
         selectFile() {
-            this.app.cv = this.$refs.cv.files[0]
+            this.cv = this.$refs.cv.files[0]
         },
         selectFileIm() {
-            this.app.image = this.$refs.image.files[0]
-            console.log(this.app.image.name)
+            this.image = this.$refs.image.files[0]
         }
 
-        
+
+    },
+    watch: {
+        // eslint-disable-next-line no-unused-vars
+        cv(newFile, oldFile) {
+            if (newFile) {
+                this.cvLabel = this.cv.name
+            }
+        },
+        // eslint-disable-next-line no-unused-vars
+         image(newFile, oldFile) {
+            if (newFile) {
+                this.imgLabel = this.image.name
+            }
+        }
     }
 }
 </script>
@@ -232,7 +244,7 @@ p {
 
 .upload-form input {
     display: none;
-} 
+}
 
 .upload-form label {
     font-family: 'Nunito';

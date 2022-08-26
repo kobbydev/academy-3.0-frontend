@@ -10,7 +10,7 @@
 				<div class="section-1">
 					<label class="custom-file-upload">
 						<input type="file" ref="file" @change="selectFile" />
-						+ Choose file
+						{{nameFile}}
 					</label>
 					<div class="link-input">
 						<label for="link-input">Link</label> <br />
@@ -100,7 +100,8 @@ export default {
 			link: "",
 			dateOfApplication: "",
 			batchId: "",
-			instructions: ""
+			instructions: "",
+			nameFile: "+ Choose File"
 		};
 	},
 	methods: {
@@ -124,8 +125,16 @@ export default {
 			}
 		},
 		selectFile() {
-			this.app.cv = this.$refs.file.files[0]
+			this.file = this.$refs.file.files[0]
 		},
+	}, 
+	watch:{
+		// eslint-disable-next-line no-unused-vars
+		file(newFile, oldFile){
+			if(newFile){
+				this.nameFile = this.file.name
+			}
+		}
 	}
 };
 </script>
