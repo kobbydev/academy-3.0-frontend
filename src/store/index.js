@@ -29,7 +29,7 @@ const store = createStore({
 			const token = localStorage.getItem('token');
 			try {
 				let response = await axios.get(
-					'http://localhost:8081/api/v1/userInfo',
+					'http://localhost:8082/api/v1/userInfo',
 					{
 						headers: { token: token },
 					}
@@ -44,7 +44,7 @@ const store = createStore({
 			const token = localStorage.getItem('admintoken');
 			try {
 				let response = await axios.get(
-					'http://localhost:8081/api/v1/admin/getApplicants',
+					'http://localhost:8082/api/v1/admin/getApplicants',
 					{
 						headers: { token: token },
 					}
@@ -59,7 +59,7 @@ const store = createStore({
 			const token = localStorage.getItem('admintoken');
 			try {
 				let response = await axios.get(
-					'http://localhost:8081/api/v1/admin-applications',
+					'http://localhost:8082/api/v1/admin-applications',
 					{
 						headers: { token: token },
 					}
