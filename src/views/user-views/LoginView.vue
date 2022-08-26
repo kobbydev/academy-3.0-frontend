@@ -69,7 +69,11 @@ export default {
 					localStorage.setItem('userRole', response.data.data.user.role);
 					console.log(response);
 					alert(response.data.message);
-					this.$router.push('/dashboard');
+					if (response.data.data.user.is_applied) {
+						this.$router.push('/dashboard');
+					} else {
+						this.$router.push({ name: 'user-application' });
+					}
 				})
 				.catch((error) => {
 					alert('Email or Password wrong');

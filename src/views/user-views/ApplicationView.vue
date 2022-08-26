@@ -102,6 +102,8 @@ export default {
 	components: { Button },
 	data() {
 		return {
+			fileImage: '',
+			fileCv: '',
 			applicationInfo: {
 				firstName: '',
 				lastName: '',
@@ -111,8 +113,8 @@ export default {
 				dob: '',
 				university: '',
 				cgpa: '',
-				image: '',
-				cv: '',
+				image: this.fileImage,
+				cv: this.fileCv,
 			},
 		};
 	},
