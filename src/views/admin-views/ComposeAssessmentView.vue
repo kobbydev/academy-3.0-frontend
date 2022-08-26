@@ -120,12 +120,6 @@ export default {
 					linkIcon: require('../../assets/Setting-icon.svg'),
 					routerLink: '/settings',
 				},
-				{
-					lId: 'logout',
-					linkName: 'Logout',
-					linkIcon: require('../../assets/logout-icon.svg'),
-					routerLink: '/',
-				},
 			],
 		};
 	},

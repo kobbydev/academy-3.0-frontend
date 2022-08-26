@@ -29,7 +29,13 @@
 		<div class="right-section">
 			<select name="batch" id="batch-select">
 				<option value="">Select Batch</option>
-				<option value="batch-1">Entries - Batch 1</option>
+				<option
+					value="{{ batch.batchId}}"
+					v-for="(batch, index) in allBatches"
+					:key="index"
+				>
+					Entries - {{ batch.batchId }}
+				</option>
 				<option value="batch-2">Entries - Batch 2</option>
 			</select>
 			<p>Comprises of all that applied for batch 2</p>
@@ -46,7 +52,20 @@
 						CGPA <img src="../../assets/sort-icon.svg" alt="" />
 					</th>
 				</tr>
-				<tr class="table-body" @click="showModal">
+				<tr
+					class="table-body"
+					@click="showModal"
+					v-for="(applicant, index) in allApplicants"
+					:key="index"
+				>
+					<td>{{ applicant.firstName }} {{ applicant.lastName }}</td>
+					<td>{{ applicant.emailAddress }}</td>
+					<td>{{ applicant.dateOfBirth }} - 22</td>
+					<td>{{ applicant.address }}</td>
+					<td>{{ applicant.university }}</td>
+					<td>{{ applicant.cgpa }}</td>
+				</tr>
+				<!-- <tr class="table-body" @click="showModal">
 					<td>Ify Chinke</td>
 					<td>ify@enyata.com</td>
 					<td>12/09/19 - 22</td>
@@ -61,15 +80,7 @@
 					<td>3 Sabo Ave, Yaba, Lagos</td>
 					<td>University of Nigeria</td>
 					<td>5.0</td>
-				</tr>
-				<tr class="table-body" @click="showModal">
-					<td>Ify Chinke</td>
-					<td>ify@enyata.com</td>
-					<td>12/09/19 - 22</td>
-					<td>3 Sabo Ave, Yaba, Lagos</td>
-					<td>University of Nigeria</td>
-					<td>5.0</td>
-				</tr>
+				</tr> -->
 			</table>
 		</div>
 	</div>
@@ -79,11 +90,13 @@
 import UserMenu from '../../components/UserMenu.vue';
 import Modal from '@/components/Modal.vue';
 import ChoiceModal from '@/components/ChoiceModal.vue';
+import { mapActions, mapGetters } from 'vuex';
 export default {
 	name: 'ApplicationEntries',
 	components: { UserMenu, Modal, ChoiceModal },
 	data() {
 		return {
+			selectTerm: '',
 			links: [
 				{
 					lId: 'dashboard',
@@ -127,19 +140,33 @@ export default {
 					linkIcon: require('../../assets/Setting-icon.svg'),
 					routerLink: '/settings',
 				},
-				{
-					lId: 'logout',
-					linkName: 'Logout',
-					linkIcon: require('../../assets/logout-icon.svg'),
-					routerLink: '/',
-				},
 			],
 			isModalVisible: false,
 			isApproveModalVisible: false,
 			isDeclineModalVisible: false,
 		};
 	},
+	async created() {
+		await this.getAllApplicants();
+		await this.getAllBatches();
+		console.log(this.allBatches);
+	},
+	computed: {
+		...mapGetters({
+			allApplicants: 'getAllApplicants',
+			allBatches: 'getAllBatches',
+		}),
+		// filteredBatches() {
+		// 	if (this.selectTerm) {
+		// 		qs
+		// 	}
+		// },
+	},
 	methods: {
+		...mapActions({
+			getAllApplicants: 'getAllApplicants',
+			getAllBatches: 'getAllBatches',
+		}),
 		showModal() {
 			this.isModalVisible = true;
 		},

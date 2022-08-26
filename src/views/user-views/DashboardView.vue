@@ -1,24 +1,41 @@
 <template>
 	<div class="dashboard">
 		<div class="left-section">
-			<UserMenu :linksData="links" :linkName="linkName" :linkIcon="linkIcon" :routerLink="routerLink" />
+			<UserMenu
+				:linksData="links"
+				:linkName="linkName"
+				:linkIcon="linkIcon"
+				:routerLink="routerLink"
+				:profilePic="applicantInfo?.user.image"
+				:userEmail="applicantInfo?.user.emailAddress"
+				:userFirstName="applicantInfo?.user.firstName"
+				:userLastName="applicantInfo?.user.lastName"
+				:logout="logout"
+			/>
 		</div>
 		<div class="right-section">
 			<h1 class="heading">Dashboard</h1>
-			<p class="status-message">
+			<p class="status-message" v-show="isReviewOngoing">
 				Your Application is currently being review, you wil be notified if
 				successful
+			</p>
+			<p class="status-message" v-show="isReviewApproved">
+				Your Application has been approved, prepare for you assessment
+			</p>
+			<p class="status-message" v-show="isReviewDeclined">
+				Your Application has been declined, we hope you try again for the next
+				batch
 			</p>
 			<div class="application-data">
 				<div class="application-date">
 					<p class="header">Date of Application</p>
-					<h2>09.09.19</h2>
+					<h2>{{ applicationDate }}</h2>
 					<hr />
-					<p class="status-text">4 days since applied</p>
+					<p class="status-text">{{ applicationTimeline }} since applied</p>
 				</div>
 				<div class="application-status">
 					<p class="header">Application Status</p>
-					<h2>Pending</h2>
+					<h2>{{ applicantInfo?.user.app_status }}</h2>
 					<hr />
 					<p class="status-text">We will get back to you</p>
 				</div>
@@ -37,7 +54,10 @@
 				</div>
 				<div class="assessment">
 					<h1>Take Assessment</h1>
-					<p>We have 4 days left until the next assessment Watch this space</p>
+					<p>
+						We have {{ this.assessmentDate }} left until the next assessment
+						Watch this space
+					</p>
 					<Button text="Take Assessment" />
 				</div>
 			</div>
@@ -48,6 +68,8 @@
 <script>
 import UserMenu from '../../components/UserMenu.vue';
 import Button from '@/components/Button.vue';
+import { mapActions, mapGetters } from 'vuex';
+import { formatDistanceToNow, format } from 'date-fns';
 export default {
 	name: 'DashboardView',
 	components: {
@@ -56,6 +78,10 @@ export default {
 	},
 	data() {
 		return {
+			userApplicationInfo: [],
+			isReviewOngoing: true,
+			isReviewApproved: false,
+			isReviewDeclined: false,
 			links: [
 				{
 					linkName: 'Dashboard',
@@ -67,13 +93,51 @@ export default {
 					linkIcon: require('../../assets/assessment-icon.svg'),
 					routerLink: '/assessment',
 				},
-				{
-					linkName: 'Logout',
-					linkIcon: require('../../assets/logout-icon.svg'),
-					routerLink: '/login',
-				},
 			],
 		};
+	},
+	async created() {
+		await this.getApplicant();
+		console.log(this.getApplicant());
+	},
+	computed: {
+		...mapGetters({
+			applicant: 'getApplicant',
+		}),
+		applicantInfo() {
+			return this.applicant;
+		},
+		applicationTimeline() {
+			return formatDistanceToNow(new Date(this.applicantInfo.user.createdAt));
+		},
+		applicationDate() {
+			return format(new Date(this.applicantInfo.user.createdAt), 'dd.MM.yy');
+		},
+		assessmentDate() {
+			return formatDistanceToNow(new Date(2022, 9, 1));
+		},
+		review() {
+			return this.isReviewSuccessful;
+		},
+	},
+	methods: {
+		...mapActions({
+			getApplicant: 'getApplicant',
+		}),
+	},
+	watch: {
+		approvedApplication() {
+			if (this.applicant.user.app_status === 'Approved') {
+				this.isReviewApproved = true;
+				this.isReviewDeclined = false;
+				this.isReviewOngoing = false;
+			}
+			if (this.applicant.user.app_status === 'Declined') {
+				this.isReviewApproved = false;
+				this.isReviewDeclined = true;
+				this.isReviewOngoing = false;
+			}
+		},
 	},
 };
 </script>

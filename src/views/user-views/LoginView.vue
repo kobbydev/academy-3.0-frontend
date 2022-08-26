@@ -6,17 +6,28 @@
 			<form action="#">
 				<div class="label-inp">
 					<label for="email">Email Address</label>
-					<input type="email" name="email" v-model="user.emailAddress" />
+					<input type="email" name="email" v-model="userInfo.emailAddress" />
 				</div>
 				<div class="label-inp">
 					<label for="password">Password</label>
-					<input :type="[passToggle ? password1 : text]" name="password" id="pass"
-						v-model="user.password"><span @click="change"><img src="@/assets/see-icon.svg"
-							:class="[passToggle ? see1 : '']" alt="visibility icon">
-						<img src="@/assets/unsee-icon.svg" alt="" :class="[passToggle ? '' : unsee1]"></span>
+					<input
+						:type="[passToggle ? password : text]"
+						name="password"
+						id="pass"
+						v-model="userInfo.password"
+					/><span @click="change"
+						><img
+							src="@/assets/see-icon.svg"
+							:class="[passToggle ? see1 : '']"
+							alt="visibility icon" />
+						<img
+							src="@/assets/unsee-icon.svg"
+							alt=""
+							:class="[passToggle ? '' : unsee1]"
+					/></span>
 				</div>
 			</form>
-			<Button text="Sign In" @click.prevent="loginUser"></Button>
+			<Button text="Sign In" @click="logIn"></Button>
 			<div class="word">
 				<h3>Don’t have an account yet? <a href="/signup">Sign Up</a></h3>
 				<a href="/forgot-password" id="forgot">Forgot Password?</a>
@@ -27,57 +38,50 @@
 
 <script>
 import Button from '@/components/Button.vue';
-import axios from 'axios'
+import axios from 'axios';
 export default {
 	name: 'LogInView',
 	components: { Button },
 	data() {
 		return {
+			userInfo: {
+				emailAddress: '',
+				password: '',
+			},
 			passToggle: true,
 			see1: 'see1',
 			unsee1: 'unsee1',
 			password1: 'password',
 			text: 'text',
-			user: {
-
-				password: '',
-				emailAddress: ''
-			}
-		}
+			// password1: '',
+			emailAddress: '',
+		};
 	},
 	methods: {
 		change() {
-			this.passToggle = !this.passToggle
+			this.passToggle = !this.passToggle;
 		},
-		// loginUser() {
-		// 	axios
-		// 		.post("http://localhost:8081/api/v1/user-login", this.user)
-		// 		.then((res) => {
-		// 			console.log(res);
-
-		// 		})
-		// 		.catch((err) => console.log(err));
-		// },
-		async loginUser() {
-			if (this.user.emailAddress.trim() !== '' && this.user.password !== '') {
-				const response = await axios.post("http://localhost:8082/api/v1/user-login", this.user)
-				this.user.emailAddress = ''
-				this.user.password = ''
-				console.log(response)
-				if (response.data.message === 'User logged in successfully') {
-					localStorage.setItem("token", response.headers);
-					console.log(response.header)
-					// console.log(Object.keys(response.data.data.user));
-					this.$router.push('/dashboard');
-					console.log(response.data.message)
-					this.isLoggedin = true
-					console.log(this.isLoggedin)
-				}
-				
-			}
-		}
-	}
-}
+		logIn() {
+			axios
+				.post('http://localhost:8081/api/v1/user-login', this.userInfo)
+				.then((response) => {
+					localStorage.setItem('token', response.data.data.user.token);
+					localStorage.setItem('userRole', response.data.data.user.role);
+					console.log(response);
+					alert(response.data.message);
+					if (response.data.data.user.is_applied) {
+						this.$router.push('/dashboard');
+					} else {
+						this.$router.push({ name: 'user-application' });
+					}
+				})
+				.catch((error) => {
+					alert('Email or Password wrong');
+					console.log(error);
+				});
+		},
+	},
+};
 </script>
 
 <style scoped>
