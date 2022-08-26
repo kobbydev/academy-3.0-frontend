@@ -31,7 +31,7 @@
 				<label for="instructions">Instructions</label><br />
 				<textarea name="instructions" id="instructions" cols="30" rows="10"
 					v-model="instructions"></textarea><br />
-				<Button type="submit" text="Submit" />
+				<Button type="submit" text="Submit" @click.prevent="createAdminApplication" />
 			</form>
 		</div>
 	</div>
