@@ -152,36 +152,49 @@ const router = createRouter({
 
 router.beforeEach((to) => {
 	const token = localStorage.getItem('token');
+	const adminToken = localStorage.getItem('admintoken');
 	const role = localStorage.getItem('adminrole');
-	// console.log(token);
-	// const decoded = jwt_decode(token);
 	let isAuthenticated = false;
+	let adminAuthentication = false;
+	const nowDate = new Date();
 
 	if (token) {
 		const decode = jwt_decode(token);
-		console.log(decode);
+
 		const expiryDate = new Date(decode.exp * 1000);
-		const nowDate = new Date();
 		if (expiryDate > nowDate) {
 			isAuthenticated = true;
-			console.log(localStorage.getItem('token'));
+			console.log(isAuthenticated);
 		} else {
 			localStorage.removeItem('token');
 			isAuthenticated = false;
 		}
+	} else if (adminToken) {
+		const admindecode = jwt_decode(adminToken);
+		const expiry = new Date(admindecode.exp * 1000);
+		if (expiry > nowDate) {
+			adminAuthentication = true;
+			console.log(adminAuthentication);
+		} else {
+			localStorage.removeItem('token');
+			adminAuthentication = false;
+		}
 	} else {
 		isAuthenticated = false;
+		adminAuthentication = false;
 	}
 
 	if (!to.meta.noAuth) {
-		if (!isAuthenticated && to.name !== 'login') {
+		if (to.meta.admin && !adminAuthentication) {
+			return { name: 'adminlogin' };
+		}
+		if (!to.meta.admin && !isAuthenticated && to.name !== 'login') {
 			return { name: 'login' };
 		}
-	}
-
-	if (to.meta.requiresAuth && isAuthenticated) {
-		if (to.meta.admin && role !== 'Admin') {
-			return { name: 'dashboard' };
+		if (isAuthenticated) {
+			if (to.meta.admin && role !== 'Admin') {
+				return { name: 'dashboard' };
+			}
 		}
 	}
 });

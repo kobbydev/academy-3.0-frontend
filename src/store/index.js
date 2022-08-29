@@ -5,23 +5,36 @@ import { createStore } from 'vuex';
 const store = createStore({
 	state: {
 		applicant: [],
+		singleApplicant: [],
 		allApplicants: [],
 		allBatches: [],
+		applicantInfo: [],
 	},
 	getters: {
 		getApplicant: (state) => state.applicant,
+		getSingleApplicant: (state) => state.singleApplicant,
 		getAllApplicants: (state) => state.allApplicants,
 		getAllBatches: (state) => state.allBatches,
+		getApplicantInfo: (state) => {
+			return state.applicantInfo;
+		},
 	},
 	mutations: {
 		SET_APPLICANT(state, payload) {
 			state.applicant = payload;
+		},
+		SET_SINGLE_APPLICANT(state, payload) {
+			state.singleApplicant = payload;
 		},
 		SET_ALL_APPLICANTS(state, payload) {
 			state.allApplicants = payload;
 		},
 		SET_ALL_BATCHES(state, payload) {
 			state.allBatches = payload;
+		},
+		setEmail(state, email) {
+			state.applicantInfo = [];
+			state.applicantInfo.push(email);
 		},
 	},
 	actions: {
@@ -35,6 +48,23 @@ const store = createStore({
 					}
 				);
 				commit('SET_APPLICANT', response.data.data);
+				return response;
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async getSingleApplicant({ commit }) {
+			const token = localStorage.getItem('admintoken');
+			const email = localStorage.getItem('userEmail');
+			// const email = this.$store.getters.getApplicantInfo[0];
+			try {
+				let response = await axios.get(
+					`http://localhost:8081/api/v1/applicant-info/${email}`,
+					{
+						headers: { token: token },
+					}
+				);
+				commit('SET_SINGLE_APPLICANT', response.data.data);
 				return response;
 			} catch (error) {
 				console.log(error);

@@ -54,7 +54,10 @@
 				</tr>
 				<tr
 					class="table-body"
-					@click="showModal"
+					@click="
+						showModal();
+						getEmail(index);
+					"
 					v-for="(applicant, index) in allApplicants"
 					:key="index"
 				>
@@ -149,17 +152,15 @@ export default {
 	async created() {
 		await this.getAllApplicants();
 		await this.getAllBatches();
-		console.log(this.allBatches);
+		console.log(this.getEmail());
 	},
 	computed: {
 		...mapGetters({
 			allApplicants: 'getAllApplicants',
 			allBatches: 'getAllBatches',
 		}),
-		// filteredBatches() {
-		// 	if (this.selectTerm) {
-		// 		qs
-		// 	}
+		// getSingleApplicantInfo(index) {
+		// 	return this.getSingleApplicant(this.allApplicants[index].emailAddress);
 		// },
 	},
 	methods: {
@@ -180,10 +181,19 @@ export default {
 		},
 		closeModal() {
 			this.isModalVisible = false;
+			// localStorage.removeItem('userEmail');
 		},
 		closeChoiceModal() {
 			this.isApproveModalVisible = false;
 			this.isDeclineModalVisible = false;
+		},
+		getEmail(index) {
+			// const result = this.allApplicants[index].emailAddress;
+			this.$store.commit('setEmail', this.allApplicants[index].emailAddress);
+			const result = this.$store.getters.getApplicantInfo[0];
+			// localStorage.removeItem('userEmail');
+			localStorage.setItem('userEmail', result);
+			console.log(result);
 		},
 	},
 };
