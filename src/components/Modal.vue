@@ -2,14 +2,19 @@
 	<div class="modal" @click="close">
 		<div class="modal-content">
 			<div class="profile-picture">
-				<img src="" alt="" />
+				<img :src="singleApplicant.image" alt="" />
 			</div>
 			<p class="modal-text">Personal Details</p>
 			<hr />
 			<div class="section-1">
 				<div class="name-section">
 					<label for="user-name">Name</label><br />
-					<input type="text" name="user-name" readonly />
+					<input
+						type="text"
+						name="user-name"
+						readonly
+						v-model="singleApplicant.firstName"
+					/>
 				</div>
 				<div class="email-section">
 					<label for="user-email">Email</label><br />
@@ -56,10 +61,49 @@
 
 <script>
 import Button from './Button.vue';
+// import axios from 'axios';
+import { mapActions, mapGetters } from 'vuex';
 export default {
 	name: 'ModalComponent',
 	components: { Button },
+	props: [
+		'image',
+		'cv',
+		'emailAddress',
+		'address',
+		'courseOfStudy',
+		'dateOfBirth',
+		'cgpa',
+		'university',
+		'firstName',
+		'lastName',
+	],
+	data() {
+		return {
+			applicantInfo: [],
+		};
+	},
+	async created() {
+		// const newResult = this.$store.getters.getApplicantInfo[0];
+		// const newResult = localStorage.getItem('userEmail');
+		await this.getSingleApplicant();
+		// this.logA();
+		// console.log(newResult);
+		// console.log(this.singleApplicant);
+		// this.getSingleApplicant();
+	},
+	// async updated() {
+	// 	await this.getSingleApplicant();
+	// },
+	computed: {
+		...mapGetters({
+			singleApplicant: 'getSingleApplicant',
+		}),
+	},
 	methods: {
+		...mapActions({
+			getSingleApplicant: 'getSingleApplicant',
+		}),
 		close() {
 			this.$emit('close');
 		},
@@ -69,6 +113,20 @@ export default {
 		decline() {
 			this.$emit('decline');
 		},
+		// async getSingleApplicant() {
+		// 	const email = this.$store.getters.getApplicantInfo[0];
+		// 	const token = localStorage.getItem('admintoken');
+		// 	let response = await axios.get(
+		// 		`http://localhost:8081/api/v1/applicant-info/${email}`,
+		// 		{
+		// 			headers: { token: token },
+		// 		}
+		// 	);
+		// 	this.applicantInfo.push(response);
+		// },
+		// logA() {
+		// 	console.log('a');
+		// },
 	},
 };
 </script>
