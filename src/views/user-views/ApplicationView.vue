@@ -5,9 +5,9 @@
         <section class="form-container">
             <form class="upload-form" enctype="multipart/form-data">
                 <input type="file" class="cv-inp" id="cv" accept=".doc, .docx, .pdf" ref="cv" />
-                <label for="cv" class="cv-lab">{{cvLabel}}</label>
-                <input type="file" class="photo-inp" id="photo" ref="image"/>
-                <label for="photo" accept="image/*" class="photo-lab">{{imgLabel}}</label>
+                <label for="cv" class="cv-lab">{{ cvLabel }}</label>
+                <input type="file" class="photo-inp" id="photo" ref="image" />
+                <label for="photo" accept="image/*" class="photo-lab">{{ imgLabel }}</label>
             </form>
             <form action="#" class="main-form">
                 <div class="left-side">
@@ -91,11 +91,12 @@ export default {
             formData.append('cv', this.cv)
 
             try {
-                const response = await axios.post('http://localhost:8082/api/v1/application', formData,
+                await axios.post('http://localhost:8082/api/v1/application', formData,
                     {
                         headers: { token: token },
                     })
-                console.log(response)
+                this.$router.push('/dashboard');
+
             } catch (e) {
                 console.log(e)
             }
