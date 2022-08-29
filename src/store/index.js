@@ -53,9 +53,9 @@ const store = createStore({
 				console.log(error);
 			}
 		},
-		async getSingleApplicant({ commit }) {
+		async getSingleApplicant({ commit }, email) {
 			const token = localStorage.getItem('admintoken');
-			const email = localStorage.getItem('userEmail');
+			// const email = localStorage.getItem('userEmail');
 			// const email = this.$store.getters.getApplicantInfo[0];
 			try {
 				let response = await axios.get(
