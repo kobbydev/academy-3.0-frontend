@@ -83,18 +83,6 @@ export default {
 			applicantInfo: [],
 		};
 	},
-	async created() {
-		// const newResult = this.$store.getters.getApplicantInfo[0];
-		// const newResult = localStorage.getItem('userEmail');
-		await this.getSingleApplicant();
-		// this.logA();
-		// console.log(newResult);
-		// console.log(this.singleApplicant);
-		// this.getSingleApplicant();
-	},
-	// async updated() {
-	// 	await this.getSingleApplicant();
-	// },
 	computed: {
 		...mapGetters({
 			singleApplicant: 'getSingleApplicant',

@@ -6,7 +6,7 @@
 			@approve="approveModal"
 			@decline="declineModal"
 		/>
-		<ChoiceModal
+		<!-- <ChoiceModal
 			@close="closeChoiceModal"
 			v-show="isApproveModalVisible"
 			text="Are you sure you want to approve this application?"
@@ -15,7 +15,7 @@
 			@close="closeChoiceModal"
 			v-show="isDeclineModalVisible"
 			text="Are you sure you want to decline this application?"
-		/>
+		/> -->
 		<div class="left-section">
 			<UserMenu
 				class="user-menu"
@@ -92,11 +92,11 @@
 <script>
 import UserMenu from '../../components/UserMenu.vue';
 import Modal from '@/components/Modal.vue';
-import ChoiceModal from '@/components/ChoiceModal.vue';
+// import ChoiceModal from '@/components/ChoiceModal.vue';
 import { mapActions, mapGetters } from 'vuex';
 export default {
 	name: 'ApplicationEntries',
-	components: { UserMenu, Modal, ChoiceModal },
+	components: { UserMenu, Modal },
 	data() {
 		return {
 			selectTerm: '',
@@ -154,19 +154,23 @@ export default {
 		await this.getAllBatches();
 		console.log(this.getEmail());
 	},
+	async updated() {
+		const email = localStorage.getItem('userEmail');
+		await this.getSingleApplicant(email);
+		console.log(this.singleApplicant);
+	},
 	computed: {
 		...mapGetters({
 			allApplicants: 'getAllApplicants',
 			allBatches: 'getAllBatches',
+			singleApplicant: 'getApplicant',
 		}),
-		// getSingleApplicantInfo(index) {
-		// 	return this.getSingleApplicant(this.allApplicants[index].emailAddress);
-		// },
 	},
 	methods: {
 		...mapActions({
 			getAllApplicants: 'getAllApplicants',
 			getAllBatches: 'getAllBatches',
+			getSingleApplicant: 'getSingleApplicant',
 		}),
 		showModal() {
 			this.isModalVisible = true;
@@ -188,11 +192,11 @@ export default {
 			this.isDeclineModalVisible = false;
 		},
 		getEmail(index) {
-			// const result = this.allApplicants[index].emailAddress;
+			const result1 = this.allApplicants[index].emailAddress;
 			this.$store.commit('setEmail', this.allApplicants[index].emailAddress);
 			const result = this.$store.getters.getApplicantInfo[0];
-			// localStorage.removeItem('userEmail');
-			localStorage.setItem('userEmail', result);
+			localStorage.removeItem('userEmail');
+			localStorage.setItem('userEmail', result1);
 			console.log(result);
 		},
 	},
