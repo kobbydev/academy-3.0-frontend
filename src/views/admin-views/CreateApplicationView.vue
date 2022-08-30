@@ -35,7 +35,8 @@
 					</div>
 					<div class="batch-input">
 						<label for="batch-id">Batch ID</label> <br />
-						<input type="text" id="batch-id" name="batch-id" />
+						<input type="text" id="batch-id" name="batch-id" /><br />
+						<p>Batch Id cannot be empty</p>
 					</div>
 				</div>
 				<label for="instructions">Instructions</label><br />
@@ -49,17 +50,26 @@
 				<Button type="submit" text="Submit" />
 			</form>
 		</div>
+		<div class="message-box" v-if="isShown">
+			<div class="background"></div>
+			<div class="message">
+				<p>Application was Created</p>
+				<i class="uil uil-check-circle"></i>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
 import UserMenu from '../../components/UserMenu.vue';
 import Button from '@/components/Button.vue';
+import axios from 'axios';
 export default {
 	name: 'CreateApplication',
 	components: { UserMenu, Button },
 	data() {
 		return {
+			isShown: false,
 			links: [
 				{
 					lId: 'dashboard',
@@ -105,6 +115,25 @@ export default {
 				},
 			],
 		};
+	},
+	methods: {
+		submit() {
+			const token = localStorage.getItem('admintoken');
+			axios
+				.post('http://localhost:8081/api/v1/admin-create-application', {
+					headers: { token: token },
+				})
+				.then((response) => {
+					this.isShown = true;
+					setTimeout(() => {
+						this.isShown = false;
+					}, 2000);
+					console.log(response);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		},
 	},
 };
 </script>
@@ -234,5 +263,35 @@ button {
 	opacity: 0.7;
 	border-radius: 17px;
 	height: 66px;
+}
+.background {
+	width: 100vw;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: rgba(0, 0, 0, 0.3);
+	display: flex;
+	justify-content: center;
+	z-index: 2;
+	align-items: center;
+}
+.message {
+	display: flex;
+	flex-direction: column;
+	padding: 79px 96px;
+	background: #ffffff;
+}
+.message p {
+	font-family: 'Lato';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 18px;
+	line-height: 150%;
+	margin-bottom: 48px;
+	text-align: center;
+	color: #4f4f4f;
+	width: 267px;
 }
 </style>

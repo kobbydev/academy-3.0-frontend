@@ -12,7 +12,7 @@
 		</div>
 		<div class="right-section">
 			<h1 class="heading">Compose Assessment</h1>
-			<p class="question-number">15/30</p>
+			<p class="question-number">{{ index + 1 }}/30</p>
 			<form>
 				<div class="section-1">
 					<label class="custom-file-upload">
@@ -27,43 +27,61 @@
 						id="questions"
 						cols="30"
 						rows="10"
+						v-model="questionForm.question"
 					></textarea>
 				</div>
 				<div class="options-section">
 					<div class="options-a-b">
 						<div class="options-a">
-							<label for="option1" class="radio-labels">Option A</label><br />
-							<label for="" class="radio-btn"
-								><input type="radio" name="question-options" /> </label
-							><br />
+							<label for="option-a" class="radio-labels">Option A</label><br />
+
+							<input
+								type="text"
+								name="question-options"
+								v-model="questionForm.optionA"
+								id="option-a"
+							/>
+							<br />
 						</div>
 						<div class="options-b">
-							<label for="option1" class="radio-labels">Option B</label><br />
-							<label for="" class="radio-btn"
-								><input type="radio" name="question-options" /> </label
-							><br />
+							<label for="option-b" class="radio-labels">Option B</label><br />
+
+							<input
+								type="text"
+								name="question-options"
+								v-model="questionForm.optionB"
+								id="option-b"
+							/><br />
 						</div>
 					</div>
 					<div class="options-c-d">
 						<div class="option-c">
-							<label for="option1" class="radio-labels">Option C</label><br />
-							<label for="" class="radio-btn"
-								><input type="radio" name="question-options" /> </label
-							><br />
+							<label for="option-c" class="radio-labels">Option C</label><br />
+
+							<input
+								type="text"
+								name="question-options"
+								v-model="questionForm.optionC"
+								id="option-c"
+							/><br />
 						</div>
 						<div class="option-d">
-							<label for="option1" class="radio-labels">Option D</label><br />
-							<label for="" class="radio-btn"
-								><input type="radio" name="question-options" />
-							</label>
+							<label for="option-d" class="radio-labels">Option D</label><br />
+
+							<input
+								type="text"
+								name="question-options"
+								v-model="questionForm.optionD"
+								id="option-d"
+							/>
 						</div>
 					</div>
 				</div>
 				<div class="buttons">
-					<Button text="Previous" />
-					<Button text="Next" /><br />
+					<Button text="Previous" @click="previous" type="button" />
+					<Button text="Next" @click="next" type="button" /><br />
 				</div>
-				<Button text="Finish" type="submit" class="finish-btn" />
+				<Button text="Finish" type="button" class="finish-btn" />
 			</form>
 		</div>
 	</div>
@@ -72,6 +90,7 @@
 <script>
 import UserMenu from '../../components/UserMenu.vue';
 import Button from '@/components/Button.vue';
+import axios from 'axios';
 export default {
 	name: 'ComposeAssessment',
 	components: { UserMenu, Button },
@@ -121,7 +140,60 @@ export default {
 					routerLink: '/settings',
 				},
 			],
+			index: 0,
+			questions: [],
+			questionForm: {
+				question: '',
+				optionA: '',
+				optionB: '',
+				optionC: '',
+				optionD: '',
+				questionFile: '',
+				correctAnswer: '',
+			},
+			questionTemplate: {
+				question: '',
+				optionA: '',
+				optionB: '',
+				optionC: '',
+				optionD: '',
+				questionFile: '',
+				correctAnswer: '',
+			},
 		};
+	},
+	methods: {
+		next() {
+			if (this.questionForm.question !== '') {
+				this.questions[this.index] = this.questionForm;
+				// if (this.questions[this.index]) {
+				// 	!this.question.push(this.questionForm);
+				// }
+				// this.questions.push(this.questionForm);
+				this.index++;
+				// this.questionForm = this.questionTemplate;
+				if (this.index < this.questions.length) {
+					this.questionForm = { ...this.questions[this.index] };
+				} else {
+					this.questionForm = { ...this.questionTemplate };
+				}
+			}
+		},
+		previous() {
+			if (this.questionForm.question !== '') {
+				this.questions[this.index] = this.questionForm;
+			}
+			if (this.index === 0) {
+				this.index = 0;
+			} else {
+				this.index--;
+			}
+			this.questionForm = { ...this.questions[this.index] };
+		},
+		finish() {
+			axios.post();
+		},
+		selectCorrectAnswer() {},
 	},
 };
 </script>
@@ -202,6 +274,15 @@ input[type='radio']:focus {
 input[type='file'] {
 	display: none;
 }
+input[type='text'] {
+	border: 1.5px solid #2b3c4e;
+	border-radius: 4px;
+	height: 41px;
+	width: 456px;
+	padding: 10px;
+	font-family: 'Lato';
+	font-style: normal;
+}
 label {
 	font-family: 'Lato';
 	font-style: normal;
@@ -232,6 +313,9 @@ label {
 }
 textarea {
 	width: 100%;
+	padding: 10px;
+	font-family: 'Lato';
+	font-style: normal;
 }
 .buttons {
 	display: flex;
@@ -254,6 +338,7 @@ button {
 	padding: 10px 31px;
 	margin-left: 85px;
 	color: #ffffff;
+	cursor: pointer;
 }
 button:nth-of-type(2) {
 	padding: 10px 46px;

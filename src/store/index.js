@@ -32,7 +32,7 @@ const store = createStore({
 		SET_ALL_BATCHES(state, payload) {
 			state.allBatches = payload;
 		},
-		setEmail(state, email) {
+		setId(state, email) {
 			state.applicantInfo = [];
 			state.applicantInfo.push(email);
 		},
@@ -53,13 +53,13 @@ const store = createStore({
 				console.log(error);
 			}
 		},
-		async getSingleApplicant({ commit }, email) {
+		async getSingleApplicant({ commit }, id) {
 			const token = localStorage.getItem('admintoken');
 			// const email = localStorage.getItem('userEmail');
 			// const email = this.$store.getters.getApplicantInfo[0];
 			try {
 				let response = await axios.get(
-					`http://localhost:8081/api/v1/applicant-info/${email}`,
+					`http://localhost:8081/api/v1/applicant-info/${id}`,
 					{
 						headers: { token: token },
 					}

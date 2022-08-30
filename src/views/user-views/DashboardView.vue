@@ -15,14 +15,14 @@
 		</div>
 		<div class="right-section">
 			<h1 class="heading">Dashboard</h1>
-			<p class="status-message" v-show="isReviewOngoing">
-				Your Application is currently being review, you wil be notified if
+			<p class="status-message" v-if="applicant.user.app_status === 'Pending'">
+				Your Application is currently being reviewed, you wil be notified if
 				successful
 			</p>
-			<p class="status-message" v-show="isReviewApproved">
-				Your Application has been approved, prepare for you assessment
+			<p class="status-message" v-if="applicant.user.app_status === 'Approved'">
+				Your Application has been approved, prepare for your assessment
 			</p>
-			<p class="status-message" v-show="isReviewDeclined">
+			<p class="status-message" v-if="applicant.user.app_status === 'Declined'">
 				Your Application has been declined, we hope you try again for the next
 				batch
 			</p>
@@ -54,11 +54,34 @@
 				</div>
 				<div class="assessment">
 					<h1>Take Assessment</h1>
-					<p>
-						We have {{ this.assessmentDate }} left until the next assessment
+					<p v-if="assessmentDate > 0">
+						We have {{ assessmentDate }} days left until the next assessment
 						Watch this space
 					</p>
-					<Button text="Take Assessment" />
+					<p
+						v-if="
+							assessmentDate === 0 && applicant.user.app_status === 'Approved'
+						"
+						class="second-message"
+					>
+						You can now take your assessment
+					</p>
+					<p v-if="applicant.user.app_status === 'Declined'">
+						You can't take a test because your application was declined. Please
+						try again for the next batch
+					</p>
+					<Button
+						text="Take Assessment"
+						:disabled="
+							(assessmentDate > 0, applicant.user.app_status === 'Declined')
+						"
+						@click="this.$router.push({ name: 'questions' })"
+						:class="{
+							enabled:
+								assessmentDate === 0 &&
+								applicant.user.app_status === 'Approved',
+						}"
+					/>
 				</div>
 			</div>
 		</div>
@@ -69,7 +92,7 @@
 import UserMenu from '../../components/UserMenu.vue';
 import Button from '@/components/Button.vue';
 import { mapActions, mapGetters } from 'vuex';
-import { formatDistanceToNow, format } from 'date-fns';
+import { formatDistanceToNow, format, differenceInDays } from 'date-fns';
 export default {
 	name: 'DashboardView',
 	components: {
@@ -99,6 +122,7 @@ export default {
 	async created() {
 		await this.getApplicant();
 		console.log(this.getApplicant());
+		console.log(this.assessmentDate);
 	},
 	computed: {
 		...mapGetters({
@@ -113,8 +137,13 @@ export default {
 		applicationDate() {
 			return format(new Date(this.applicantInfo.user.createdAt), 'dd.MM.yy');
 		},
+		// assessmentDate() {
+		// 	return formatDistanceToNow(new Date(2022, 7, 30, 9, 27, 0), {
+		// 		includeSeconds: true,
+		// 	});
+		// },
 		assessmentDate() {
-			return formatDistanceToNow(new Date(2022, 9, 1));
+			return differenceInDays(new Date(2022, 7, 31, 0, 0), new Date());
 		},
 		review() {
 			return this.isReviewSuccessful;
@@ -125,20 +154,20 @@ export default {
 			getApplicant: 'getApplicant',
 		}),
 	},
-	watch: {
-		approvedApplication() {
-			if (this.applicant.user.app_status === 'Approved') {
-				this.isReviewApproved = true;
-				this.isReviewDeclined = false;
-				this.isReviewOngoing = false;
-			}
-			if (this.applicant.user.app_status === 'Declined') {
-				this.isReviewApproved = false;
-				this.isReviewDeclined = true;
-				this.isReviewOngoing = false;
-			}
-		},
-	},
+	// watch: {
+	// 	approvedApplication() {
+	// 		if (this.applicant.user.app_status === 'Approved') {
+	// 			this.isReviewApproved = true;
+	// 			this.isReviewDeclined = false;
+	// 			this.isReviewOngoing = false;
+	// 		}
+	// 		if (this.applicant.user.app_status === 'Declined') {
+	// 			this.isReviewApproved = false;
+	// 			this.isReviewDeclined = true;
+	// 			this.isReviewOngoing = false;
+	// 		}
+	// 	},
+	// },
 };
 </script>
 
@@ -291,6 +320,9 @@ button {
 	color: #ffffff;
 	margin: auto;
 	margin-top: 0;
+}
+.enabled {
+	background: #7557d3;
 	cursor: pointer;
 }
 ::-webkit-scrollbar {

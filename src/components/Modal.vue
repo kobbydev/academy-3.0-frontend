@@ -1,5 +1,6 @@
 <template>
-	<div class="modal" @click="close">
+	<div class="modal">
+		<div class="modal-background" @click="close"></div>
 		<div class="modal-content">
 			<div class="profile-picture">
 				<img :src="singleApplicant.image" alt="" />
@@ -9,32 +10,47 @@
 			<div class="section-1">
 				<div class="name-section">
 					<label for="user-name">Name</label><br />
-					<input
-						type="text"
-						name="user-name"
-						readonly
-						v-model="singleApplicant.firstName"
-					/>
+					<input type="text" name="user-name" readonly v-model="fullName" />
 				</div>
 				<div class="email-section">
 					<label for="user-email">Email</label><br />
-					<input type="text" name="user-email" readonly />
+					<input
+						type="text"
+						name="user-email"
+						readonly
+						v-model="singleApplicant.emailAddress"
+					/>
 				</div>
 			</div>
 			<div class="section-2">
 				<div class="address-section">
 					<label for="user-address">Address</label><br />
-					<input type="text" name="user-address" readonly />
+					<input
+						type="text"
+						name="user-address"
+						readonly
+						v-model="singleApplicant.address"
+					/>
 				</div>
 				<div class="university-section">
 					<label for="user-university">University</label><br />
-					<input type="text" name="user-university" readonly />
+					<input
+						type="text"
+						name="user-university"
+						readonly
+						v-model="singleApplicant.university"
+					/>
 				</div>
 			</div>
 			<div class="section-3">
 				<div class="course-section">
 					<label for="user-course">Course of Study</label><br />
-					<input type="text" name="user-course" readonly />
+					<input
+						type="text"
+						name="user-course"
+						readonly
+						v-model="singleApplicant.courseOfStudy"
+					/>
 				</div>
 				<div class="dob-section">
 					<label for="user-dob">Date of Birth</label><br />
@@ -44,16 +60,44 @@
 			<div class="section-4">
 				<div class="cgpa-section">
 					<label for="user-cgpa">CGPA</label><br />
-					<input type="text" name="user-cgpa" readonly />
+					<input
+						type="text"
+						name="user-cgpa"
+						readonly
+						v-model="singleApplicant.cgpa"
+					/>
 				</div>
 				<div class="cv-section">
 					<label for="user-cv">CV</label><br />
-					<input type="text" name="user-cv" readonly />
+					<input
+						type="text"
+						name="user-cv"
+						readonly
+						v-model="singleApplicant.cv"
+					/>
 				</div>
 			</div>
+			<div class="status-text" v-if="singleApplicant.app_status === 'Approved'">
+				Application has already been approved
+				<i class="uil uil-check-circle"></i>
+			</div>
+			<div class="status-text" v-if="singleApplicant.app_status === 'Declined'">
+				Application has already been declined
+				<i class="uil uil-exclamation-circle"></i>
+			</div>
 			<div class="buttons">
-				<Button text="Approve" class="approve-btn" @click="approve" />
-				<Button text="Decline" class="decline-btn" @click="decline" />
+				<Button
+					text="Approve"
+					class="approve-btn"
+					@click="approve"
+					v-show="singleApplicant.app_status === 'Pending'"
+				/>
+				<Button
+					text="Decline"
+					class="decline-btn"
+					@click="decline"
+					v-show="singleApplicant.app_status === 'Pending'"
+				/>
 			</div>
 		</div>
 	</div>
@@ -61,8 +105,8 @@
 
 <script>
 import Button from './Button.vue';
-// import axios from 'axios';
 import { mapActions, mapGetters } from 'vuex';
+import { format, differenceInYears } from 'date-fns';
 export default {
 	name: 'ModalComponent',
 	components: { Button },
@@ -87,6 +131,18 @@ export default {
 		...mapGetters({
 			singleApplicant: 'getSingleApplicant',
 		}),
+		fullName() {
+			return (
+				this.singleApplicant.firstName + ' ' + this.singleApplicant.lastName
+			);
+		},
+		dateFormat() {
+			return (
+				this.dateOfBirthConversion(this.singleApplicant.dateOfBirth) +
+				'-' +
+				this.age(this.singleApplicant.dateOfBirth)
+			);
+		},
 	},
 	methods: {
 		...mapActions({
@@ -101,20 +157,12 @@ export default {
 		decline() {
 			this.$emit('decline');
 		},
-		// async getSingleApplicant() {
-		// 	const email = this.$store.getters.getApplicantInfo[0];
-		// 	const token = localStorage.getItem('admintoken');
-		// 	let response = await axios.get(
-		// 		`http://localhost:8081/api/v1/applicant-info/${email}`,
-		// 		{
-		// 			headers: { token: token },
-		// 		}
-		// 	);
-		// 	this.applicantInfo.push(response);
-		// },
-		// logA() {
-		// 	console.log('a');
-		// },
+		dateOfBirthConversion(date) {
+			return format(new Date(date), 'MM/dd/yy');
+		},
+		age(date) {
+			return differenceInYears(new Date(), new Date(date));
+		},
 	},
 };
 </script>
@@ -128,7 +176,7 @@ export default {
 	justify-content: space-between;
 	margin-bottom: 36px;
 }
-.modal {
+.modal-background {
 	width: 100vw;
 	position: fixed;
 	top: 0;
@@ -159,6 +207,10 @@ export default {
 	height: 179px;
 	margin-bottom: 42px;
 }
+.profile-picture img {
+	width: 179px;
+	height: 179px;
+}
 .modal-text {
 	font-family: 'Lato';
 	font-style: normal;
@@ -185,6 +237,7 @@ input {
 	border: 1px solid #cdcfd6;
 	border-radius: 4px;
 	padding: 14px 0;
+	padding-left: 16px;
 	cursor: pointer;
 	outline: none;
 }
@@ -225,5 +278,16 @@ input::placeholder {
 	color: #4f4f4f;
 	padding: 14px 36px;
 	cursor: pointer;
+}
+.status-text {
+	font-family: 'Lato';
+	font-style: italic;
+	font-weight: 500;
+	font-size: 16px;
+	text-align: center;
+}
+input[type='text'] {
+	font-family: 'Lato';
+	font-style: normal;
 }
 </style>

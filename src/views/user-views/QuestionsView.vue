@@ -6,6 +6,10 @@
 				:linkName="linkName"
 				:linkIcon="linkIcon"
 				:routerLink="routerLink"
+				:profilePic="applicantInfo?.user.image"
+				:userEmail="applicantInfo?.user.emailAddress"
+				:userFirstName="applicantInfo?.user.firstName"
+				:userLastName="applicantInfo?.user.lastName"
 			/>
 		</div>
 		<div class="right-section">
@@ -86,6 +90,7 @@
 <script>
 import UserMenu from '../../components/UserMenu.vue';
 import Button from '@/components/Button.vue';
+import { mapActions, mapGetters } from 'vuex';
 export default {
 	name: 'QuestionsView',
 	components: { UserMenu, Button },
@@ -104,6 +109,24 @@ export default {
 				},
 			],
 		};
+	},
+	async created() {
+		await this.getApplicant();
+		console.log(this.getApplicant());
+		console.log(this.assessmentDate);
+	},
+	computed: {
+		...mapGetters({
+			applicant: 'getApplicant',
+		}),
+		applicantInfo() {
+			return this.applicant;
+		},
+	},
+	methods: {
+		...mapActions({
+			getApplicant: 'getApplicant',
+		}),
 	},
 };
 </script>
@@ -230,6 +253,7 @@ span {
 	line-height: 19px;
 	color: #ffffff;
 	padding: 10px 81px;
+	cursor: pointer;
 }
 input[type='radio']:checked ~ label {
 	background: #31d283;
