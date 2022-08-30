@@ -6,16 +6,16 @@
 			@approve="approveModal"
 			@decline="declineModal"
 		/>
-		<!-- <ChoiceModal
+		<ChoiceModal
 			@close="closeChoiceModal"
 			v-show="isApproveModalVisible"
 			text="Are you sure you want to approve this application?"
 		/>
-		<ChoiceModal
+		<DeclineChoiceModal
 			@close="closeChoiceModal"
 			v-show="isDeclineModalVisible"
 			text="Are you sure you want to decline this application?"
-		/> -->
+		/>
 		<div class="left-section">
 			<UserMenu
 				class="user-menu"
@@ -28,7 +28,6 @@
 		</div>
 		<div class="right-section">
 			<select name="batch" id="batch-select">
-				<option value="">Select Batch</option>
 				<option
 					value="{{ batch.batchId}}"
 					v-for="(batch, index) in allBatches"
@@ -63,27 +62,14 @@
 				>
 					<td>{{ applicant.firstName }} {{ applicant.lastName }}</td>
 					<td>{{ applicant.emailAddress }}</td>
-					<td>{{ applicant.dateOfBirth }} - 22</td>
+					<td>
+						{{ dateOfBirthConversion(applicant.dateOfBirth) }} -
+						{{ age(applicant.dateOfBirth) }}
+					</td>
 					<td>{{ applicant.address }}</td>
 					<td>{{ applicant.university }}</td>
 					<td>{{ applicant.cgpa }}</td>
 				</tr>
-				<!-- <tr class="table-body" @click="showModal">
-					<td>Ify Chinke</td>
-					<td>ify@enyata.com</td>
-					<td>12/09/19 - 22</td>
-					<td>3 Sabo Ave, Yaba, Lagos</td>
-					<td>University of Nigeria</td>
-					<td>5.0</td>
-				</tr>
-				<tr class="table-body" @click="showModal">
-					<td>Ify Chinke</td>
-					<td>ify@enyata.com</td>
-					<td>12/09/19 - 22</td>
-					<td>3 Sabo Ave, Yaba, Lagos</td>
-					<td>University of Nigeria</td>
-					<td>5.0</td>
-				</tr> -->
 			</table>
 		</div>
 	</div>
@@ -92,11 +78,13 @@
 <script>
 import UserMenu from '../../components/UserMenu.vue';
 import Modal from '@/components/Modal.vue';
-// import ChoiceModal from '@/components/ChoiceModal.vue';
+import { format, differenceInYears } from 'date-fns';
+import ChoiceModal from '@/components/ChoiceModal.vue';
+import DeclineChoiceModal from '@/components/DeclineChoiceModal.vue';
 import { mapActions, mapGetters } from 'vuex';
 export default {
 	name: 'ApplicationEntries',
-	components: { UserMenu, Modal },
+	components: { UserMenu, Modal, ChoiceModal, DeclineChoiceModal },
 	data() {
 		return {
 			selectTerm: '',
@@ -155,8 +143,9 @@ export default {
 		console.log(this.getEmail());
 	},
 	async updated() {
-		const email = localStorage.getItem('userEmail');
-		await this.getSingleApplicant(email);
+		// const id = localStorage.getItem('userId');
+		const id = this.$store.getters.getApplicantInfo[0];
+		await this.getSingleApplicant(id);
 		console.log(this.singleApplicant);
 	},
 	computed: {
@@ -165,6 +154,11 @@ export default {
 			allBatches: 'getAllBatches',
 			singleApplicant: 'getApplicant',
 		}),
+		dateOfBirth() {
+			return (dateOb) => {
+				format(new Date(dateOb), 'MM/dd/yy');
+			};
+		},
 	},
 	methods: {
 		...mapActions({
@@ -192,12 +186,18 @@ export default {
 			this.isDeclineModalVisible = false;
 		},
 		getEmail(index) {
-			const result1 = this.allApplicants[index].emailAddress;
-			this.$store.commit('setEmail', this.allApplicants[index].emailAddress);
-			const result = this.$store.getters.getApplicantInfo[0];
-			localStorage.removeItem('userEmail');
-			localStorage.setItem('userEmail', result1);
-			console.log(result);
+			const result1 = this.allApplicants[index]._id;
+			this.$store.commit('setId', this.allApplicants[index]._id);
+			// const result = this.$store.getters.getApplicantInfo[0];
+			localStorage.removeItem('userId');
+			localStorage.setItem('userId', result1);
+			console.log(result1);
+		},
+		dateOfBirthConversion(date) {
+			return format(new Date(date), 'MM/dd/yy');
+		},
+		age(date) {
+			return differenceInYears(new Date(), new Date(date));
 		},
 	},
 };

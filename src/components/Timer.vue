@@ -4,16 +4,20 @@
 		<hr />
 		<p>Set Time</p>
 		<div class="time-selection">
-			<select name="batch" id="minute-select">
-				<option value="">000 <span>min</span></option>
-				<option value="batch-1">001 <span>min</span></option>
-				<option value="batch-2">Entries - Batch 2</option>
-			</select>
-			<select name="batch" id="second-select">
-				<option value="">000 <span>sec</span></option>
-				<option value="batch-1">001 <span>sec</span></option>
-				<option value="batch-2">Entries - Batch 2</option>
-			</select>
+			<div class="minute-selection">
+				<select name="batch" id="minute-select">
+					<option value="">000</option>
+					<option value="batch-1">001</option>
+				</select>
+				<p>min</p>
+			</div>
+			<div class="seconds-selection">
+				<select name="batch" id="minute-select">
+					<option value="">000</option>
+					<option value="batch-1">001</option>
+				</select>
+				<p>sec</p>
+			</div>
 		</div>
 		<Button text="Save" class="save-btn" />
 	</div>
@@ -63,7 +67,7 @@ select {
 	background-repeat: no-repeat;
 	border: none;
 	font-family: 'Lato';
-	width: 200px;
+	width: 120px;
 	font-style: normal;
 	font-weight: 300;
 	font-size: 48px;
@@ -97,5 +101,18 @@ select span {
 	border: none;
 	letter-spacing: -0.5px;
 	color: #ffffff;
+}
+.time-selection {
+	display: flex;
+}
+.minute-selection p,
+.seconds-selection p {
+	position: relative;
+	left: -75px;
+	bottom: 35px;
+}
+.minute-selection,
+.seconds-selection {
+	display: flex;
 }
 </style>

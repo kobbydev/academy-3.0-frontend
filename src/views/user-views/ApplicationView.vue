@@ -120,9 +120,8 @@ export default {
 	},
 	methods: {
 		submit() {
-			axios;
-			const token = localStorage
-				.getItem('token')
+			const token = localStorage.getItem('token');
+			axios
 				.post(
 					'http://localhost:8081/api/v1/application',
 					this.applicationInfo,

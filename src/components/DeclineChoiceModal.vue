@@ -3,7 +3,7 @@
 		<div class="modal-content">
 			<p>{{ text }}</p>
 			<div class="buttons">
-				<Button text="Yes" class="approve-btn" @click="approve" />
+				<Button text="Yes" class="approve-btn" @click="decline" />
 				<Button text="No" class="decline-btn" @click="close" />
 			</div>
 		</div>
@@ -30,14 +30,14 @@ export default {
 		close() {
 			this.$emit('close');
 		},
-		approve() {
+		decline() {
 			const userId = this.singleApplicant._id;
 			const token = localStorage.getItem('admintoken');
 			// this.status.app_status = 'Approved';
 			axios
 				.patch(
 					`http://localhost:8081/api/v1/admin/approve-application/${userId}`,
-					{ app_status: 'Approved' },
+					{ app_status: 'Declined' },
 					{
 						headers: { token: token },
 					}

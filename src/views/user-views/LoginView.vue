@@ -1,6 +1,14 @@
 <template>
 	<section class="whole-logInForm">
 		<div class="container">
+			<div
+				:class="{ loggedIn: isShown, error: isErrorShown }"
+				v-if="isShown || isErrorShown"
+			>
+				{{ message }}
+				<i class="uil uil-exclamation-circle" v-if="isErrorShown"></i>
+				<i class="uil uil-check-circle" v-if="isShown"></i>
+			</div>
 			<img src="@/assets/Enyata-logo.svg" alt="Enyata Logo" id="logo" />
 			<h1>Applicant Log In</h1>
 			<form action="#">
@@ -55,6 +63,9 @@ export default {
 			text: 'text',
 			password1: '',
 			emailAddress: '',
+			message: '',
+			isShown: false,
+			isErrorShown: false,
 		};
 	},
 	methods: {
@@ -68,15 +79,30 @@ export default {
 					localStorage.setItem('token', response.data.data.user.token);
 					localStorage.setItem('userRole', response.data.data.user.role);
 					console.log(response);
-					alert(response.data.message);
-					if (response.data.data.user.is_applied) {
-						this.$router.push('/dashboard');
-					} else {
-						this.$router.push({ name: 'user-application' });
-					}
+					// alert(response.data.message);
+					this.message = 'Login Successful';
+					this.isShown = true;
+					setTimeout(() => {
+						this.isShown = false;
+						if (response.data.data.user.is_applied) {
+							this.$router.push('/dashboard');
+						} else {
+							this.$router.push({ name: 'user-application' });
+						}
+					}, 2000);
+					// if (response.data.data.user.is_applied) {
+					// 	this.$router.push('/dashboard');
+					// } else {
+					// 	this.$router.push({ name: 'user-application' });
+					// }
 				})
 				.catch((error) => {
-					alert('Email or Password wrong');
+					// alert('Email or Password wrong');
+					this.message = 'Email or Password wrong';
+					this.isErrorShown = true;
+					setTimeout(() => {
+						this.isErrorShown = false;
+					}, 2000);
 					console.log(error);
 				});
 		},
@@ -208,5 +234,27 @@ span img {
 
 .unsee1 {
 	display: block;
+}
+.loggedIn,
+.error {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	padding: 20px 20px;
+	font-style: italic;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 17px;
+	color: green;
+	background: rgb(171, 228, 171);
+	border: none;
+	/* border-radius: 10px; */
+	margin-bottom: 20px;
+	text-align: center;
+}
+.error {
+	color: black;
+	background: rgb(235, 146, 146);
 }
 </style>

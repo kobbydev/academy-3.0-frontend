@@ -12,9 +12,13 @@
 		</div>
 		<div class="right-section">
 			<select name="batch" id="batch-select">
-				<option value="">Select Batch</option>
-				<option value="batch-1">Results - Batch 1</option>
-				<option value="batch-2">Results - Batch 2</option>
+				<option
+					value="{{ batch.batchId}}"
+					v-for="(batch, index) in allBatches"
+					:key="index"
+				>
+					Results - {{ batch.batchId }}
+				</option>
 			</select>
 			<p>Comprises of all that applied for batch 2</p>
 			<table>
@@ -33,32 +37,21 @@
 						Test Scores <img src="../../assets/sort-icon.svg" alt="" />
 					</th>
 				</tr>
-				<tr class="table-body">
-					<td>Ify Chinke</td>
-					<td>ify@enyata.com</td>
-					<td>12/09/19 - 22</td>
-					<td>3 Sabo Ave, Yaba, Lagos</td>
-					<td>University of Nigeria</td>
-					<td>5.0</td>
+				<tr
+					class="table-body"
+					v-for="(applicant, index) in allApplicants"
+					:key="index"
+				>
+					<td>{{ applicant.firstName }} {{ applicant.lastName }}</td>
+					<td>{{ applicant.emailAddress }}</td>
+					<td>
+						{{ dateOfBirthConversion(applicant.dateOfBirth) }} -
+						{{ age(applicant.dateOfBirth) }}
+					</td>
+					<td>{{ applicant.address }}</td>
+					<td>{{ applicant.university }}</td>
+					<td>{{ applicant.cgpa }}</td>
 					<td>15</td>
-				</tr>
-				<tr class="table-body">
-					<td>Ify Chinke</td>
-					<td>ify@enyata.com</td>
-					<td>12/09/19 - 22</td>
-					<td>3 Sabo Ave, Yaba, Lagos</td>
-					<td>University of Nigeria</td>
-					<td>5.0</td>
-					<td>20</td>
-				</tr>
-				<tr class="table-body">
-					<td>Ify Chinke</td>
-					<td>ify@enyata.com</td>
-					<td>12/09/19 - 22</td>
-					<td>3 Sabo Ave, Yaba, Lagos</td>
-					<td>University of Nigeria</td>
-					<td>5.0</td>
-					<td>19</td>
 				</tr>
 			</table>
 		</div>
@@ -67,6 +60,8 @@
 
 <script>
 import UserMenu from '../../components/UserMenu.vue';
+import { mapActions, mapGetters } from 'vuex';
+import { format, differenceInYears } from 'date-fns';
 export default {
 	name: 'ResultsView',
 	components: { UserMenu },
@@ -117,6 +112,28 @@ export default {
 				},
 			],
 		};
+	},
+	async created() {
+		await this.getAllApplicants();
+		await this.getAllBatches();
+	},
+	computed: {
+		...mapGetters({
+			allApplicants: 'getAllApplicants',
+			allBatches: 'getAllBatches',
+		}),
+	},
+	methods: {
+		...mapActions({
+			getAllApplicants: 'getAllApplicants',
+			getAllBatches: 'getAllBatches',
+		}),
+		dateOfBirthConversion(date) {
+			return format(new Date(date), 'MM/dd/yy');
+		},
+		age(date) {
+			return differenceInYears(new Date(), new Date(date));
+		},
 	},
 };
 </script>

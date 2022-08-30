@@ -6,6 +6,10 @@
 				:linkName="linkName"
 				:linkIcon="linkIcon"
 				:routerLink="routerLink"
+				:profilePic="applicantInfo?.user.image"
+				:userEmail="applicantInfo?.user.emailAddress"
+				:userFirstName="applicantInfo?.user.firstName"
+				:userLastName="applicantInfo?.user.lastName"
 			/>
 		</div>
 		<div class="right-section">
@@ -27,10 +31,19 @@
 
 			<div class="counter">
 				<img src="@/assets/counter.svg" alt="" />
-				<p>
-					We have 4 days left until the next assessment<br />Watch this space
+				<p v-if="assessmentDate > 0">
+					We have {{ assessmentDate }} days left until the next assessment<br />Watch
+					this space
 				</p>
-				<Button text="Take Assessment" />
+				<p v-if="assessmentDate === 0" class="second-message">
+					You can now take your assessment
+				</p>
+				<Button
+					text="Take Assessment"
+					:disabled="assessmentDate > 0"
+					@click="this.$router.push({ name: 'questions' })"
+					:class="{ enabled: assessmentDate === 0 }"
+				/>
 			</div>
 		</div>
 	</div>
@@ -39,6 +52,8 @@
 <script>
 import UserMenu from '../../components/UserMenu.vue';
 import Button from '@/components/Button.vue';
+import { mapActions, mapGetters } from 'vuex';
+import { formatDistanceToNow, format, differenceInDays } from 'date-fns';
 export default {
 	name: 'AssessmentView',
 	components: { UserMenu, Button },
@@ -57,6 +72,33 @@ export default {
 				},
 			],
 		};
+	},
+	async created() {
+		await this.getApplicant();
+		console.log(this.getApplicant());
+		console.log(this.assessmentDate);
+	},
+	computed: {
+		...mapGetters({
+			applicant: 'getApplicant',
+		}),
+		applicantInfo() {
+			return this.applicant;
+		},
+		applicationTimeline() {
+			return formatDistanceToNow(new Date(this.applicantInfo.user.createdAt));
+		},
+		applicationDate() {
+			return format(new Date(this.applicantInfo.user.createdAt), 'dd.MM.yy');
+		},
+		assessmentDate() {
+			return differenceInDays(new Date(2022, 8, 31, 0, 0), new Date());
+		},
+	},
+	methods: {
+		...mapActions({
+			getApplicant: 'getApplicant',
+		}),
 	},
 };
 </script>
@@ -160,5 +202,9 @@ button {
 	line-height: 19px;
 	border: none;
 	color: #ffffff;
+}
+.enabled {
+	background: #7557d3;
+	cursor: pointer;
 }
 </style>

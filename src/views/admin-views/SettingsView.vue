@@ -16,12 +16,12 @@
 			<Button
 				text="Admin Profile"
 				@click="setSelectedComponent('profile')"
-				:class="{ active: isActive }"
+				:class="{ active: selectedComponent === 'profile' }"
 			/>
 			<Button
 				text="Timer Settings"
 				@click="setSelectedComponent('timer')"
-				:class="{ active: isActive }"
+				:class="{ active: selectedComponent === 'timer' }"
 			/>
 			<!-- <profile v-if="selectedComponent === 'profile'"></profile>
 			<timer v-if="selectedComponent === 'timer'"></timer> -->
@@ -43,7 +43,6 @@ export default {
 	data() {
 		return {
 			selectedComponent: 'profile',
-			isActive: true,
 			links: [
 				{
 					lId: 'dashboard',
@@ -93,7 +92,6 @@ export default {
 	methods: {
 		setSelectedComponent(component) {
 			this.selectedComponent = component;
-			this.isActive = true;
 		},
 	},
 };
@@ -143,6 +141,20 @@ export default {
 }
 .active {
 	background: rgba(117, 87, 211, 0.1);
+	font-family: 'Lato';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 17px;
+	color: #333758;
+	mix-blend-mode: normal;
+	padding: 24px 52px;
+	border: none;
+	cursor: pointer;
+	margin-bottom: 43px;
+}
+button {
+	background: white;
 	font-family: 'Lato';
 	font-style: normal;
 	font-weight: 400;

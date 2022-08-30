@@ -6,6 +6,10 @@
 				:linkName="linkName"
 				:linkIcon="linkIcon"
 				:routerLink="routerLink"
+				:profilePic="applicantInfo?.user.image"
+				:userEmail="applicantInfo?.user.emailAddress"
+				:userFirstName="applicantInfo?.user.firstName"
+				:userLastName="applicantInfo?.user.lastName"
 			/>
 		</div>
 		<div class="right-section">
@@ -27,7 +31,7 @@
 					We have received your assessment test, we will get back to you soon.
 					Best of luck
 				</p>
-				<Button text="Home" @click="this.$router.push({ name: 'home' })" />
+				<Button text="Home" @click="this.$router.push({ name: 'dashboard' })" />
 			</div>
 		</div>
 	</div>
@@ -36,6 +40,7 @@
 <script>
 import UserMenu from '../../components/UserMenu.vue';
 import Button from '../../components/Button.vue';
+import { mapActions, mapGetters } from 'vuex';
 export default {
 	name: 'SuccessView',
 	components: { UserMenu, Button },
@@ -54,6 +59,24 @@ export default {
 				},
 			],
 		};
+	},
+	async created() {
+		await this.getApplicant();
+		console.log(this.getApplicant());
+		console.log(this.assessmentDate);
+	},
+	computed: {
+		...mapGetters({
+			applicant: 'getApplicant',
+		}),
+		applicantInfo() {
+			return this.applicant;
+		},
+	},
+	methods: {
+		...mapActions({
+			getApplicant: 'getApplicant',
+		}),
 	},
 };
 </script>

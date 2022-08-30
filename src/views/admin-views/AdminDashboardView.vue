@@ -57,7 +57,10 @@
 				<div class="assessment">
 					<h1>Create Assessment</h1>
 					<p>Create test question for an incoming academy students</p>
-					<Button text="Create Assessment" />
+					<Button
+						text="Create Assessment"
+						@click="this.$router.push({ name: 'compose-assessment' })"
+					/>
 				</div>
 			</div>
 		</div>
