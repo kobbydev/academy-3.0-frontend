@@ -63,6 +63,37 @@ export default {
 			],
 		};
 	},
+	computed:{
+		_seconds:()=>1000,
+		_minutes(){
+			return this._seconds* 60;
+		}
+	},
+
+	mounted() {
+		this.showRemaining()
+	},
+
+	method: {
+		showRemaining(){
+			const timer = setInterval(()=>{
+				const now = new Date(); 
+				const end = new Date(2022, 8, 30, 10, 10);
+				const distance = end.getTime() - now.getTime();
+
+				if(distance<0){
+					clearInterval(timer);
+					return;
+				}
+
+				const minutes = Math.floor(distance/this._minutes);
+				const seconds = Math.floor((distance%this._minutes)/this._seconds);
+				  
+				this.displayMinutes = minutes < 10 ? "0" + minutes : minutes;
+				this.displayMinutes = seconds < 10 ? "0" + seconds : seconds;
+			}, 1000)
+		}
+	}
 };
 </script>
 
