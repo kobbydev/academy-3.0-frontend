@@ -140,7 +140,7 @@ export default {
 	async created() {
 		await this.getAllApplicants();
 		await this.getAllBatches();
-		console.log(this.getEmail());
+		// console.log(this.getEmail());
 	},
 	async updated() {
 		// const id = localStorage.getItem('userId');

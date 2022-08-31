@@ -1,103 +1,92 @@
 <template>
-	<div class="whole-form">
-		<div class="whole-form-container">
-			<img src="@/assets/Enyata-logo.svg" alt="Enyata Logo" id="logo" />
-			<h1>Applicant Sign Up</h1>
-			<form action="#">
-				<div class="left-side">
-					<div class="label-inp">
-						<label for="firstName">First Name</label>
-						<input type="text" name="firstName" v-model="firstName" />
-					</div>
-					<div class="label-inp">
-						<label for="emailAddress">Email Address</label>
-						<input type="email" name="emailAddress" v-model="emailAddress" />
-					</div>
-					<div class="label-inp">
-						<label for="password">Password</label>
-						<input
-							:type="[passToggle ? password : text]"
-							name="passwords"
-							id="pass"
-							v-model="password1"
-						/><span @click="change"
-							><img
-								src="@/assets/see-icon.svg"
-								:class="[passToggle ? see1 : '']"
-								alt="visibility icon" />
-							<img
-								src="@/assets/unsee-icon.svg"
-								alt=""
-								:class="[passToggle ? '' : unsee1]"
-						/></span>
-					</div>
-				</div>
-				<div class="left-side">
-					<div class="label-inp">
-						<label for="lastName">Last Name</label>
-						<input type="text" name="lastName" v-model="lastName" />
-					</div>
-					<div class="label-inp">
-						<label for="phoneNumber">Phone Number</label>
-						<input type="tel" name="phoneNumber" v-model="phoneNumber" />
-					</div>
-					<div class="label-inp">
-						<label for="confirmPassword">Confirm Password</label>
-						<input
-							:type="[conPassToggle ? password : text]"
-							name="confirmPassword"
-							id="conpass"
-							v-model="conPasswords"
-						/><span @click="change2"
-							><img
-								src="@/assets/see-icon.svg"
-								alt="visibility icon"
-								:class="[conPassToggle ? see2 : '']" />
-							<img
-								src="@/assets/unsee-icon.svg"
-								alt=""
-								:class="[conPassToggle ? '' : unsee2]"
-						/></span>
-					</div>
-				</div>
-			</form>
-			<Button text="Sign Up"></Button>
-			<h2>Already have an account? <a href="/login">Sign In</a></h2>
-		</div>
-	</div>
+    <div class="whole-form">
+        <div class="whole-form-container">
+            <img src="@/assets/Enyata-logo.svg" alt="Enyata Logo" id="logo">
+            <h1>Applicant Sign Up</h1>
+            <form action="#">
+                <div class="left-side">
+                    <div class="label-inp">
+                        <label for="firstName">First Name</label>
+                        <input type="text" name="firstName" v-model="newUser.firstName">
+                    </div>
+                    <div class="label-inp">
+                        <label for="emailAddress">Email Address</label>
+                        <input type="email" name="emailAddress" v-model="newUser.emailAddress">
+                    </div>
+                    <div class="label-inp">
+                        <label for="password">Password</label>
+                        <input :type="[passToggle ? password1 : text]" name="passwords" id="pass"
+                            v-model="newUser.password"><span @click="change"><img src="@/assets/see-icon.svg"
+                                :class="[passToggle ? see1 : '']" alt="visibility icon">
+                            <img src="@/assets/unsee-icon.svg" alt="" :class="[passToggle ? '' : unsee1]"></span>
+                    </div>
+                </div>
+                <div class="left-side">
+                    <div class="label-inp">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" name="lastName" v-model="newUser.lastName">
+                    </div>
+                    <div class="label-inp">
+                        <label for="phoneNumber">Phone Number</label>
+                        <input type="tel" name="phoneNumber" v-model="newUser.phoneNumber">
+                    </div>
+                    <div class="label-inp">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input :type="[conPassToggle ? password1 : text]" name="confirmPassword" id="conpass"
+                            v-model="conPasswords"><span @click="change2"><img src="@/assets/see-icon.svg"
+                                alt="visibility icon" :class="[conPassToggle ? see2 : '']">
+                            <img src="@/assets/unsee-icon.svg" alt="" :class="[conPassToggle ? '' : unsee2]"></span>
+                    </div>
+                </div>
+            </form>
+            <Button text="Sign Up" @click.prevent="createUser"></Button>
+            <h2>Already have an account? <a href="/login">Sign In</a></h2>
+        </div>
+    </div>
 </template>
 
 <script>
-import Button from '@/components/Button.vue';
+import Button from "@/components/Button.vue";
+import axios from 'axios'
 export default {
-	name: 'SignUpView',
-	components: { Button },
-	data() {
-		return {
-			firstName: '',
-			lastName: '',
-			emailAddress: '',
-			phoneNumber: '',
-			password1: '',
-			conPasswords: '',
-			passToggle: true,
-			see1: 'see1',
-			unsee1: 'unsee1',
-			conPassToggle: true,
-			see2: 'see1',
-			unsee2: 'unsee1',
-			password: 'password',
-			text: 'text',
-		};
-	},
-	methods: {
-		change() {
-			this.passToggle = !this.passToggle;
-		},
-		change2() {
-			this.conPassToggle = !this.conPassToggle;
-		},
-	},
+    name: "SignUpView",
+    components: { Button },
+    data() {
+        return {
+            newUser: {
+                firstName: '',
+                lastName: '',
+                emailAddress: '',
+                phoneNumber: '',
+                password: '',
+            },
+            conPasswords: '',
+            passToggle: true,
+            see1: 'see1',
+            unsee1: 'unsee1',
+            conPassToggle: true,
+            see2: 'see1',
+            unsee2: 'unsee1',
+            password1: 'password',
+            text: 'text',
+        }
+    },
+    methods: {
+        change() {
+            this.passToggle = !this.passToggle
+        },
+        change2() {
+            this.conPassToggle = !this.conPassToggle
+        },
+        async createUser() {
+            if (this.user.emailAddress.trim() !== '' && this.user.password !== '') {
+				const response = await axios.post("http://localhost:8082/api/v1/signup", this.user)
+				this.user.emailAddress = ''
+				this.user.password = ''
+				console.log(response)
+			}
+        },
+    }
 };
 </script>
 

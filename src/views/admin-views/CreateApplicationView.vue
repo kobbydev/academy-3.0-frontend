@@ -1,37 +1,27 @@
 <template>
 	<div class="create-application">
 		<div class="left-section">
-			<UserMenu
-				class="user-menu"
-				:linksData="links"
-				:linkName="linkName"
-				:linkIcon="linkIcon"
-				:routerLink="routerLink"
-				:lId="lId"
-			/>
+			<UserMenu class="user-menu" :linksData="links" :linkName="linkName" :linkIcon="linkIcon"
+				:routerLink="routerLink" :lId="lId" />
 		</div>
 		<div class="right-section">
 			<h1 class="heading">Create Application</h1>
-			<form>
+			<form enctype="multipart/form-data">
 				<div class="section-1">
 					<label class="custom-file-upload">
-						<input type="file" />
-						+ Choose file
+						<input type="file" ref="file" @change="selectFile" />
+						{{nameFile}}
 					</label>
 					<div class="link-input">
 						<label for="link-input">Link</label> <br />
-						<input type="text" name="link-input" id="link-input" />
+						<input type="text" name="link-input" id="link-input" v-model="link" />
 					</div>
 				</div>
 				<div class="section-2">
 					<div class="date-input">
 						<label for="date-input">Application closure date</label><br />
-						<input
-							type="date"
-							id="date-input"
-							name="date-input"
-							min="2022-08-14"
-						/>
+						<input type="date" id="date-input" name="date-input" min="2022-08-14"
+							v-model="dateOfApplication" />
 					</div>
 					<div class="batch-input">
 						<label for="batch-id">Batch ID</label> <br />
@@ -40,14 +30,9 @@
 					</div>
 				</div>
 				<label for="instructions">Instructions</label><br />
-				<textarea
-					name="instructions"
-					id="instructions"
-					cols="30"
-					rows="10"
-				></textarea
-				><br />
-				<Button type="submit" text="Submit" />
+				<textarea name="instructions" id="instructions" cols="30" rows="10"
+					v-model="instructions"></textarea><br />
+				<Button type="submit" text="Submit" @click.prevent="createAdminApplication" />
 			</form>
 		</div>
 		<div class="message-box" v-if="isShown">
@@ -114,27 +99,46 @@ export default {
 					routerLink: '/settings',
 				},
 			],
+			file: "",
+			link: "",
+			dateOfApplication: "",
+			batchId: "",
+			instructions: "",
+			nameFile: "+ Choose File"
 		};
 	},
 	methods: {
-		submit() {
-			const token = localStorage.getItem('admintoken');
-			axios
-				.post('http://localhost:8081/api/v1/admin-create-application', {
-					headers: { token: token },
-				})
-				.then((response) => {
-					this.isShown = true;
-					setTimeout(() => {
-						this.isShown = false;
-					}, 2000);
-					console.log(response);
-				})
-				.catch((error) => {
-					console.log(error);
-				});
+		async createAdminApplication() {
+			const token = localStorage.getItem('token');
+			const formData = new FormData();
+			formData.append('applicationFile', this.file)
+			formData.append('link', this.link),
+			formData.append('dateOfApplication', this.dateOfApplication)
+			formData.append('batchId', this.batchId)
+			formData.append('instructions', this.instructions)
+
+			try {
+				const response = await axios.post('http://localhost:8082/api/v1/admin-create-application', formData,
+					{
+						headers: { token: token },
+					})
+				console.log(response)
+			} catch (e) {
+				console.log(e)
+			}
 		},
-	},
+		selectFile() {
+			this.file = this.$refs.file.files[0]
+		},
+	}, 
+	watch:{
+		// eslint-disable-next-line no-unused-vars
+		file(newFile, oldFile){
+			if(newFile){
+				this.nameFile = this.file.name
+			}
+		}
+	}
 };
 </script>
 
@@ -144,6 +148,7 @@ export default {
 	overflow: hidden;
 	height: 100vh;
 }
+
 .left-section {
 	width: 20vw;
 	background: #ffffff;
@@ -153,12 +158,14 @@ export default {
 	bottom: 0;
 	height: 100vh;
 }
+
 .right-section {
 	width: 80vw;
 	height: 100%;
 	padding: 137px 97px 86px 75px;
 	overflow-y: scroll;
 }
+
 .heading {
 	font-family: 'Lato';
 	font-style: normal;
@@ -169,21 +176,26 @@ export default {
 	letter-spacing: -0.02em;
 	color: #2b3c4e;
 }
+
 .section-1,
 .section-2 {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
+
 .section-1 {
 	margin-bottom: 30px;
 }
+
 .section-2 {
 	margin-bottom: 36px;
 }
+
 input[type='file'] {
 	display: none;
 }
+
 label {
 	font-family: 'Lato';
 	font-style: normal;
@@ -192,6 +204,7 @@ label {
 	line-height: 17px;
 	color: #2b3c4e;
 }
+
 .custom-file-upload {
 	border: 1.55172px dashed #2b3c4e;
 	border-radius: 6.2069px;
@@ -205,6 +218,7 @@ label {
 	color: #2b3c4e;
 	margin-right: 64px;
 }
+
 .section-1 input,
 .section-2 input {
 	border: 1.5px solid #2b3c4e;
@@ -213,6 +227,7 @@ label {
 	height: 41px;
 	width: 456px;
 }
+
 #date-input {
 	margin-right: 64px;
 	font-family: 'Lato';
@@ -222,16 +237,19 @@ label {
 	line-height: 12px;
 	color: #cecece;
 }
+
 textarea {
 	border: 1.5px solid #2b3c4e;
 	border-radius: 4px;
 	height: 144px;
 	width: 100%;
 }
+
 form {
 	display: flex;
 	flex-direction: column;
 }
+
 button {
 	background: #7557d3;
 	border-radius: 4px;
@@ -246,6 +264,7 @@ button {
 	color: #ffffff;
 	padding: 16px 164px;
 }
+
 ::-webkit-scrollbar {
 	width: 10px;
 	right: 10px;
