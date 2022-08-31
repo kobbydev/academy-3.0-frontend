@@ -59,7 +59,7 @@ const store = createStore({
 			// const email = this.$store.getters.getApplicantInfo[0];
 			try {
 				let response = await axios.get(
-					`http://localhost:8081/api/v1/applicant-info/${email}`,
+					`http://localhost:8082/api/v1/applicant-info/${email}`,
 					{
 						headers: { token: token },
 					}
