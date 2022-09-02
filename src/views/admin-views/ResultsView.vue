@@ -4,10 +4,10 @@
 			<UserMenu
 				class="user-menu"
 				:linksData="links"
-				:linkName="linkName"
-				:linkIcon="linkIcon"
-				:routerLink="routerLink"
-				:lId="lId"
+				:profilePic="adminDetails?.admin.profileImage"
+				:userFirstName="adminDetails?.admin.firstName"
+				:userLastName="adminDetails?.admin.lastName"
+				:userEmail="adminDetails?.admin.emailAddress"
 			/>
 		</div>
 		<div class="right-section">
@@ -51,7 +51,7 @@
 					<td>{{ applicant.address }}</td>
 					<td>{{ applicant.university }}</td>
 					<td>{{ applicant.cgpa }}</td>
-					<td>15</td>
+					<td>{{ applicant.scores }}</td>
 				</tr>
 			</table>
 		</div>
@@ -114,6 +114,7 @@ export default {
 		};
 	},
 	async created() {
+		await this.getAdminInfo();
 		await this.getAllApplicants();
 		await this.getAllBatches();
 	},
@@ -121,12 +122,17 @@ export default {
 		...mapGetters({
 			allApplicants: 'getAllApplicants',
 			allBatches: 'getAllBatches',
+			adminInfo: 'getAdminInfo',
 		}),
+		adminDetails() {
+			return this.adminInfo;
+		},
 	},
 	methods: {
 		...mapActions({
 			getAllApplicants: 'getAllApplicants',
 			getAllBatches: 'getAllBatches',
+			getAdminInfo: 'getAdminInfo',
 		}),
 		dateOfBirthConversion(date) {
 			return format(new Date(date), 'MM/dd/yy');
@@ -156,7 +162,7 @@ a.router-link-exact-active {
 	border-radius: 8px;
 	position: relative;
 	bottom: 0;
-	height: 100vh;
+	height: 100%;
 }
 .right-section {
 	width: 80vw;

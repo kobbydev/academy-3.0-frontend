@@ -73,10 +73,11 @@ export default {
 		},
 		logIn() {
 			axios
-				.post('http://localhost:8082/api/v1/user-login', this.userInfo)
+				.post('http://localhost:8081/api/v1/user-login', this.userInfo)
 				.then((response) => {
 					localStorage.setItem('token', response.data.data.user.token);
 					localStorage.setItem('userRole', response.data.data.user.role);
+					localStorage.setItem('userLoginId', response.data.data.user._id);
 					console.log(response);
 					// alert(response.data.message);
 					this.message = 'Login Successful';

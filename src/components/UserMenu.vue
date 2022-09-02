@@ -64,7 +64,7 @@ export default {
 	/* height: 25vh; */
 	margin-bottom: 42px;
 	/* padding: 75px 100px 38px 82px; */
-	width: 292px;
+	/* width: 292px; */
 	height: 255px;
 }
 .profile-picture {
@@ -94,7 +94,7 @@ export default {
 	text-align: center;
 	color: #2b3c4e;
 	width: 100%;
-	padding: 20px 43px;
+	padding: 10px 23px;
 	cursor: pointer;
 }
 a {
@@ -107,7 +107,7 @@ a {
 	text-align: center;
 	color: #2b3c4e;
 	width: 100%;
-	padding: 20px 43px;
+	padding: 0px 23px;
 	margin-top: 28px;
 	margin-bottom: 28px;
 }
@@ -132,7 +132,7 @@ a {
 }
 a.router-link-exact-active {
 	border-left: 4px solid #7557d3;
-	padding-left: 39px;
+	padding-left: 19px;
 	font-weight: 700;
 }
 #logout {

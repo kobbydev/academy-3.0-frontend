@@ -3,9 +3,6 @@
 		<div class="left-section">
 			<UserMenu
 				:linksData="links"
-				:linkName="linkName"
-				:linkIcon="linkIcon"
-				:routerLink="routerLink"
 				:profilePic="applicantInfo?.user.image"
 				:userEmail="applicantInfo?.user.emailAddress"
 				:userFirstName="applicantInfo?.user.firstName"
@@ -21,7 +18,10 @@
 				<div class="timer">
 					<h3>Timer</h3>
 					<div class="second-timer">
-						<h1>00<span>min</span>00<span>sec</span></h1>
+						<h1>
+							{{ getTime.minutes }}<span>min</span>{{ getTime.seconds
+							}}<span>sec</span>
+						</h1>
 					</div>
 				</div>
 			</div>
@@ -41,6 +41,7 @@
 import UserMenu from '../../components/UserMenu.vue';
 import Button from '../../components/Button.vue';
 import { mapActions, mapGetters } from 'vuex';
+import intervalToDuration from 'date-fns/intervalToDuration';
 export default {
 	name: 'SuccessView',
 	components: { UserMenu, Button },
@@ -63,7 +64,7 @@ export default {
 	async created() {
 		await this.getApplicant();
 		console.log(this.getApplicant());
-		console.log(this.assessmentDate);
+		console.log(this.endTime);
 	},
 	computed: {
 		...mapGetters({
@@ -71,6 +72,14 @@ export default {
 		}),
 		applicantInfo() {
 			return this.applicant;
+		},
+		getTime() {
+			const endTime = localStorage.getItem('endTime');
+			const timer = intervalToDuration({ start: 0, end: endTime * 1000 });
+			return {
+				minutes: timer.minutes.toString().padStart(2, '0'),
+				seconds: timer.seconds.toString().padStart(2, '0'),
+			};
 		},
 	},
 	methods: {

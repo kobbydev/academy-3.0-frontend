@@ -4,10 +4,10 @@
 			<UserMenu
 				class="user-menu"
 				:linksData="links"
-				:linkName="linkName"
-				:linkIcon="linkIcon"
-				:routerLink="routerLink"
-				:lId="lId"
+				:profilePic="adminDetails?.admin.profileImage"
+				:userFirstName="adminDetails?.admin.firstName"
+				:userLastName="adminDetails?.admin.lastName"
+				:userEmail="adminDetails?.admin.emailAddress"
 			/>
 		</div>
 		<div class="right-section">
@@ -40,18 +40,8 @@
 						<tr v-for="(batch, index) in allBatches" :key="index">
 							<td>Academy {{ batch.batchId }}</td>
 							<td>{{ allApplicants.length }} students</td>
-							<td>started {{}}</td>
+							<td>started {{ applicationDate(batch.createdAt) }}</td>
 						</tr>
-						<!-- <tr>
-							<td>Academy Batch 2</td>
-							<td>15 students</td>
-							<td>started 11/09/15</td>
-						</tr>
-						<tr>
-							<td>Academy Batch 3</td>
-							<td>15 students</td>
-							<td>started 11/09/15</td>
-						</tr> -->
 					</table>
 				</div>
 				<div class="assessment">
@@ -71,6 +61,7 @@
 import UserMenu from '@/components/UserMenu.vue';
 import Button from '@/components/Button.vue';
 import { mapActions, mapGetters } from 'vuex';
+import { format } from 'date-fns';
 // import { format } from 'date-fns';
 export default {
 	name: 'AdminDashboard',
@@ -124,27 +115,29 @@ export default {
 		};
 	},
 	async created() {
+		await this.getAdminInfo();
 		await this.getAllApplicants();
 		await this.getAllBatches();
-		console.log(this.date);
 	},
 	computed: {
 		...mapGetters({
 			allApplicants: 'getAllApplicants',
 			allBatches: 'getAllBatches',
+			adminInfo: 'getAdminInfo',
 		}),
-		// date() {
-		// 	return this.allBatches.forEach((element) => {
-		// 		const newDate = format(new Date(element.createdAt), 'dd/MM/yy');
-		// 		return newDate;
-		// 	});
-		// },
+		adminDetails() {
+			return this.adminInfo;
+		},
 	},
 	methods: {
 		...mapActions({
 			getAllApplicants: 'getAllApplicants',
 			getAllBatches: 'getAllBatches',
+			getAdminInfo: 'getAdminInfo',
 		}),
+		applicationDate(date) {
+			return format(new Date(date), 'dd/MM/yy');
+		},
 	},
 };
 </script>

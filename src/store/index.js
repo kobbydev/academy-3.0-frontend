@@ -8,6 +8,9 @@ const store = createStore({
 		singleApplicant: [],
 		allApplicants: [],
 		allBatches: [],
+		adminInfo: [],
+		questions: [],
+		questionsForAdmin: [],
 		applicantInfo: [],
 	},
 	getters: {
@@ -15,6 +18,9 @@ const store = createStore({
 		getSingleApplicant: (state) => state.singleApplicant,
 		getAllApplicants: (state) => state.allApplicants,
 		getAllBatches: (state) => state.allBatches,
+		getAdminInfo: (state) => state.adminInfo,
+		getQuestions: (state) => state.questions,
+		getQuestionsForAdmin: (state) => state.questionsForAdmin,
 		getApplicantInfo: (state) => {
 			return state.applicantInfo;
 		},
@@ -32,6 +38,15 @@ const store = createStore({
 		SET_ALL_BATCHES(state, payload) {
 			state.allBatches = payload;
 		},
+		SET_ADMIN_INFO(state, payload) {
+			state.adminInfo = payload;
+		},
+		SET_QUESTIONS(state, payload) {
+			state.questions = payload;
+		},
+		SET_QUESTIONS_FOR_ADMIN(state, payload) {
+			state.questionsForAdmin = payload;
+		},
 		setId(state, email) {
 			state.applicantInfo = [];
 			state.applicantInfo.push(email);
@@ -42,7 +57,7 @@ const store = createStore({
 			const token = localStorage.getItem('token');
 			try {
 				let response = await axios.get(
-					'http://localhost:8082/api/v1/userInfo',
+					'http://localhost:8081/api/v1/userInfo',
 					{
 						headers: { token: token },
 					}
@@ -74,7 +89,7 @@ const store = createStore({
 			const token = localStorage.getItem('admintoken');
 			try {
 				let response = await axios.get(
-					'http://localhost:8082/api/v1/admin/getApplicants',
+					'http://localhost:8081/api/v1/admin/getApplicants',
 					{
 						headers: { token: token },
 					}
@@ -89,12 +104,57 @@ const store = createStore({
 			const token = localStorage.getItem('admintoken');
 			try {
 				let response = await axios.get(
-					'http://localhost:8082/api/v1/admin-applications',
+					'http://localhost:8081/api/v1/admin-applications',
 					{
 						headers: { token: token },
 					}
 				);
 				commit('SET_ALL_BATCHES', response.data.data);
+				return response;
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async getAdminInfo({ commit }) {
+			const token = localStorage.getItem('admintoken');
+			try {
+				let response = await axios.get(
+					'http://localhost:8081/api/v1/admin/info',
+					{
+						headers: { token: token },
+					}
+				);
+				commit('SET_ADMIN_INFO', response.data.data);
+				return response;
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async getQuestions({ commit }) {
+			const token = localStorage.getItem('token');
+			try {
+				let response = await axios.get(
+					'http://localhost:8081/api/v1/user/assessment-questions',
+					{
+						headers: { token: token },
+					}
+				);
+				commit('SET_QUESTIONS', response.data.data);
+				return response;
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async getQuestionsForAdmin({ commit }) {
+			const token = localStorage.getItem('admintoken');
+			try {
+				let response = await axios.get(
+					'http://localhost:8081/api/v1/user/assessment-questions',
+					{
+						headers: { token: token },
+					}
+				);
+				commit('SET_QUESTIONS_FOR_ADMIN', response.data.data);
 				return response;
 			} catch (error) {
 				console.log(error);

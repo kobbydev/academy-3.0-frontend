@@ -4,10 +4,10 @@
 			<UserMenu
 				class="user-menu"
 				:linksData="links"
-				:linkName="linkName"
-				:linkIcon="linkIcon"
-				:routerLink="routerLink"
-				:lId="lId"
+				:profilePic="adminDetails?.admin.profileImage"
+				:userFirstName="adminDetails?.admin.firstName"
+				:userLastName="adminDetails?.admin.lastName"
+				:userEmail="adminDetails?.admin.emailAddress"
 			/>
 		</div>
 		<div class="right-section">
@@ -21,46 +21,15 @@
 						<th>Time Allocated</th>
 						<th>Status</th>
 					</tr>
-					<tr class="table-body">
-						<td>Batch 1</td>
-						<td>12/07/94</td>
-						<td>30</td>
-						<td>30 mins</td>
-						<td>Taken</td>
-					</tr>
-					<tr class="table-body">
-						<td>Batch 1</td>
-						<td>12/07/94</td>
-						<td>30</td>
-						<td>30 mins</td>
-						<td>Taken</td>
-					</tr>
-					<tr class="table-body">
-						<td>Batch 1</td>
-						<td>12/07/94</td>
-						<td>30</td>
-						<td>30 mins</td>
-						<td>Taken</td>
-					</tr>
-					<tr class="table-body">
-						<td>Batch 1</td>
-						<td>12/07/94</td>
-						<td>30</td>
-						<td>30 mins</td>
-						<td>Taken</td>
-					</tr>
-					<tr class="table-body">
-						<td>Batch 1</td>
-						<td>12/07/94</td>
-						<td>30</td>
-						<td>30 mins</td>
-						<td>Taken</td>
-					</tr>
-					<tr class="table-body">
-						<td>Batch 1</td>
-						<td>12/07/94</td>
-						<td>30</td>
-						<td>30 mins</td>
+					<tr
+						class="table-body"
+						v-for="(batch, index) in allBatches"
+						:key="index"
+					>
+						<td>{{ batch.batchId }}</td>
+						<td>{{ composeDate }}</td>
+						<td>{{ numberOfQuestions }}</td>
+						<td>{{ minute }} mins {{ seconds }} seconds</td>
 						<td>Taken</td>
 					</tr>
 				</table>
@@ -71,6 +40,8 @@
 
 <script>
 import UserMenu from '../../components/UserMenu.vue';
+import { mapActions, mapGetters } from 'vuex';
+import { format } from 'date-fns';
 export default {
 	name: 'AssessmentHistory',
 	components: { UserMenu },
@@ -120,7 +91,39 @@ export default {
 					routerLink: '/settings',
 				},
 			],
+			minute: 0,
+			seconds: 0,
 		};
+	},
+	async created() {
+		await this.getAdminInfo();
+		await this.getQuestionsForAdmin();
+		await this.getAllBatches();
+		this.minute = Math.trunc(this.adminDetails.admin.timer / 60);
+		this.seconds = this.adminDetails.admin.timer % 60;
+	},
+	computed: {
+		...mapGetters({
+			adminInfo: 'getAdminInfo',
+			questionsForAdmin: 'getQuestionsForAdmin',
+			allBatches: 'getAllBatches',
+		}),
+		adminDetails() {
+			return this.adminInfo;
+		},
+		numberOfQuestions() {
+			return this.questionsForAdmin.length;
+		},
+		composeDate() {
+			return format(new Date(this.questionsForAdmin[0].createdAt), 'dd/MM/yy');
+		},
+	},
+	methods: {
+		...mapActions({
+			getAdminInfo: 'getAdminInfo',
+			getQuestionsForAdmin: 'getQuestionsForAdmin',
+			getAllBatches: 'getAllBatches',
+		}),
 	},
 };
 </script>

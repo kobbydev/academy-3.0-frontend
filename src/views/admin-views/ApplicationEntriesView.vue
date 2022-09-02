@@ -20,10 +20,10 @@
 			<UserMenu
 				class="user-menu"
 				:linksData="links"
-				:linkName="linkName"
-				:linkIcon="linkIcon"
-				:routerLink="routerLink"
-				:lId="lId"
+				:profilePic="adminDetails?.admin.profileImage"
+				:userFirstName="adminDetails?.admin.firstName"
+				:userLastName="adminDetails?.admin.lastName"
+				:userEmail="adminDetails?.admin.emailAddress"
 			/>
 		</div>
 		<div class="right-section">
@@ -140,7 +140,7 @@ export default {
 	async created() {
 		await this.getAllApplicants();
 		await this.getAllBatches();
-		// console.log(this.getEmail());
+		await this.getAdminInfo();
 	},
 	async updated() {
 		// const id = localStorage.getItem('userId');
@@ -153,7 +153,11 @@ export default {
 			allApplicants: 'getAllApplicants',
 			allBatches: 'getAllBatches',
 			singleApplicant: 'getApplicant',
+			adminInfo: 'getAdminInfo',
 		}),
+		adminDetails() {
+			return this.adminInfo;
+		},
 		dateOfBirth() {
 			return (dateOb) => {
 				format(new Date(dateOb), 'MM/dd/yy');
@@ -165,6 +169,7 @@ export default {
 			getAllApplicants: 'getAllApplicants',
 			getAllBatches: 'getAllBatches',
 			getSingleApplicant: 'getSingleApplicant',
+			getAdminInfo: 'getAdminInfo',
 		}),
 		showModal() {
 			this.isModalVisible = true;

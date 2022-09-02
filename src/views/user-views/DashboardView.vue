@@ -3,28 +3,45 @@
 		<div class="left-section">
 			<UserMenu
 				:linksData="links"
-				:linkName="linkName"
-				:linkIcon="linkIcon"
-				:routerLink="routerLink"
 				:profilePic="applicantInfo?.user.image"
 				:userEmail="applicantInfo?.user.emailAddress"
 				:userFirstName="applicantInfo?.user.firstName"
 				:userLastName="applicantInfo?.user.lastName"
-				:logout="logout"
 			/>
 		</div>
 		<div class="right-section">
 			<h1 class="heading">Dashboard</h1>
-			<p class="status-message" v-if="applicant.user.app_status === 'Pending'">
+			<p
+				class="status-message"
+				v-if="
+					applicant.user.app_status === 'Pending' &&
+					applicant.user.is_taken_test === false
+				"
+			>
 				Your Application is currently being reviewed, you wil be notified if
 				successful
 			</p>
-			<p class="status-message" v-if="applicant.user.app_status === 'Approved'">
+			<p
+				class="status-message"
+				v-if="
+					applicant.user.app_status === 'Approved' &&
+					applicant.user.is_taken_test === false
+				"
+			>
 				Your Application has been approved, prepare for your assessment
 			</p>
-			<p class="status-message" v-if="applicant.user.app_status === 'Declined'">
+			<p
+				class="status-message"
+				v-if="
+					applicant.user.app_status === 'Declined' &&
+					applicant.user.is_taken_test === false
+				"
+			>
 				Your Application has been declined, we hope you try again for the next
 				batch
+			</p>
+			<p class="status-message" v-if="applicant.user.is_taken_test === true">
+				Your Application has been approved and you have taken the assessment
 			</p>
 			<div class="application-data">
 				<div class="application-date">
@@ -54,32 +71,48 @@
 				</div>
 				<div class="assessment">
 					<h1>Take Assessment</h1>
-					<p v-if="assessmentDate > 0">
+					<p
+						v-if="assessmentDate > 0 && applicant.user.is_taken_test === false"
+					>
 						We have {{ assessmentDate }} days left until the next assessment
 						Watch this space
 					</p>
 					<p
 						v-if="
-							assessmentDate === 0 && applicant.user.app_status === 'Approved'
+							assessmentDate <= 0 &&
+							applicant.user.app_status === 'Approved' &&
+							applicant.user.is_taken_test === false
 						"
 						class="second-message"
 					>
 						You can now take your assessment
 					</p>
-					<p v-if="applicant.user.app_status === 'Declined'">
+					<p
+						v-if="
+							applicant.user.app_status === 'Declined' &&
+							applicant.user.is_taken_test === false
+						"
+					>
 						You can't take a test because your application was declined. Please
 						try again for the next batch
+					</p>
+					<p v-if="applicant.user.is_taken_test">
+						Please wait for feedback. <i class="uil uil-spinner-alt"></i>
 					</p>
 					<Button
 						text="Take Assessment"
 						:disabled="
-							(assessmentDate > 0, applicant.user.app_status === 'Declined')
+							assessmentDate > 0 ||
+							applicant.user.app_status === 'Declined' ||
+							applicant.user.is_taken_test ||
+							applicant.user.app_status === 'Pending'
 						"
-						@click="this.$router.push({ name: 'questions' })"
+						@click="takeAssessment"
 						:class="{
 							enabled:
-								assessmentDate === 0 &&
-								applicant.user.app_status === 'Approved',
+								assessmentDate <= 0 &&
+								applicant.user.app_status === 'Approved' &&
+								applicant.user.is_taken_test === false,
 						}"
 					/>
 				</div>
@@ -101,10 +134,6 @@ export default {
 	},
 	data() {
 		return {
-			userApplicationInfo: [],
-			isReviewOngoing: true,
-			isReviewApproved: false,
-			isReviewDeclined: false,
 			links: [
 				{
 					linkName: 'Dashboard',
@@ -121,8 +150,10 @@ export default {
 	},
 	async created() {
 		await this.getApplicant();
-		console.log(this.getApplicant());
-		console.log(this.assessmentDate);
+		localStorage.setItem('taken_test', this.applicantInfo.user.is_taken_test);
+		// console.log(this.getApplicant());
+		// console.log(localStorage.getItem('taken_test'));
+		// console.log(this.assessmentDate);
 	},
 	computed: {
 		...mapGetters({
@@ -137,13 +168,8 @@ export default {
 		applicationDate() {
 			return format(new Date(this.applicantInfo.user.createdAt), 'dd.MM.yy');
 		},
-		// assessmentDate() {
-		// 	return formatDistanceToNow(new Date(2022, 7, 30, 9, 27, 0), {
-		// 		includeSeconds: true,
-		// 	});
-		// },
 		assessmentDate() {
-			return differenceInDays(new Date(2022, 7, 31, 0, 0), new Date());
+			return differenceInDays(new Date(2022, 8, 2, 0, 0), new Date());
 		},
 		review() {
 			return this.isReviewSuccessful;
@@ -153,21 +179,14 @@ export default {
 		...mapActions({
 			getApplicant: 'getApplicant',
 		}),
+		takeAssessment() {
+			if (this.applicant.user.is_taken_test) {
+				this.$router.push({ name: 'success' });
+			} else {
+				this.$router.push({ name: 'questions' });
+			}
+		},
 	},
-	// watch: {
-	// 	approvedApplication() {
-	// 		if (this.applicant.user.app_status === 'Approved') {
-	// 			this.isReviewApproved = true;
-	// 			this.isReviewDeclined = false;
-	// 			this.isReviewOngoing = false;
-	// 		}
-	// 		if (this.applicant.user.app_status === 'Declined') {
-	// 			this.isReviewApproved = false;
-	// 			this.isReviewDeclined = true;
-	// 			this.isReviewOngoing = false;
-	// 		}
-	// 	},
-	// },
 };
 </script>
 

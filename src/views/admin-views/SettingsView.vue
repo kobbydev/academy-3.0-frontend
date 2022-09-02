@@ -4,10 +4,10 @@
 			<UserMenu
 				class="user-menu"
 				:linksData="links"
-				:linkName="linkName"
-				:linkIcon="linkIcon"
-				:routerLink="routerLink"
-				:lId="lId"
+				:profilePic="adminDetails?.admin.profileImage"
+				:userFirstName="adminDetails?.admin.firstName"
+				:userLastName="adminDetails?.admin.lastName"
+				:userEmail="adminDetails?.admin.emailAddress"
 			/>
 		</div>
 		<div class="right-section">
@@ -37,6 +37,7 @@ import UserMenu from '../../components/UserMenu.vue';
 import Button from '@/components/Button.vue';
 import Profile from '../../components/Profile.vue';
 import Timer from '../../components/Timer.vue';
+import { mapActions, mapGetters } from 'vuex';
 export default {
 	name: 'SettingsView',
 	components: { UserMenu, Button, Profile, Timer },
@@ -89,7 +90,24 @@ export default {
 			],
 		};
 	},
+	async created() {
+		await this.getAdminInfo();
+	},
+	async updated() {
+		await this.getAdminInfo();
+	},
+	computed: {
+		...mapGetters({
+			adminInfo: 'getAdminInfo',
+		}),
+		adminDetails() {
+			return this.adminInfo;
+		},
+	},
 	methods: {
+		...mapActions({
+			getAdminInfo: 'getAdminInfo',
+		}),
 		setSelectedComponent(component) {
 			this.selectedComponent = component;
 		},

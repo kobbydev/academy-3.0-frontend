@@ -3,9 +3,6 @@
 		<div class="left-section">
 			<UserMenu
 				:linksData="links"
-				:linkName="linkName"
-				:linkIcon="linkIcon"
-				:routerLink="routerLink"
 				:profilePic="applicantInfo?.user.image"
 				:userEmail="applicantInfo?.user.emailAddress"
 				:userFirstName="applicantInfo?.user.firstName"
@@ -24,65 +21,72 @@
 				<div class="timer">
 					<h3>Timer</h3>
 					<div class="second-timer">
-						<h1>00<span>min</span>00<span>sec</span></h1>
+						<h1>
+							{{ getTime.minutes }}<span>min</span>{{ getTime.seconds
+							}}<span>sec</span>
+						</h1>
 					</div>
 				</div>
 			</div>
-			<div class="questions-section">
-				<h1 class="question-number">Question 1</h1>
-				<p class="question-text">What is the purpose of HDR technology?</p>
+			<div
+				class="questions-section"
+				v-for="(question, index) in questions.slice(index, index + 1)"
+				:key="index"
+			>
+				<h1 class="question-number">Question {{ index + 1 }}</h1>
+				<p class="question-text">{{ question.question }}</p>
 				<div class="options">
 					<div class="option-a">
 						<input
 							type="radio"
 							name="options"
-							value="A. To reduce the file size of images and videos."
-							id="option-a"
+							:value="question.optionA"
+							id="optionA"
+							@change="selectAnswer($event)"
+							:checked="answer === 'optionA'"
 						/>
-						<label for="option-a"
-							>A. To reduce the file size of images and videos.</label
-						>
+						<label for="optionA">{{ question.optionA }}</label>
 					</div>
 					<div class="option-b">
 						<input
 							type="radio"
 							name="options"
-							value="B. To speed up 3D rendering performance."
-							id="option-b"
+							:value="question.optionB"
+							id="optionB"
+							@change="selectAnswer($event)"
+							:checked="answer === 'optionB'"
 						/>
-						<label for="option-b"
-							>B. To speed up 3D rendering performance.</label
-						>
+						<label for="optionB">{{ question.optionB }}</label>
 					</div>
 					<div class="option-c">
 						<input
 							type="radio"
 							name="options"
-							value="C. To support higher video resolutions."
-							id="option-c"
+							:value="question.optionC"
+							id="optionC"
+							@change="selectAnswer($event)"
+							:checked="answer === 'optionC'"
 						/>
-						<label for="option-c"
-							>C. To support higher video resolutions.</label
-						>
+						<label for="optionC">{{ question.optionC }}</label>
 					</div>
 					<div class="option-d">
 						<input
 							type="radio"
 							name="options"
-							value="D. To display more colors in images and videos"
-							id="option-d"
+							:value="question.optionD"
+							id="optionD"
+							@change="selectAnswer($event)"
+							:checked="answer === 'optionD'"
 						/>
-						<label for="option-d"
-							>D. To display more colors in images and videos</label
-						>
+						<label for="optionD">{{ question.optionD }}</label>
 					</div>
 				</div>
 			</div>
 			<div class="buttons">
-				<Button text="Previous" class="previous-btn" />
-				<Button text="Next" class="next-btn" />
+				<Button text="Previous" class="previous-btn" @click="previous" />
+				<Button text="Next" class="next-btn" @click="next" />
 			</div>
-			<Button text="Finish" class="finish-btn" />
+			<Button text="Finish" class="finish-btn" @click="finish" />
 		</div>
 	</div>
 </template>
@@ -91,6 +95,8 @@
 import UserMenu from '../../components/UserMenu.vue';
 import Button from '@/components/Button.vue';
 import { mapActions, mapGetters } from 'vuex';
+import axios from 'axios';
+import intervalToDuration from 'date-fns/intervalToDuration';
 export default {
 	name: 'QuestionsView',
 	components: { UserMenu, Button },
@@ -108,25 +114,107 @@ export default {
 					routerLink: '/assessment',
 				},
 			],
+			index: 0,
+			questionsArray: [],
+			answer: '',
+			score: 0,
+			time: 0,
+			endTime: 0,
 		};
 	},
 	async created() {
 		await this.getApplicant();
-		console.log(this.getApplicant());
-		console.log(this.assessmentDate);
+		await this.getQuestions();
+		this.startTimer(), (this.endTime = setInterval(this.startTimer, 1000));
+		console.log(this.applicant.user.timer);
 	},
 	computed: {
 		...mapGetters({
 			applicant: 'getApplicant',
+			questions: 'getQuestions',
 		}),
 		applicantInfo() {
 			return this.applicant;
+		},
+		getTime() {
+			const timer = intervalToDuration({ start: 0, end: this.time * 1000 });
+			return {
+				minutes: timer.minutes.toString().padStart(2, '0'),
+				seconds: timer.seconds.toString().padStart(2, '0'),
+			};
+		},
+	},
+	watch: {
+		time(value) {
+			if (value >= this.applicant.user.time) {
+				this.stopTimer();
+				this.finish();
+			}
 		},
 	},
 	methods: {
 		...mapActions({
 			getApplicant: 'getApplicant',
+			getQuestions: 'getQuestions',
 		}),
+		startTimer() {
+			this.time++;
+		},
+		stopTimer() {
+			clearInterval(this.endTime);
+			localStorage.setItem('endTime', this.time);
+		},
+		next() {
+			this.questionsArray[this.index] = this.answer;
+			if (this.index === this.questions.length) {
+				return false;
+			} else {
+				this.index++;
+			}
+			if (this.index < this.questionsArray.length) {
+				this.answer = this.questionsArray[this.index];
+			} else {
+				this.answer = '';
+			}
+		},
+		previous() {
+			this.questionsArray[this.index] = this.answer;
+			if (this.index === 0) {
+				this.index = 0;
+			} else {
+				this.index--;
+			}
+			this.answer = this.questionsArray[this.index];
+		},
+		selectAnswer(event) {
+			this.answer = event.target.id;
+		},
+		finish() {
+			this.stopTimer();
+			let overallScore = 0;
+			this.questionsArray.forEach((item, index) => {
+				if (item === this.questions[index].correctAnswer) {
+					overallScore += 1;
+				}
+			});
+			this.score = overallScore;
+			// const userId = localStorage.getItem('userLoginId');
+			const userId = this.applicantInfo.user._id;
+			const token = localStorage.getItem('token');
+			axios
+				.put(
+					`http://localhost:8081/api/v1/user/update/${userId}`,
+					{ scores: this.score, is_taken_test: true },
+					{
+						headers: { token: token },
+					}
+				)
+				.then((response) => {
+					console.log(response);
+					this.$router.push({ name: 'success' });
+				})
+				.catch((error) => console.log(error));
+		},
 	},
 };
 </script>
@@ -277,9 +365,9 @@ input[type='radio']:checked ~ label {
 	color: #2b3c4e;
 	margin-bottom: 48px;
 }
-#option-b,
-#option-c,
-#option-d {
+#optionB,
+#optionC,
+#optionD {
 	margin-top: 37px;
 }
 label {

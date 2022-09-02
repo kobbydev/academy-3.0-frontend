@@ -3,9 +3,6 @@
 		<div class="left-section">
 			<UserMenu
 				:linksData="links"
-				:linkName="linkName"
-				:linkIcon="linkIcon"
-				:routerLink="routerLink"
 				:profilePic="applicantInfo?.user.image"
 				:userEmail="applicantInfo?.user.emailAddress"
 				:userFirstName="applicantInfo?.user.firstName"
@@ -16,10 +13,11 @@
 			<div class="header">
 				<div class="header-">
 					<h1 class="heading">Take Assessment</h1>
-					<p>
+					<p v-if="this.applicantInfo.user.is_taken_test === false">
 						Click the button below to start assessment, you have limited time
 						for this test
 					</p>
+					<p v-if="this.applicantInfo.user.is_taken_test">Thank You</p>
 				</div>
 				<div class="timer">
 					<h3>Timer</h3>
@@ -30,16 +28,42 @@
 			</div>
 
 			<div class="counter">
-				<img src="@/assets/counter.svg" alt="" />
-				<p v-if="assessmentDate > 0">
+				<img
+					src="@/assets/counter.svg"
+					alt=""
+					v-if="
+						assessmentDate > 0 &&
+						this.applicantInfo.user.is_taken_test === false
+					"
+				/>
+				<i
+					class="uil uil-smile-beam"
+					v-if="this.applicantInfo.user.is_taken_test"
+				></i>
+				<p
+					v-if="
+						assessmentDate > 0 &&
+						this.applicantInfo.user.is_taken_test === false
+					"
+				>
 					We have {{ assessmentDate }} days left until the next assessment<br />Watch
 					this space
 				</p>
-				<p v-if="assessmentDate === 0" class="second-message">
+				<p
+					v-if="
+						assessmentDate === 0 &&
+						this.applicantInfo.user.is_taken_test === false
+					"
+					class="second-message"
+				>
 					You can now take your assessment
+				</p>
+				<p v-if="this.applicantInfo.user.is_taken_test" class="second-message">
+					You have already taken the assessment. Please wait for feedback
 				</p>
 				<Button
 					text="Take Assessment"
+					v-show="this.applicantInfo.user.is_taken_test === false"
 					:disabled="assessmentDate > 0"
 					@click="this.$router.push({ name: 'questions' })"
 					:class="{ enabled: assessmentDate === 0 }"
@@ -206,5 +230,9 @@ button {
 .enabled {
 	background: #7557d3;
 	cursor: pointer;
+}
+i {
+	font-size: 100px;
+	color: #7557d3;
 }
 </style>

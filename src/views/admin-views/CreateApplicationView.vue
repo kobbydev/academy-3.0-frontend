@@ -1,8 +1,14 @@
 <template>
 	<div class="create-application">
 		<div class="left-section">
-			<UserMenu class="user-menu" :linksData="links" :linkName="linkName" :linkIcon="linkIcon"
-				:routerLink="routerLink" :lId="lId" />
+			<UserMenu
+				class="user-menu"
+				:linksData="links"
+				:profilePic="adminDetails?.admin.profileImage"
+				:userFirstName="adminDetails?.admin.firstName"
+				:userLastName="adminDetails?.admin.lastName"
+				:userEmail="adminDetails?.admin.emailAddress"
+			/>
 		</div>
 		<div class="right-section">
 			<h1 class="heading">Create Application</h1>
@@ -10,29 +16,54 @@
 				<div class="section-1">
 					<label class="custom-file-upload">
 						<input type="file" ref="file" @change="selectFile" />
-						{{nameFile}}
+						{{ nameFile }}
 					</label>
 					<div class="link-input">
 						<label for="link-input">Link</label> <br />
-						<input type="text" name="link-input" id="link-input" v-model="link" />
+						<input
+							type="text"
+							name="link-input"
+							id="link-input"
+							v-model="link"
+						/>
 					</div>
 				</div>
 				<div class="section-2">
 					<div class="date-input">
 						<label for="date-input">Application closure date</label><br />
-						<input type="date" id="date-input" name="date-input" min="2022-08-14"
-							v-model="dateOfApplication" />
+						<input
+							type="date"
+							id="date-input"
+							name="date-input"
+							min="2022-08-14"
+							v-model="dateOfApplication"
+						/>
 					</div>
 					<div class="batch-input">
 						<label for="batch-id">Batch ID</label> <br />
-						<input type="text" id="batch-id" name="batch-id" /><br />
-						<p>Batch Id cannot be empty</p>
+						<input
+							type="text"
+							id="batch-id"
+							name="batch-id"
+							v-model="batchId"
+						/><br />
+						<!-- <p>Batch Id cannot be empty</p> -->
 					</div>
 				</div>
 				<label for="instructions">Instructions</label><br />
-				<textarea name="instructions" id="instructions" cols="30" rows="10"
-					v-model="instructions"></textarea><br />
-				<Button type="submit" text="Submit" @click.prevent="createAdminApplication" />
+				<textarea
+					name="instructions"
+					id="instructions"
+					cols="30"
+					rows="10"
+					v-model="instructions"
+				></textarea
+				><br />
+				<Button
+					type="submit"
+					text="Submit"
+					@click.prevent="createAdminApplication"
+				/>
 			</form>
 		</div>
 		<div class="message-box" v-if="isShown">
@@ -49,6 +80,7 @@
 import UserMenu from '../../components/UserMenu.vue';
 import Button from '@/components/Button.vue';
 import axios from 'axios';
+import { mapActions, mapGetters } from 'vuex';
 export default {
 	name: 'CreateApplication',
 	components: { UserMenu, Button },
@@ -99,46 +131,63 @@ export default {
 					routerLink: '/settings',
 				},
 			],
-			file: "",
-			link: "",
-			dateOfApplication: "",
-			batchId: "",
-			instructions: "",
-			nameFile: "+ Choose File"
+			file: '',
+			link: '',
+			dateOfApplication: '',
+			batchId: '',
+			instructions: '',
+			nameFile: '+ Choose File',
 		};
 	},
+	async created() {
+		await this.getAdminInfo();
+	},
+	computed: {
+		...mapGetters({
+			adminInfo: 'getAdminInfo',
+		}),
+		adminDetails() {
+			return this.adminInfo;
+		},
+	},
 	methods: {
+		...mapActions({
+			getAdminInfo: 'getAdminInfo',
+		}),
 		async createAdminApplication() {
-			const token = localStorage.getItem('token');
+			const token = localStorage.getItem('admintoken');
 			const formData = new FormData();
-			formData.append('applicationFile', this.file)
+			formData.append('applicationFile', this.file);
 			formData.append('link', this.link),
-			formData.append('dateOfApplication', this.dateOfApplication)
-			formData.append('batchId', this.batchId)
-			formData.append('instructions', this.instructions)
+				formData.append('dateOfApplication', this.dateOfApplication);
+			formData.append('batchId', this.batchId);
+			formData.append('instructions', this.instructions);
 
 			try {
-				const response = await axios.post('http://localhost:8082/api/v1/admin-create-application', formData,
+				const response = await axios.post(
+					'http://localhost:8081/api/v1/admin-create-application',
+					formData,
 					{
 						headers: { token: token },
-					})
-				console.log(response)
+					}
+				);
+				console.log(response);
 			} catch (e) {
-				console.log(e)
+				console.log(e);
 			}
 		},
 		selectFile() {
-			this.file = this.$refs.file.files[0]
+			this.file = this.$refs.file.files[0];
 		},
-	}, 
-	watch:{
+	},
+	watch: {
 		// eslint-disable-next-line no-unused-vars
-		file(newFile, oldFile){
-			if(newFile){
-				this.nameFile = this.file.name
+		file(newFile, oldFile) {
+			if (newFile) {
+				this.nameFile = this.file.name;
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 
@@ -210,7 +259,7 @@ label {
 	border-radius: 6.2069px;
 	display: inline-block;
 	cursor: pointer;
-	width: 456px;
+	width: 32%;
 	padding: 46px 181px 40px 167px;
 	font-family: 'Avenir Roman';
 	font-size: 16px;

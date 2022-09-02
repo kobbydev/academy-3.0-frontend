@@ -4,10 +4,10 @@
 			<UserMenu
 				class="user-menu"
 				:linksData="links"
-				:linkName="linkName"
-				:linkIcon="linkIcon"
-				:routerLink="routerLink"
-				:lId="lId"
+				:profilePic="adminDetails?.admin.profileImage"
+				:userFirstName="adminDetails?.admin.firstName"
+				:userLastName="adminDetails?.admin.lastName"
+				:userEmail="adminDetails?.admin.emailAddress"
 			/>
 		</div>
 		<div class="right-section">
@@ -33,46 +33,70 @@
 				<div class="options-section">
 					<div class="options-a-b">
 						<div class="options-a">
-							<label for="option-a" class="radio-labels">Option A</label><br />
+							<label
+								for="option-a"
+								class="radio-labels"
+								@click="selectCorrectAnswer('optionA')"
+								>Option A</label
+							><br />
 
 							<input
 								type="text"
 								name="question-options"
 								v-model="questionForm.optionA"
 								id="option-a"
+								:class="{ chosen: questionForm.correctAnswer === 'optionA' }"
 							/>
 							<br />
 						</div>
 						<div class="options-b">
-							<label for="option-b" class="radio-labels">Option B</label><br />
+							<label
+								for="option-b"
+								class="radio-labels"
+								@click="selectCorrectAnswer('optionB')"
+								>Option B</label
+							><br />
 
 							<input
 								type="text"
 								name="question-options"
 								v-model="questionForm.optionB"
 								id="option-b"
+								:class="{ chosen: questionForm.correctAnswer === 'optionB' }"
 							/><br />
 						</div>
 					</div>
 					<div class="options-c-d">
 						<div class="option-c">
-							<label for="option-c" class="radio-labels">Option C</label><br />
+							<label
+								for="option-c"
+								class="radio-labels"
+								@click="selectCorrectAnswer('optionC')"
+								>Option C</label
+							><br />
 
 							<input
 								type="text"
 								name="question-options"
 								v-model="questionForm.optionC"
 								id="option-c"
+								:class="{ chosen: questionForm.correctAnswer === 'optionC' }"
 							/><br />
 						</div>
 						<div class="option-d">
-							<label for="option-d" class="radio-labels">Option D</label><br />
+							<label
+								for="option-d"
+								class="radio-labels"
+								@click="selectCorrectAnswer('optionD')"
+								>Option D</label
+							><br />
 
 							<input
 								type="text"
 								name="question-options"
 								v-model="questionForm.optionD"
 								id="option-d"
+								:class="{ chosen: questionForm.correctAnswer === 'optionD' }"
 							/>
 						</div>
 					</div>
@@ -81,7 +105,12 @@
 					<Button text="Previous" @click="previous" type="button" />
 					<Button text="Next" @click="next" type="button" /><br />
 				</div>
-				<Button text="Finish" type="button" class="finish-btn" />
+				<Button
+					text="Finish"
+					type="button"
+					class="finish-btn"
+					@click="finish"
+				/>
 			</form>
 		</div>
 	</div>
@@ -91,11 +120,13 @@
 import UserMenu from '../../components/UserMenu.vue';
 import Button from '@/components/Button.vue';
 import axios from 'axios';
+import { mapActions, mapGetters } from 'vuex';
 export default {
 	name: 'ComposeAssessment',
 	components: { UserMenu, Button },
 	data() {
 		return {
+			isChosen: false,
 			links: [
 				{
 					lId: 'dashboard',
@@ -148,7 +179,6 @@ export default {
 				optionB: '',
 				optionC: '',
 				optionD: '',
-				questionFile: '',
 				correctAnswer: '',
 			},
 			questionTemplate: {
@@ -157,12 +187,25 @@ export default {
 				optionB: '',
 				optionC: '',
 				optionD: '',
-				questionFile: '',
 				correctAnswer: '',
 			},
 		};
 	},
+	async created() {
+		await this.getAdminInfo();
+	},
+	computed: {
+		...mapGetters({
+			adminInfo: 'getAdminInfo',
+		}),
+		adminDetails() {
+			return this.adminInfo;
+		},
+	},
 	methods: {
+		...mapActions({
+			getAdminInfo: 'getAdminInfo',
+		}),
 		next() {
 			if (this.questionForm.question !== '') {
 				this.questions[this.index] = this.questionForm;
@@ -191,9 +234,19 @@ export default {
 			this.questionForm = { ...this.questions[this.index] };
 		},
 		finish() {
-			axios.post();
+			const token = localStorage.getItem('admintoken');
+			this.questions.forEach((item) => {
+				axios
+					.post('http://localhost:8081/api/v1/admin/create-assessment', item, {
+						headers: { token: token },
+					})
+					.then((response) => console.log(response))
+					.catch((error) => console.log(error));
+			});
 		},
-		selectCorrectAnswer() {},
+		selectCorrectAnswer(value) {
+			this.questionForm.correctAnswer = value;
+		},
 	},
 };
 </script>
@@ -254,7 +307,9 @@ input[type='radio']:checked {
 	background: #31d283 no-repeat center center;
 	background-size: 59px 59px;
 }
-
+.chosen {
+	background: #31d283;
+}
 input[type='radio']:focus {
 	outline-color: transparent;
 }

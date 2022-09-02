@@ -54,7 +54,12 @@
 				</div>
 				<div class="dob-section">
 					<label for="user-dob">Date of Birth</label><br />
-					<input type="text" name="user-dob" readonly />
+					<input
+						type="text"
+						name="user-dob"
+						readonly
+						v-model="singleApplicant.dateOfBirth"
+					/>
 				</div>
 			</div>
 			<div class="section-4">
@@ -143,6 +148,15 @@ export default {
 				this.age(this.singleApplicant.dateOfBirth)
 			);
 		},
+		dateOfBirthConversion() {
+			return format(new Date(this.singleApplicant.dateOfBirth), 'MM/dd/yy');
+		},
+		age() {
+			return differenceInYears(
+				new Date(),
+				new Date(this.singleApplicant.dateOfBirth)
+			);
+		},
 	},
 	methods: {
 		...mapActions({
@@ -157,12 +171,15 @@ export default {
 		decline() {
 			this.$emit('decline');
 		},
-		dateOfBirthConversion(date) {
-			return format(new Date(date), 'MM/dd/yy');
-		},
-		age(date) {
-			return differenceInYears(new Date(), new Date(date));
-		},
+		// dateOfBirthConversion() {
+		// 	return format(new Date(this.singleApplicant.dateOfBirth), 'MM/dd/yy');
+		// },
+		// age() {
+		// 	return differenceInYears(
+		// 		new Date(),
+		// 		new Date(this.singleApplicant.dateOfBirth)
+		// 	);
+		// },
 	},
 };
 </script>
