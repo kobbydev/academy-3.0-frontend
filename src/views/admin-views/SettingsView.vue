@@ -5,8 +5,7 @@
 				class="user-menu"
 				:linksData="links"
 				:profilePic="adminDetails?.admin.profileImage"
-				:userFirstName="adminDetails?.admin.firstName"
-				:userLastName="adminDetails?.admin.lastName"
+				:userFirstName="adminDetails?.admin.fullName"
 				:userEmail="adminDetails?.admin.emailAddress"
 			/>
 		</div>
@@ -93,9 +92,9 @@ export default {
 	async created() {
 		await this.getAdminInfo();
 	},
-	async updated() {
-		await this.getAdminInfo();
-	},
+	// async mounted() {
+	// 	await this.getAdminInfo();
+	// },
 	computed: {
 		...mapGetters({
 			adminInfo: 'getAdminInfo',

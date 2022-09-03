@@ -21,8 +21,7 @@
 				class="user-menu"
 				:linksData="links"
 				:profilePic="adminDetails?.admin.profileImage"
-				:userFirstName="adminDetails?.admin.firstName"
-				:userLastName="adminDetails?.admin.lastName"
+				:userFirstName="adminDetails?.admin.fullName"
 				:userEmail="adminDetails?.admin.emailAddress"
 			/>
 		</div>

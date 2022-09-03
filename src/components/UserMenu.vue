@@ -76,6 +76,7 @@ export default {
 .profile-picture img {
 	width: 80px;
 	height: 80px;
+	border-radius: 50%;
 }
 .links {
 	margin-bottom: 28px;
