@@ -5,8 +5,7 @@
 				class="user-menu"
 				:linksData="links"
 				:profilePic="adminDetails?.admin.profileImage"
-				:userFirstName="adminDetails?.admin.firstName"
-				:userLastName="adminDetails?.admin.lastName"
+				:userFirstName="adminDetails?.admin.fullName"
 				:userEmail="adminDetails?.admin.emailAddress"
 			/>
 		</div>
@@ -118,6 +117,7 @@ export default {
 		await this.getAdminInfo();
 		await this.getAllApplicants();
 		await this.getAllBatches();
+		console.log(this.adminDetails)
 	},
 	computed: {
 		...mapGetters({

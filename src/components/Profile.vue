@@ -7,9 +7,9 @@
 		<hr />
 		<div class="upload-section">
 			<img :src="adminDetails.admin.profileImage" alt="" />
-			<!-- <Button text="Upload new image" class="upload-btn" /> -->
-			<label class="upload-btn" accept="image/*"
-				><input type="file" ref="profileImage" />Upload new image</label
+			<label class="upload-btn" accept="image/*" :disabled="isDisabled"
+				><input type="file" ref="profileImage" @change="selectFileIm" />Upload
+				new image</label
 			>
 			<Button text="x Remove" class="remove-btn" />
 		</div>
@@ -42,8 +42,6 @@
 						:readonly="isDisabled"
 					/>
 				</div>
-			</div>
-			<div class="section-2">
 				<div class="country-section">
 					<label for="country">Country</label><br />
 					<input
@@ -88,25 +86,21 @@ export default {
 	},
 	async created() {
 		await this.getAdminInfo();
-		this.adminName = `${this.adminDetails.admin.firstName} ${this.adminDetails.admin.lastName}`;
+		this.adminName = this.adminDetails.admin.fullName;
 		this.adminCountry = this.adminDetails.admin.country;
 		this.adminAddress = this.adminDetails.admin.address;
 		this.adminEmail = this.adminDetails.admin.emailAddress;
 		this.adminPhoneNumber = this.adminDetails.admin.phoneNumber;
 	},
+	// async updated() {
+	// 	await this.getAdminInfo();
+	// },
 	computed: {
 		...mapGetters({
 			adminInfo: 'getAdminInfo',
 		}),
 		adminDetails() {
 			return this.adminInfo;
-		},
-		fullName() {
-			return (
-				this.adminDetails.admin.firstName +
-				' ' +
-				this.adminDetails.admin.lastName
-			);
 		},
 	},
 	methods: {
@@ -131,7 +125,7 @@ export default {
 				.patch(
 					'http://localhost:8081/api/v1/admin/update-details',
 					{
-						firstName: this.adminName,
+						fullName: this.adminName,
 						emailAddress: this.adminEmail,
 						country: this.adminCountry,
 						address: this.adminAddress,
@@ -234,8 +228,10 @@ input[type='file'] {
 	color: #ff5722;
 }
 .section-1 {
-	display: flex;
-	justify-content: space-between;
+	display: grid;
+	grid-template-columns: auto auto auto;
+	row-gap: 40px;
+	column-gap: 40px;
 }
 label {
 	font-family: 'Lato';
@@ -286,11 +282,9 @@ label {
 	letter-spacing: -0.117188px;
 	color: #333758;
 }
-.address-section {
-	margin-left: 50px;
-}
 .save-btn {
 	margin: auto;
+	margin-top: 40px;
 	background: #7557d3;
 	border-radius: 3px;
 	font-family: 'Karla';
